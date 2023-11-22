@@ -57,6 +57,12 @@ void Collider::StayCollision(Collider* _pOther)
 	m_pOwner->StayCollision(_pOther);
 }
 
+bool Collider::OverlapSquare(Vec2 point, Vec2 size)
+{
+
+	return false;
+}
+
 void Collider::FinalUpdate()
 {
 	// Object위치를 따라가야 하는거야.

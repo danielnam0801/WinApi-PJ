@@ -24,7 +24,9 @@ Player::Player()
 	GetCollider()->SetScale(Vec2(20.f,30.f));
 	//GetCollider()->SetOffSetPos(Vec2(50.f,0.f));
 	
-	// ¾û¾û¾û ³» 20ºÐ ¤Ð¤Ð¤Ð ¤±³¯¾î;¤Ó³²·¯;¤±³ª¾ó
+	_gravityScale = 9.8f;
+	_jumpPower = 100;
+
 	CreateAnimator();
 	GetAnimator()->CreateAnim(L"Jiwoo_Front", m_pTex,Vec2(0.f, 150.f),
 		Vec2(50.f, 50.f), Vec2(50.f, 0.f), 5, 0.2f);
@@ -66,39 +68,55 @@ void Player::Update()
 		vPos.x += 100.f * fDT;
 		GetAnimator()->PlayAnim(L"Jiwoo_Right", true);
 	}
-	if (KEY_PRESS(KEY_TYPE::UP))
+
+	if (_isGround && KEY_DOWN(KEY_TYPE::SPACE) && !_isDoubleJump)
 	{
-		vPos.y -= 100.f * fDT;
-		GetAnimator()->PlayAnim(L"Jiwoo_Back", true);
+		if (_isJump) //DoubleJump
+		{
+			DoubleJump();
+		}
+		else
+		{
+			Jump();
+		}
 	}
-	if (KEY_PRESS(KEY_TYPE::DOWN))
+	else
 	{
-		vPos.y += 100.f * fDT;
-		GetAnimator()->PlayAnim(L"Jiwoo_Front", true);
+		
 	}
-	if (KEY_DOWN(KEY_TYPE::SPACE))
-	{
-		CreateBullet();
-		ResMgr::GetInst()->Play(L"Shoot");
-	}
-	if(KEY_PRESS(KEY_TYPE::CTRL))
-		GetAnimator()->PlayAnim(L"Jiwoo_Attack", false, 1);
+
+
+	_moveDir.y -= _gravityScale * fDT;
+
+	vPos = vPos + _moveDir;
+
+	_isGround = CheckGroundCollider(vPos.y);
+
+	/*if(KEY_PRESS(KEY_TYPE::CTRL))
+		GetAnimator()->PlayAnim(L"Jiwoo_Attack", false, 1);*/
 	SetPos(vPos);
 	GetAnimator()->Update();
 }
 
-void Player::CreateBullet()
+void Player::Jump()
 {
-	Bullet* pBullet = new Bullet;
-	Vec2 vBulletPos = GetPos();
-	vBulletPos.y -= GetScale().y / 2.f;
-	pBullet->SetPos(vBulletPos);
-	pBullet->SetScale(Vec2(25.f,25.f));
-//	pBullet->SetDir(M_PI / 4 * 7);
-//	pBullet->SetDir(120* M_PI / 180);
-	pBullet->SetDir(Vec2(-10.f,-15.f));
-	pBullet->SetName(L"Player_Bullet");
-	SceneMgr::GetInst()->GetCurScene()->AddObject(pBullet, OBJECT_GROUP::BULLET);
+	_isJump = true;
+	_moveDir.y += _jumpPower;
+}
+
+void Player::DoubleJump()
+{
+	_isDoubleJump = true;
+	_moveDir.y += _jumpPower * 0.8f;
+}
+
+bool Player::CheckGroundCollider(float yValue)
+{
+	return 
+}
+
+void Player::Land()
+{
 }
 
 void Player::Render(HDC _dc)
@@ -137,3 +155,5 @@ void Player::Render(HDC _dc)
 	//	, 0, 0, Width, Height, RGB(255, 0, 255));
 	Component_Render(_dc);
 }
+
+

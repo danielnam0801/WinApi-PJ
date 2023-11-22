@@ -16,6 +16,8 @@ public:
 	void ExitCollision(Collider* _pOther);
 	void StayCollision(Collider* _pOther);
 public:
+	bool OverlapSquare(Vec2 point, Vec2 size);
+public:
 	void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
 	void SetOffSetPos(Vec2 _vOffsetPos) 
 	{ m_vOffsetPos = _vOffsetPos; }
