@@ -13,6 +13,9 @@ void Start_Scene::Init()
 	pObj->SetPos((Vec2({Core::GetInst()->GetResolution().x /2, Core::GetInst()->GetResolution().y / 2})));
 	pObj->SetScale(Vec2(100.f,100.f));
 	AddObject(pObj, OBJECT_GROUP::PLAYER);
+	
+	Object* mouseObj = new Object;
+	AddObject(mouseObj, OBJECT_GROUP::MOUSE);
 
 	// 몬스터 세팅 마구마구 배치를 해봅시다.
 
@@ -42,7 +45,9 @@ void Start_Scene::Init()
 
 	// 충돌체크해야되는것들을 설정하자.
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::BULLET, OBJECT_GROUP::MONSTER);
+	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::MOUSE, OBJECT_GROUP::MAP);
 }
+
 
 void Start_Scene::Update()
 {

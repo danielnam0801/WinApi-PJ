@@ -30,7 +30,9 @@ public:
 	}
 	const wstring& GetName() const { return m_strName; }
 	void SetName(wstring _name) { m_strName = _name; }
+	bool SetIsClicked(bool value) { m_IsClicked = value; }
 	bool GetIsDead() const { return !m_IsAlive; }
+	bool GetIsClicked() const { return !m_IsClicked; }
 private:
 	void SetDead() { m_IsAlive = false; }
 	friend class EventMgr;
@@ -43,6 +45,7 @@ private:
 	Collider* m_pCollider;
 	wstring m_strName; // ¿Ã∏ß.
 	bool m_IsAlive;
+	bool m_IsClicked;
 	Animator* m_pAnimator;
 };
 

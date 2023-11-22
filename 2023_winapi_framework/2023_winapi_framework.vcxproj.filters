@@ -62,6 +62,12 @@
     <Filter Include="Engine\08. Module">
       <UniqueIdentifier>{b8698270-780f-4bb6-bf63-bf69c99fa2ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\03. Manager\MapMgr">
+      <UniqueIdentifier>{6a458794-cd6e-4692-b8b6-17046ee73559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\MapObject">
+      <UniqueIdentifier>{f9da4e9c-2274-4bf5-be2c-f456ec076f2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -154,6 +160,10 @@
     <ClInclude Include="2023_winapi_framework.h">
       <Filter>Default</Filter>
     </ClInclude>
+    <ClInclude Include="MapMgr.h">
+      <Filter>Engine\03. Manager\MapMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseObj.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2023_winapi_framework.rc">
@@ -241,5 +251,9 @@
     <ClCompile Include="Animator.cpp">
       <Filter>Engine\07. Component</Filter>
     </ClCompile>
+    <ClCompile Include="MapMgr.cpp">
+      <Filter>Engine\03. Manager\MapMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseObj.cpp" />
   </ItemGroup>
 </Project>
