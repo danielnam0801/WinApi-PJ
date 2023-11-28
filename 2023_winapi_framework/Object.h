@@ -1,6 +1,7 @@
 #pragma once
 class Collider;
 class Animator;
+class Rigidbody;
 class Object
 {
 public:
@@ -28,9 +29,13 @@ public:
 	{
 		return m_pAnimator;
 	}
+	Rigidbody* GetRigidbody()
+	{
+		return m_pRigidbody;
+	}
 	const wstring& GetName() const { return m_strName; }
 	void SetName(wstring _name) { m_strName = _name; }
-	bool SetIsClicked(bool value) { m_IsClicked = value; }
+	void SetIsClicked(bool value) { m_IsClicked = value; }
 	bool GetIsDead() const { return !m_IsAlive; }
 	bool GetIsClicked() const { return !m_IsClicked; }
 private:
@@ -38,14 +43,16 @@ private:
 	friend class EventMgr;
 public:
 	void CreateCollider();
+	void CreateRigidbody();
 	void CreateAnimator();
 private:
 	Vec2 m_vPos; // 위치
 	Vec2 m_vScale; // 크기
-	Collider* m_pCollider;
 	wstring m_strName; // 이름.
 	bool m_IsAlive;
 	bool m_IsClicked;
+	Collider* m_pCollider;
+	Rigidbody* m_pRigidbody;
 	Animator* m_pAnimator;
 };
 

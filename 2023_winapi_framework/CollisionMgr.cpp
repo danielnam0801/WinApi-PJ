@@ -128,6 +128,24 @@ void CollisionMgr::CheckGroup(OBJECT_GROUP _eLeft, OBJECT_GROUP _eRight)
 	}
 }
 
+bool CollisionMgr::CheckContainObject(Vec2 checkPos, Collider* col)
+{
+	Vec2 xPos
+	{
+		col->GetFinalPos().x - col->GetScale().x / 2,
+		col->GetFinalPos().x + col->GetScale().x / 2
+	};
+	Vec2 yPos
+	{
+		col->GetFinalPos().y - col->GetScale().y / 2,
+		col->GetFinalPos().y + col->GetScale().y / 2
+	};
+	
+	if (checkPos.x < xPos.y && checkPos.x > xPos.x && checkPos.y < yPos.y && checkPos.y > yPos.x)
+		return true;
+	return false;
+}
+
 void CollisionMgr::CheckReset()
 {
 	memset(m_arrCheck, 0, sizeof(UINT) * (UINT)(OBJECT_GROUP::END));

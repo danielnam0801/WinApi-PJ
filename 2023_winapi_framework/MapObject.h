@@ -4,8 +4,9 @@
 class MapObject : public Object
 {
 public:
-	MapObject(MAPOBJECT_TYPE type);
+	MapObject();
 	~MapObject();
+	void Render(HDC _dc);
 private:
 	MAPOBJECT_TYPE m_type;
 };

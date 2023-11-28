@@ -15,6 +15,7 @@ class CollisionMgr
 public:
 	void Update();
 	void CheckGroup(OBJECT_GROUP _eLeft, OBJECT_GROUP _eRight);
+	bool CheckContainObject(Vec2 checkPos, Collider* col);
 	void CheckReset();
 private:
 	void CollisionGroupUpdate(OBJECT_GROUP _eLeft, OBJECT_GROUP _eRight);

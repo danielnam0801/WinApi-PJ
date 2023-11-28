@@ -3,6 +3,7 @@
 #include "KeyMgr.h"
 #include "TimeMgr.h"
 #include "Collider.h"
+#include "Rigidbody.h"
 #include "Animator.h"
 Object::Object()
 	: m_pCollider(nullptr)
@@ -10,6 +11,7 @@ Object::Object()
 	, m_vScale{}
 	, m_IsAlive(true)
 	, m_pAnimator(nullptr)
+	, m_pRigidbody(nullptr)
 {
 }
 
@@ -17,15 +19,29 @@ Object::~Object()
 {
 	if (nullptr != m_pCollider)
 		delete m_pCollider;
+	if (nullptr != m_pRigidbody)
+		delete m_pRigidbody;
 	if (nullptr != m_pAnimator)
 		delete m_pAnimator;
 
 }
 
+//bool Object::CheckInclude(Object obj1, Object obj2)
+//{
+	//obj1.
+	//return false;
+//}
+
 void Object::CreateCollider()
 {
 	m_pCollider = new Collider;
 	m_pCollider->m_pOwner = this;
+}
+
+void Object::CreateRigidbody()
+{
+	m_pRigidbody = new Rigidbody;
+	m_pRigidbody->m_pOwner = this;
 }
 
 void Object::CreateAnimator()
@@ -48,6 +64,8 @@ void Object::FinalUpdate()
 {
 	if (m_pCollider)
 		m_pCollider->FinalUpdate();
+	if (m_pRigidbody)
+		m_pRigidbody->FinalUpdate(fDT);
 }
 
 void Object::Render(HDC _dc)
@@ -77,6 +95,5 @@ void Object::Component_Render(HDC _dc)
 		m_pCollider->Render(_dc);
 	if (nullptr != m_pAnimator)
 		m_pAnimator->Render(_dc);
-
 }
 

@@ -28,12 +28,14 @@ enum class OBJECT_GROUP
 	MONSTER,
 	MOUSE,
 	MAP,
+	GROUND,
+	OBSTACLE,
 	END = 30
 };
 
 enum class MAPOBJECT_TYPE
 {
-	SQUARE,
+	SQUARE, CIRCLE, TRIANGLE
 };
 
 enum class PEN_TYPE

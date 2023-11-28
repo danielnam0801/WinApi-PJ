@@ -1,7 +1,8 @@
 #pragma once
+class MapObject;
 class MapFactory
 {
 public:
-	void CreateMapObj();
+	MapObject* CreateMapObj(MAPOBJECT_TYPE _type, Vec2 _spawnPos);
 };
 
