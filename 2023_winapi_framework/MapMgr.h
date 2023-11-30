@@ -5,6 +5,7 @@ class MapMgr
 {
 	SINGLE(MapMgr);
 public:
+	void Init();
 	void MakeObject(MAPOBJECT_TYPE _type);
 	void MovingObject();
 	void ReleaseObject();
