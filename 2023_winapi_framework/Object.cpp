@@ -5,6 +5,8 @@
 #include "Collider.h"
 #include "Rigidbody.h"
 #include "Animator.h"
+#include "Gravity.h"
+
 Object::Object()
 	: m_pCollider(nullptr)
 	, m_vPos{}
@@ -12,6 +14,7 @@ Object::Object()
 	, m_IsAlive(true)
 	, m_pAnimator(nullptr)
 	, m_pRigidbody(nullptr)
+	, m_pGravity(nullptr)
 {
 }
 
@@ -23,6 +26,8 @@ Object::~Object()
 		delete m_pRigidbody;
 	if (nullptr != m_pAnimator)
 		delete m_pAnimator;
+	if (nullptr != m_pGravity)
+		delete m_pGravity;
 
 }
 
@@ -50,6 +55,12 @@ void Object::CreateAnimator()
 	m_pAnimator->m_pOwner = this;
 }
 
+void Object::CreateGravity()
+{
+	m_pGravity = new Gravity;
+	m_pGravity->m_pOwner = this;
+}
+
 void Object::Update()
 {
 	//Vec2 vPos = m_obj.GetPos();
@@ -62,10 +73,14 @@ void Object::Update()
 
 void Object::FinalUpdate()
 {
-	if (m_pCollider)
-		m_pCollider->FinalUpdate();
+	if (m_pAnimator)
+		m_pAnimator->FinalUpdate();
+	if (m_pGravity)
+		m_pGravity->FinalUpdate();
 	if (m_pRigidbody)
 		m_pRigidbody->FinalUpdate(fDT);
+	if (m_pCollider)
+		m_pCollider->FinalUpdate();
 }
 
 void Object::Render(HDC _dc)

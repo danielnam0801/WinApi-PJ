@@ -18,8 +18,12 @@ private:
     void DoubleJump();
     //bool CheckGroundCollider();
     void Land();
+    void CreateInit();
     //void SetOffSetPos(Vec2 _offsetPos) { m_offsetPos = _offsetPos; }
 private:
+    float _isCreateEnd;
+    float _jumpTime;
+    float _curTime;
     bool _isJump;
     bool _isDoubleJump;
     float _jumpPower;

@@ -9,6 +9,7 @@ public:
 	~Animator();
 public:
 	void Update();
+	void FinalUpdate();
 	void Render(HDC _dc);
 public:
 	// 애니메이션 생성함수

@@ -13,15 +13,19 @@
 #include "Animator.h"
 #include "Animation.h"
 #include "Rigidbody.h"
+#include "Gravity.h"
 #include "Ground.h"
 
 Player::Player()
 	: m_pTex(nullptr)
 	, _isJump(false)
 	, _isDoubleJump(false)
-	, _jumpPower(-5.f)
-	, _isGround(false)
+	, _jumpPower(-800.f)
+	, _isGround(true)
 	, _moveDir{ 0.0f,0.0f }
+	, _jumpTime{ 0.f }
+	, _curTime{ 0.f }
+	, _isCreateEnd{ false }
 {
 	//m_pTex = new Texture;
 	//wstring strFilePath = PathMgr::GetInst()->GetResPath();
@@ -31,7 +35,8 @@ Player::Player()
 	m_pTex = ResMgr::GetInst()->TexLoad(L"Player", L"Texture\\jiwoo.bmp");
 	CreateCollider();
 	CreateRigidbody();
-	GetRigidbody()->SetApplyGravity(true);
+	CreateGravity();
+	GetGravity()->SetApplyGravity(false);
 	GetCollider()->SetScale(Vec2(20.f,30.f));
 	//GetCollider()->SetOffSetPos(Vec2(0.f,-20.f));
 	
@@ -56,43 +61,51 @@ Player::Player()
 	//// «¡∑π¿” ¥Ÿ 
 	for (size_t i = 0; i < pAnim->GetMaxFrame(); ++i);
 		//pAnim->SetFrameOffset(i, Vec2(0.f, -20.f));
+	CreateInit();
 }
+
 Player::~Player()
 {
 	//if (nullptr != m_pTex)
 	//	delete m_pTex;
 }
+
 void Player::Update()
 {
+	if (_isCreateEnd == false)
+	{
+		return;
+	}
+	else
+	{
+		GetGravity()->SetGravity(1600.f);
+	}
+
 	Rigidbody* rb = GetRigidbody();
 
 	if (KEY_PRESS(KEY_TYPE::LEFT))
 	{
-		rb->AddForce(Vec2(-20.f, 0.f));
+		rb->SetVelocity(Vec2(-300.f, rb->GetVelocity().y));
 		//vPos.x -= 100.f * fDT;
 		GetAnimator()->PlayAnim(L"Jiwoo_Left", true);
 	}
 	if (KEY_PRESS(KEY_TYPE::RIGHT))
 	{
-		rb->AddForce(Vec2(20.f, 0.f));
+		rb->SetVelocity(Vec2(300.f, rb->GetVelocity().y));
 		//vPos.x += 100.f * fDT;
 		GetAnimator()->PlayAnim(L"Jiwoo_Right", true);
-	}
-
-	if (_isGround && KEY_DOWN(KEY_TYPE::SPACE))
-	{
-		Jump();	
 	}
 
 	if (KEY_DOWN(KEY_TYPE::SPACE))
 	{
 		if (!_isDoubleJump)
 		{
+			//GetGravity()->SetApplyGravity(true);
 			if (_isGround)
 			{
 				Jump();
 			}
-			else if(_isJump)
+			else
 			{
 				DoubleJump();
 			}
@@ -114,23 +127,23 @@ void Player::Update()
 void Player::Jump()
 {
 	_isJump = true;
-	GetRigidbody()->AddForce({ 0.f, _jumpPower });
+	GetRigidbody()->SetVelocity({ 0.f, _jumpPower });
 }
 
 void Player::DoubleJump()
 {
 	_isDoubleJump = true;
-	GetRigidbody()->AddForce({ 0.f, _jumpPower * 0.8f });
+	GetRigidbody()->SetVelocity({ 0.f, _jumpPower * 0.8f });
 }
-
-//bool Player::CheckGroundCollider()
-//{
-//	//return 
-//	return true;
-//}
 
 void Player::Land()
 {
+}
+
+void Player::CreateInit()
+{
+	GetGravity()->SetGravity(200.f);
+	GetGravity()->SetApplyGravity(true);
 }
 
 void Player::Render(HDC _dc)
@@ -178,7 +191,7 @@ void Player::EnterCollision(Collider* _pOther)
 		if (pGround->GetCollider()->GetFinalPos().y > GetCollider()->GetFinalPos().y) // «√∑π¿ÃæÓ∞° ¿ßø°¿÷¿ª∂ß.
 		{
 			GetRigidbody()->StopImmediately();
-			GetRigidbody()->SetApplyGravity(false);
+			GetGravity()->SetApplyGravity(false);
 
 			Vec2 objPos = _pOther->GetFinalPos();
 			Vec2 objScale = _pOther->GetScale();
@@ -188,24 +201,22 @@ void Player::EnterCollision(Collider* _pOther)
 
 			float len = abs(pos.y - objPos.y);
 			float value = (scale.y / 2.f + objScale.y / 2.f) - len;
-			
+
 			pos = GetPos();
 			pos.y += value + 0.1f;
 			SetPos(pos);
 
-			_isJump = false;
-			_isDoubleJump = false;
-			
-		/*	float pointGap =
-				(pGround->GetCollider()->GetFinalPos().y
-					- pGround->GetCollider()->GetScale().y / 2);*/
-			//SetPos({ GetPos().x, pointGap + 1.f });
+			/*	float pointGap =
+					(pGround->GetCollider()->GetFinalPos().y
+						- pGround->GetCollider()->GetScale().y / 2);*/
+						//SetPos({ GetPos().x, pointGap + 1.f });
 			_isGround = true;
+			_isCreateEnd = true;
 		}
-		else //πÿø°º≠ ∫Œµ˙»˘ ∞ÊøÏ
-		{
-			//GetRigidbody()->StopImmediately();
-		}
+		//else //πÿø°º≠ ∫Œµ˙»˘ ∞ÊøÏ
+		//{
+		//	GetRigidbody()->StopImmediately();
+		//}
 	}
 }
 
@@ -213,7 +224,7 @@ void Player::ExitCollision(Collider* _pOther)
 {
 	if (_pOther->GetObj()->GetName() == L"Ground")
 	{
-		GetRigidbody()->SetApplyGravity(true);
+		GetGravity()->SetApplyGravity(true);
 		_isGround = false;
 	}
 }
@@ -223,6 +234,8 @@ void Player::StayCollision(Collider* _pOther)
 	if (_pOther->GetObj()->GetName() == L"Ground")
 	{
 		_isGround = true;
+		_isJump = false;
+		_isDoubleJump = false;
 	}
 }
 

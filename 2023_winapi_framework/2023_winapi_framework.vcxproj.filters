@@ -193,6 +193,7 @@
     <ClInclude Include="Ground.h">
       <Filter>Engine\04. Object\Map\MapObject</Filter>
     </ClInclude>
+    <ClInclude Include="Gravity.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2023_winapi_framework.rc">
@@ -304,5 +305,6 @@
     <ClCompile Include="Ground.cpp">
       <Filter>Engine\04. Object\Map\MapObject</Filter>
     </ClCompile>
+    <ClCompile Include="Gravity.cpp" />
   </ItemGroup>
 </Project>

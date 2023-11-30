@@ -180,6 +180,7 @@
     <ClInclude Include="EventMgr.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Game_Scene.h" />
+    <ClInclude Include="Gravity.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="KeyMgr.h" />
     <ClInclude Include="MapFactory.h" />
@@ -216,6 +217,7 @@
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="EventMgr.cpp" />
     <ClCompile Include="Game_Scene.cpp" />
+    <ClCompile Include="Gravity.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="KeyMgr.cpp" />
     <ClCompile Include="main.cpp" />

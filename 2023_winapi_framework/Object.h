@@ -2,6 +2,7 @@
 class Collider;
 class Animator;
 class Rigidbody;
+class Gravity;
 class Object
 {
 public:
@@ -24,7 +25,9 @@ public:
 	const Vec2& GetPos() const { return m_vPos; }
 	const Vec2& GetScale() const { return m_vScale; }
 	Collider* GetCollider() const 
-	{ return m_pCollider; }
+	{ 
+		return m_pCollider;
+	}
 	Animator* GetAnimator()
 	{
 		return m_pAnimator;
@@ -32,6 +35,10 @@ public:
 	Rigidbody* GetRigidbody()
 	{
 		return m_pRigidbody;
+	}
+	Gravity* GetGravity()
+	{
+		return m_pGravity;
 	}
 	const wstring& GetName() const { return m_strName; }
 	void SetName(wstring _name) { m_strName = _name; }
@@ -45,6 +52,7 @@ public:
 	void CreateCollider();
 	void CreateRigidbody();
 	void CreateAnimator();
+	void CreateGravity();
 private:
 	Vec2 m_vPos; // 위치
 	Vec2 m_vScale; // 크기
@@ -54,5 +62,6 @@ private:
 	Collider* m_pCollider;
 	Rigidbody* m_pRigidbody;
 	Animator* m_pAnimator;
+	Gravity* m_pGravity;
 };
 

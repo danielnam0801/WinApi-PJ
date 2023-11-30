@@ -10,6 +10,7 @@ public:
 	Vec2(POINT _pt);
 	Vec2(const Vec2& _vec);
 public:
+	bool IsZero() { return x == 0 && y == 0; }
 	float Length() { return (float)(sqrt(pow(x, 2) + pow(y, 2))); }
 	Vec2& Normalize()
 	{
@@ -44,7 +45,7 @@ public:
 	}
 	Vec2 operator * (float _vOther)
 	{
-		assert(!(0.f == _vOther || 0.f == _vOther));
+		//assert(!(0.f == _vOther || 0.f == _vOther));
 		return Vec2(x * _vOther, y * _vOther);
 	}
 	Vec2 operator * (int _i)
