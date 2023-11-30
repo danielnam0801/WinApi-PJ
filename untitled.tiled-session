@@ -1,0 +1,75 @@
+{
+    "activeFile": "JumpMap.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "DarkStone.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 4
+        },
+        "JumpMap.tmx": {
+            "expandedGroupLayers": [
+                3
+            ],
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 934.8484848484848,
+                "y": 862.1212121212122
+            }
+        },
+        "JumpMap.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 0.5,
+            "scaleInEditor": 0.33
+        },
+        "PlatFormMap.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "PlatFormTileset.tsx": {
+            "scaleInDock": 0.5,
+            "scaleInEditor": 1
+        },
+        "Rock_Tile_Map.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 8
+        },
+        "Stone.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 5.5
+        },
+        "rocktile.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 8
+        },
+        "sprites_02.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 8
+        }
+    },
+    "last.imagePath": "C:/Users/user/Downloads",
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "JumpMap.tmx",
+        "Stone.tsx"
+    ],
+    "project": "untitled.tiled-project",
+    "recentFiles": [
+        "Stone.tsx",
+        "JumpMap.tmx",
+        "DarkStone.tsx",
+        "PlatFormTileset.tsx",
+        "PlatFormMap.tsx",
+        "Rock_Tile_Map.tsx",
+        "rocktile.tsx",
+        "sprites_02.tsx",
+        "JumpMap.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}
