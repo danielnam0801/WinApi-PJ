@@ -1,20 +1,22 @@
 #include "pch.h"
 #include "MapParsingMgr.h"
+#include "Object.h"
+#include "Texture.h"
 
 bool MapParsingMgr::initialize(const Vec2& windowSize, const Vec2& resolution, const std::string& title, const fs::path& basePath)
 {
-    m_window.create(sf::VideoMode(windowSize.x, windowSize.y), title, sf::Style::Titlebar | sf::Style::Close);
-    m_window.setView(sf::View(sf::FloatRect(0.f, 0.f, (float)resolution.x, (float)resolution.y)));
-    m_window.setFramerateLimit(60);
+    //m_window.create(sf::VideoMode(windowSize.x, windowSize.y), title, sf::Style::Titlebar | sf::Style::Close);
+    //m_window.setView(sf::View(sf::FloatRect(0.f, 0.f, (float)resolution.x, (float)resolution.y)));
+    //m_window.setFramerateLimit(60);
 
     m_basePath = basePath;
 #if __clang__
     fs::path appRoot = getMacApplicationFolder(true);
     m_basePath = appRoot / m_basePath;
 #endif
-    m_font.loadFromMemory(vera_font::_VERA_TTF, vera_font::_VERA_TTF_SIZE);
-    ImGui::SFML::Init(m_window);
-    ImGui::GetIO().IniFilename = nullptr;
+    //m_font.loadFromMemory(vera_font::_VERA_TTF, vera_font::_VERA_TTF_SIZE);
+    //ImGui::SFML::Init(m_window);
+    //ImGui::GetIO().IniFilename = nullptr;
 
     //Initialize maps
     m_map = parseMap("ultimate_test.json");
@@ -179,108 +181,98 @@ void MapParsingMgr::drawMap()
     //}
 }
 
-void MapParsingMgr::drawImgui()
-{
-
-    if (!m_isImguiSizeSet)
-    {
-        ImGui::SetNextWindowSize({ 300, 400 });
-        m_isImguiSizeSet = true;
-    }
-    ImGui::Begin("Maps");
-    float timeDeltaMs = (float)((double)m_timeDelta.asMicroseconds() / 1000);
-    float fps = 1000.f / timeDeltaMs;
-    ImGui::TextWrapped("FPS: %.1f (Time delta: %.3f ms)", fps, timeDeltaMs);
-
-    std::string mapsStr = std::to_string(m_mapIndex) + " of " + std::to_string(m_maxMapIndex);
-    ImGui::PushItemWidth(45);
-    ImGui::LabelText(mapsStr.c_str(), "Map: ");
-
-    if (ImGui::Button("<-"))
-    {
-        --m_mapIndex;
-        if (m_mapIndex < 0)
-            m_mapIndex = m_maxMapIndex;
-    }
-    if (ImGui::IsItemHovered())
-        ImGui::SetTooltip("Previous");
-    ImGui::SameLine();
-
-    if (ImGui::Button("->"))
-    {
-        ++m_mapIndex;
-        if (m_mapIndex > m_maxMapIndex)
-            m_mapIndex = 0;
-    }
-    if (ImGui::IsItemHovered())
-        ImGui::SetTooltip("Next");
-
-    //World related data
-    if (m_mapIndex > 4 && m_currentMap != nullptr)
-    {
-        //RBP: Add info here
-        for (int i = 0; i < m_worldVisibilityFlags.size(); ++i)
-        {
-            std::string id = "Show world - part " + std::to_string(i + 1) + "###visibility" + std::to_string(i);
-            bool checked = m_worldVisibilityFlags[i];
-            ImGui::TextWrapped("%s", m_worldMapInfo.at(i).c_str());
-            if (ImGui::Checkbox(id.c_str(), &checked))
-                m_worldVisibilityFlags[i] = checked;
-        }
-    }
-    else
-    {
-        ImGui::TextWrapped("%s", m_currentInfo.c_str());
-    }
-
-
-    if (m_mapIndex == 0)
-    {
-        ImGui::Text("Animation data:");
-        for (auto& [id, animation] : m_animationUpdateQueue)
-        {
-            ImGui::TextWrapped("Frame %d (duration %d of %d) - tile: %d", animation->getCurrentFrameNumber(), (int)animation->getTimeDelta(),
-                animation->getCurrentFrame()->getDuration(), animation->getCurrentTileId());
-        }
-    }
-
-    ImGui::End();
-}
-
-void MapParsingMgr::updateAnimations()
-{
-    for (auto& [id, animation] : m_animationUpdateQueue)
-    {
-        //Time needs to be received as microseconds to get the right precision.
-        float ms = (float)((double)m_timeDelta.asMicroseconds() / 1000);
-        animation->update(ms);
-    }
-}
+//void MapParsingMgr::drawImgui()
+//{
+//
+//    if (!m_isImguiSizeSet)
+//    {
+//        ImGui::SetNextWindowSize({ 300, 400 });
+//        m_isImguiSizeSet = true;
+//    }
+//    ImGui::Begin("Maps");
+//    float timeDeltaMs = (float)((double)m_timeDelta.asMicroseconds() / 1000);
+//    float fps = 1000.f / timeDeltaMs;
+//    ImGui::TextWrapped("FPS: %.1f (Time delta: %.3f ms)", fps, timeDeltaMs);
+//
+//    std::string mapsStr = std::to_string(m_mapIndex) + " of " + std::to_string(m_maxMapIndex);
+//    ImGui::PushItemWidth(45);
+//    ImGui::LabelText(mapsStr.c_str(), "Map: ");
+//
+//    if (ImGui::Button("<-"))
+//    {
+//        --m_mapIndex;
+//        if (m_mapIndex < 0)
+//            m_mapIndex = m_maxMapIndex;
+//    }
+//    if (ImGui::IsItemHovered())
+//        ImGui::SetTooltip("Previous");
+//    ImGui::SameLine();
+//
+//    if (ImGui::Button("->"))
+//    {
+//        ++m_mapIndex;
+//        if (m_mapIndex > m_maxMapIndex)
+//            m_mapIndex = 0;
+//    }
+//    if (ImGui::IsItemHovered())
+//        ImGui::SetTooltip("Next");
+//
+//    //World related data
+//    if (m_mapIndex > 4 && m_currentMap != nullptr)
+//    {
+//        //RBP: Add info here
+//     /*   for (int i = 0; i < m_worldVisibilityFlags.size(); ++i)
+//        {
+//            std::string id = "Show world - part " + std::to_string(i + 1) + "###visibility" + std::to_string(i);
+//            bool checked = m_worldVisibilityFlags[i];
+//            ImGui::TextWrapped("%s", m_worldMapInfo.at(i).c_str());
+//            if (ImGui::Checkbox(id.c_str(), &checked))
+//                m_worldVisibilityFlags[i] = checked;
+//        }*/
+//    }
+//    else
+//    {
+//        //ImGui::TextWrapped("%s", m_currentInfo.c_str());
+//    }
+//
+//
+//    if (m_mapIndex == 0)
+//    {
+//        /*ImGui::Text("Animation data:");
+//        for (auto& [id, animation] : m_animationUpdateQueue)
+//        {
+//            ImGui::TextWrapped("Frame %d (duration %d of %d) - tile: %d", animation->getCurrentFrameNumber(), (int)animation->getTimeDelta(),
+//                animation->getCurrentFrame()->getDuration(), animation->getCurrentTileId());
+//        }*/
+//    }
+//
+//    //ImGui::End();
+//}
 
 void MapParsingMgr::run()
 {
-    sf::Clock deltaClock;
-    while (m_window.isOpen())
-    {
-        // Process events
-        sf::Event event;
-        while (m_window.pollEvent(event))
-        {
-            ImGui::SFML::ProcessEvent(event);
-            // Close m_window: exit
-            if (event.type == sf::Event::Closed)
-                m_window.close();
-        }
-        m_timeDelta = deltaClock.restart();
-        updateAnimations();
-        ImGui::SFML::Update(m_window, m_timeDelta);
-        // Clear screen
-        m_window.clear({ 35, 65, 90, 255 });
-        drawMap();
-        drawImgui();
-        ImGui::SFML::Render(m_window);
-        m_window.display();
-    }
+    //sf::Clock deltaClock;
+    //while (m_window.isOpen())
+    //{
+    //    // Process events
+    //    sf::Event event;
+    //    while (m_window.pollEvent(event))
+    //    {
+    //        ImGui::SFML::ProcessEvent(event);
+    //        // Close m_window: exit
+    //        if (event.type == sf::Event::Closed)
+    //            m_window.close();
+    //    }
+    //    m_timeDelta = deltaClock.restart();
+    //    updateAnimations();
+    //    ImGui::SFML::Update(m_window, m_timeDelta);
+    //    // Clear screen
+    //    m_window.clear({ 35, 65, 90, 255 });
+    //    drawMap();
+    //    drawImgui();
+    //    ImGui::SFML::Render(m_window);
+    //    m_window.display();
+    //}
 }
 
 void MapParsingMgr::drawTileLayer(tson::Layer& layer)//, tson::Tileset* tileset)
@@ -299,8 +291,8 @@ void MapParsingMgr::drawTileLayer(tson::Layer& layer)//, tson::Tileset* tileset)
         {
             //tileObject.getTile()->getAnimation().update(m_timeDelta.asMilliseconds());
             uint32_t ownerId = tileObject.getTile()->getId();
-            if (m_animationUpdateQueue.count(ownerId) == 0) //This is only built once to track all tile IDs with animations
-                m_animationUpdateQueue[ownerId] = &tileObject.getTile()->getAnimation();
+            //if (m_animationUpdateQueue.count(ownerId) == 0) //This is only built once to track all tile IDs with animations
+            //    m_animationUpdateQueue[ownerId] = &tileObject.getTile()->getAnimation();
 
             uint32_t tileId = tileObject.getTile()->getAnimation().getCurrentTileId();
             tson::Tile* animatedTile = tileset->getTile(tileId);
@@ -308,43 +300,43 @@ void MapParsingMgr::drawTileLayer(tson::Layer& layer)//, tson::Tileset* tileset)
         }
         tson::Vector2f position = tileObject.getPosition();
         position = { position.x + (float)m_positionOffset.x, position.y + (float)m_positionOffset.y };
-        //Vec2f position = {(float)obj.getPosition().x + (float)m_positionOffset.x, (float)obj.getPosition().y + (float)m_positionOffset.y};
+        //Vec2 position = {(float)obj.getPosition().x + (float)m_positionOffset.x, (float)obj.getPosition().y + (float)m_positionOffset.y};
         fs::path tilesetPath = getTilesetImagePath(*tileset);
-        sf::Sprite* sprite = storeAndLoadImage(tilesetPath.generic_string(), { 0, 0 });
+        Object* sprite = storeAndLoadImage(tilesetPath.generic_string(), { 0, 0 });
         if (sprite != nullptr)
         {
-            Vec2f scale = sprite->getScale();
-            Vec2f originalScale = scale;
-            float rotation = sprite->getRotation();
-            float originalRotation = rotation;
-            Vec2f origin{ ((float)drawingRect.width) / 2, ((float)drawingRect.height) / 2 };
+            Vec2 scale = sprite->GetScale();
+            Vec2 originalScale = scale;
+           /* float rotation = sprite->Get();
+            float originalRotation = rotation;*/
+            Vec2 origin{ ((float)drawingRect.width) / 2, ((float)drawingRect.height) / 2 };
 
             if (tileObject.getTile()->hasFlipFlags(tson::TileFlipFlags::Horizontally))
                 scale.x = -scale.x;
             if (tileObject.getTile()->hasFlipFlags(tson::TileFlipFlags::Vertically))
                 scale.y = -scale.y;
-            if (tileObject.getTile()->hasFlipFlags(tson::TileFlipFlags::Diagonally))
-                rotation += 90.f;
+           /* if (tileObject.getTile()->hasFlipFlags(tson::TileFlipFlags::Diagonally))
+                rotation += 90.f;*/
 
             position = { position.x + origin.x, position.y + origin.y };
-            sprite->setOrigin(origin);
-            sprite->setTextureRect({ drawingRect.x, drawingRect.y, drawingRect.width, drawingRect.height });
-            sprite->setPosition({ position.x, position.y });
+            //sprite->Set(origin);
+            //sprite->setTextureRect({ drawingRect.x, drawingRect.y, drawingRect.width, drawingRect.height });
+            sprite->SetPos({ position.x, position.y });
 
-            sprite->setScale(scale);
-            sprite->setRotation(rotation);
+            sprite->SetScale(scale);
+            //sprite->setRotation(rotation);
 
             m_window.draw(*sprite);
 
-            sprite->setScale(originalScale);       //Since we used a shared sprite for this example, we must reset the scale.
-            sprite->setRotation(originalRotation); //Since we used a shared sprite for this example, we must reset the rotation.
+            sprite->SetScale(originalScale);       //Since we used a shared sprite for this example, we must reset the scale.
+           // sprite->setRotation(originalRotation); //Since we used a shared sprite for this example, we must reset the rotation.
         }
     }
 }
 
 void MapParsingMgr::drawImageLayer(tson::Layer& layer)
 {
-    sf::Sprite* sprite = storeAndLoadImage(layer.getImage(), { layer.getOffset().x, layer.getOffset().y });
+    Object* sprite = storeAndLoadImage(layer.getImage(), { layer.getOffset().x, layer.getOffset().y });
     if (sprite != nullptr)
         m_window.draw(*sprite);
 }
@@ -360,39 +352,40 @@ void MapParsingMgr::drawObjectLayer(tson::Layer& layer)
         case tson::ObjectType::Object:
         {
             tson::Tileset* tileset = layer.getMap()->getTilesetByGid(obj.getGid());
-            Vec2f offset = getTileOffset(obj.getGid(), map, tileset);
+            Vec2 offset = getTileOffset(obj.getGid(), map, tileset);
 
-            sf::Sprite* sprite = storeAndLoadImage(getTilesetImagePath(*tileset).string(), { 0,0 });
+            //sf::Sprite* sprite = storeAndLoadImage(getTilesetImagePath(*tileset).string(), { 0,0 });
+            Object* sprite = storeAndLoadImage(getTilesetImagePath(*tileset).string(), { 0,0 });
             std::string name = obj.getName();
-            Vec2f position = { (float)obj.getPosition().x + (float)m_positionOffset.x, (float)obj.getPosition().y + (float)m_positionOffset.y };
+            Vec2 position = { (float)obj.getPosition().x + (float)m_positionOffset.x, (float)obj.getPosition().y + (float)m_positionOffset.y };
             if (sprite != nullptr)
             {
-                Vec2f scale = sprite->getScale();
-                Vec2f originalScale = scale;
-                float rotation = sprite->getRotation();
-                float originalRotation = rotation;
-                Vec2f origin{ ((float)m_map->getTileSize().x) / 2, ((float)map->getTileSize().y) / 2 };
+                Vec2 scale = sprite->GetScale();
+                Vec2 originalScale = scale;
+                //float rotation = sprite->getRotation();
+                //float originalRotation = rotation;
+                Vec2 origin{ ((float)m_map->getTileSize().x) / 2, ((float)map->getTileSize().y) / 2 };
 
                 if (obj.hasFlipFlags(tson::TileFlipFlags::Horizontally))
                     scale.x = -scale.x;
                 if (obj.hasFlipFlags(tson::TileFlipFlags::Vertically))
                     scale.y = -scale.y;
                 if (obj.hasFlipFlags(tson::TileFlipFlags::Diagonally))
-                    rotation += 90.f;
+                    //rotation += 90.f;
 
                 position = { position.x + origin.x, position.y + origin.y };
-                sprite->setOrigin(origin);
+                //sprite->setOrigin(origin);
 
-                sprite->setTextureRect({ (int)offset.x, (int)offset.y, map->getTileSize().x, map->getTileSize().y });
-                sprite->setPosition({ position.x, position.y - map->getTileSize().y });
+                //sprite->setTextureRect({ (int)offset.x, (int)offset.y, map->getTileSize().x, map->getTileSize().y });
+                sprite->SetPos({ position.x, position.y - map->getTileSize().y });
 
-                sprite->setScale(scale);
-                sprite->setRotation(rotation);
+                sprite->SetScale(scale);
+                //sprite->setRotation(rotation);
 
                 m_window.draw(*sprite);
 
-                sprite->setScale(originalScale);       //Since we used a shared sprite for this example, we must reset the scale.
-                sprite->setRotation(originalRotation); //Since we used a shared sprite for this example, we must reset the rotation.
+                sprite->SetScale(originalScale);       //Since we used a shared sprite for this example, we must reset the scale.
+                //sprite->setRotation(originalRotation); //Since we used a shared sprite for this example, we must reset the rotation.
             }
         }
         break;
@@ -410,8 +403,8 @@ void MapParsingMgr::drawObjectLayer(tson::Layer& layer)
             //then pass them into logic like this:
             //sf::Vertex line[] =
             //        {
-            //                sf::Vertex(Vec2f(obj.getPolylines()[0].x, obj.getPolylines()[0].y)),
-            //                sf::Vertex(Vec2f(obj.getPolylines()[1].x, obj.getPolylines()[1].y))
+            //                sf::Vertex(Vec2(obj.getPolylines()[0].x, obj.getPolylines()[0].y)),
+            //                sf::Vertex(Vec2(obj.getPolylines()[1].x, obj.getPolylines()[1].y))
             //        };
             //m_window.draw(line, 2, sf::Lines);
             break;
@@ -450,19 +443,19 @@ void MapParsingMgr::drawObjectLayer(tson::Layer& layer)
  * @param image
  * @return
  */
-sf::Sprite* MapParsingMgr::storeAndLoadImage(const std::string& image, const Vec2f& position)
+Object* MapParsingMgr::storeAndLoadImage(const std::string& image, const Vec2& position)
 {
     if (m_textures.count(image) == 0)
     {
         fs::path path = m_basePath / image;
         if (fs::exists(path) && fs::is_regular_file(path))
         {
-            std::unique_ptr<sf::Texture> tex = std::make_unique<sf::Texture>();
-            bool imageFound = tex->loadFromFile(path.generic_string());
+            std::unique_ptr<Texture> tex = std::make_unique<Texture>();
+            bool imageFound = tex->LoadFromFile(path.generic_string());
             if (imageFound)
             {
-                std::unique_ptr<sf::Sprite> spr = std::make_unique<sf::Sprite>();
-                spr->setTexture(*tex);
+                std::unique_ptr<Object> spr = std::make_unique<Object>();
+                spr->SetTexture(tex);
                 spr->setPosition(position);
                 m_textures[image] = std::move(tex);
                 m_sprites[image] = std::move(spr);
@@ -478,7 +471,7 @@ sf::Sprite* MapParsingMgr::storeAndLoadImage(const std::string& image, const Vec
     return nullptr;
 }
 
-Vec2f MapParsingMgr::getTileOffset(int tileId, tson::Map* map, tson::Tileset* tileset)
+Vec2 MapParsingMgr::getTileOffset(int tileId, tson::Map* map, tson::Tileset* tileset)
 {
 
     //tson::Tileset* tileset = map->getTileset("demo-tileset");
@@ -497,7 +490,7 @@ Vec2f MapParsingMgr::getTileOffset(int tileId, tson::Map* map, tson::Tileset* ti
         int currentRow = (baseTilePosition / columns);
         int offsetX = (tileModX != 0) ? ((tileModX)*map->getTileSize().x) : (0 * map->getTileSize().x);
         int offsetY = (currentRow < rows - 1) ? (currentRow * map->getTileSize().y) : ((rows - 1) * map->getTileSize().y);
-        return Vec2f((float)offsetX, (float)offsetY);
+        return Vec2((float)offsetX, (float)offsetY);
     }
 
     return { 0.f, 0.f };

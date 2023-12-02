@@ -1,15 +1,4 @@
 #pragma once
-//class MapParsingMgr
-//{
-//};
-//
-//
-// Created by robin on 22.09.2019.
-//
-
-#ifndef TILESON_SFMLDEMOMANAGER_H
-#define TILESON_SFMLDEMOMANAGER_H
-
 
 #include <map>
 #include "external/nlohmann.hpp"
@@ -22,8 +11,9 @@
 #if __clang__
 #include <mach-o/dyld.h>
 #endif
-#include "Texture.h"
+
 class Texture;
+class Object;
 class Animation;
 
 class MapParsingMgr
@@ -44,7 +34,7 @@ private:
 #endif
 
     void drawMap();
-    void drawImgui();
+    //void drawImgui();
 
     static constexpr int CURRENT_VERSION = 120; //v1.2.0
 
@@ -55,9 +45,8 @@ private:
 
     Vec2 getTileOffset(int tileId, tson::Map* map, tson::Tileset* tileset);
 
-    //sf::Sprite* storeAndLoadImage(const std::string& image, const Vec2& position);
+    Object* storeAndLoadImage(const std::string& image, const Vec2& position);
     fs::path getTilesetImagePath(const tson::Tileset& tileset);
-    void updateAnimations();
 
     fs::path m_basePath{};
     //sf::RenderWindow m_window;
@@ -78,10 +67,6 @@ private:
 
     tson::Project m_project; //Can also use Nlohmann like this: tson::Project m_project {std::make_unique<tson::NlohmannJson>()};
 
-  /*  sf::Font m_font;
-    sf::Text m_demoText;
-    sf::Time m_timeDelta;*/
-
     int m_mapIndex{ 0 };
     const int m_maxMapIndex{ 5 };
 
@@ -89,8 +74,6 @@ private:
 
     std::map<std::string, std::unique_ptr<Texture>> m_textures;
     //std::map<std::string, std::unique_ptr<sf::Sprite>> m_sprites;
-    std::map<uint32_t, tson::Animation*> m_animationUpdateQueue;
+    std::map<std::string, std::unique_ptr<Object>> m_sprites;
+    //std::map<uint32_t, tson::Animation*> m_animationUpdateQueue;
 };
-
-
-#endif //TILESON_SFMLDEMOMANAGER_H

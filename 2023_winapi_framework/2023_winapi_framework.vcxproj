@@ -186,6 +186,7 @@
     <ClInclude Include="MapFactory.h" />
     <ClInclude Include="MapMgr.h" />
     <ClInclude Include="MapObject.h" />
+    <ClInclude Include="MapParsingMgr.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MouseObj.h" />
     <ClInclude Include="Object.h" />
@@ -224,6 +225,7 @@
     <ClCompile Include="MapFactory.cpp" />
     <ClCompile Include="MapMgr.cpp" />
     <ClCompile Include="MapObject.cpp" />
+    <ClCompile Include="MapParsingMgr.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MouseObj.cpp" />
     <ClCompile Include="Object.cpp" />

@@ -8,6 +8,7 @@
 #include "CollisionMgr.h"
 #include "EventMgr.h"
 #include "MapMgr.h"
+#include "cute_tiled.h"
 
 bool Core::Init(HWND _hWnd, POINT _ptResolution)
 {
