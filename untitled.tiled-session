@@ -1,5 +1,5 @@
 {
-    "activeFile": "JumpMap.tmx",
+    "activeFile": "JumpMap.tmj",
     "expandedProjectPaths": [
         "."
     ],
@@ -7,6 +7,17 @@
         "DarkStone.tsx": {
             "scaleInDock": 2,
             "scaleInEditor": 4
+        },
+        "JumpMap.tmj": {
+            "expandedGroupLayers": [
+                3
+            ],
+            "scale": 0.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 841,
+                "y": 395
+            }
         },
         "JumpMap.tmx": {
             "expandedGroupLayers": [
@@ -50,14 +61,15 @@
         }
     },
     "last.imagePath": "C:/Users/user/Downloads",
-    "map.lastUsedFormat": "tmx",
+    "map.lastUsedFormat": "json",
     "openFiles": [
-        "JumpMap.tmx",
+        "JumpMap.tmj",
         "Stone.tsx"
     ],
     "project": "untitled.tiled-project",
     "recentFiles": [
         "Stone.tsx",
+        "JumpMap.tmj",
         "JumpMap.tmx",
         "DarkStone.tsx",
         "PlatFormTileset.tsx",

@@ -112,7 +112,7 @@ void Player::DoubleJump()
 
 bool Player::CheckGroundCollider(float yValue)
 {
-	return 
+	return
 }
 
 void Player::Land()
