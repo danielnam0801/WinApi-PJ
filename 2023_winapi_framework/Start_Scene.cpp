@@ -9,8 +9,12 @@
 #include "ResMgr.h"
 #include "MapObject.h"
 #include "Ground.h"
+#include "MapMgr.h"
+
 void Start_Scene::Init()
 {
+	MapMgr::GetInst()->Init();
+
 	Vec2 vResolution = Core::GetInst()->GetResolution();
 	Object* m_Player = new Player;
 	m_Player->SetPos((Vec2({vResolution.x /2, vResolution.y / 2})));

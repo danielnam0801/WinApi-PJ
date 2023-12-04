@@ -77,6 +77,9 @@
     <Filter Include="Engine\03. Manager\PlayerMgr">
       <UniqueIdentifier>{6587818d-b572-40d4-86a9-1a88b946ae2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\03. Manager\CameraMgr">
+      <UniqueIdentifier>{c53d4dd0-8d86-4b78-a8ab-1c5035104859}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -193,9 +196,14 @@
     <ClInclude Include="Ground.h">
       <Filter>Engine\04. Object\Map\MapObject</Filter>
     </ClInclude>
-    <ClInclude Include="Gravity.h" />
-    <ClInclude Include="MapParsingMgr.h">
-      <Filter>Engine\03. Manager\MapMgr</Filter>
+    <ClInclude Include="Gravity.h">
+      <Filter>Engine\07. Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraMgr.h">
+      <Filter>Engine\03. Manager\CameraMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Engine\04. Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -308,9 +316,14 @@
     <ClCompile Include="Ground.cpp">
       <Filter>Engine\04. Object\Map\MapObject</Filter>
     </ClCompile>
-    <ClCompile Include="Gravity.cpp" />
-    <ClCompile Include="MapParsingMgr.cpp">
-      <Filter>Engine\03. Manager\MapMgr</Filter>
+    <ClCompile Include="Gravity.cpp">
+      <Filter>Engine\07. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraMgr.cpp">
+      <Filter>Engine\03. Manager\CameraMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine\04. Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

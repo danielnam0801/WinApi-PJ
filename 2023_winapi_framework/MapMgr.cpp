@@ -3,116 +3,132 @@
 #include "MapObject.h"
 #include "KeyMgr.h"
 #include "CollisionMgr.h"
-#include <tileson.hpp>
-#include "tests/tson_files.h"
+#include <assert.h>
+#include <stdio.h>
+#include <string.h>
+#include "tileson.h"
+#include "tileson.hpp"
+#include <tests/tson_files.h>
+
 
 void MapMgr::Init()
 {
+	MakeMap();
+}
+
+void MapMgr::MakeMap()
+{
     tson::Tileson t;
-    std::unique_ptr<tson::Map> map = t.parse(fs::path("./path/to/map.json"));
+    std::unique_ptr<tson::Map> map = t.parse(tson_files::_ULTIMATE_TEST_JSON, tson_files::_ULTIMATE_TEST_JSON_SIZE);
 
     if (map->getStatus() == tson::ParseStatus::OK)
     {
-        //Gets the layer called "Object Layer" from the "ultimate_demo.json map
-        tson::Layer* objectLayer = map->getLayer("Object Layer"); //This is an Object Layer
+        //Get color as an rgba color object
+        tson::Colori bgColor = map->getBackgroundColor(); //RGBA with 0-255 on each channel
 
-        //Example from an Object Layer.
-        if (objectLayer->getType() == tson::LayerType::ObjectGroup)
+        //This color can be compared with Tiled hex string
+        if (bgColor == "#ffaa07")
+            printf("Cool!");
+
+        //Or you can compare them with other colors
+        tson::Colori otherColor{ 255, 170, 7, 255 };
+        if (bgColor == otherColor)
+            printf("This works, too!");
+
+        //You can also get the color as float, transforming values if they are already in their int form, from max 255 to 1.f
+        tson::Colorf bgColorFloat = bgColor.asFloat();
+
+        //Or the other way around
+        tson::Colori newBg = bgColorFloat.asInt();
+
+        //You can loop through every container of objects
+        for (auto& layer : map->getLayers())
         {
-            tson::Object* goomba = objectLayer->firstObj("goomba"); //Gets the first object with this name. This can be any object.
-
-            //If you want to just go through every existing object in the layer:
-            for (auto& obj : objectLayer->getObjects())
+            if (layer.getType() == tson::LayerType::ObjectGroup)
             {
-                tson::Vector2i position = obj.getPosition();
-                tson::Vector2i size = obj.getSize();
-                tson::ObjectType objType = obj.getObjectType();
-
-                //You may want to check the object type to make sure you use the data right.
-            }
-
-            tson::ObjectType objType = goomba->getObjectType();
-
-            /*!
-             * tson::ObjectType is defined like this.
-             * They are automatically detected based on what kind of object you have created
-             * enum class Type : uint8_t
+                for (auto& obj : layer.getObjects())
                 {
-                    Undefined = 0,
-                    Object = 1,
-                    Ellipse = 2, //<-- Circle
-                    Rectangle = 3,
-                    Point = 4,
-                    Polygon = 5,
-                    Polyline = 6,
-                    Text = 7,
-                    Template = 8
-                };
-             */
-
-            if (objType == tson::ObjectType::Rectangle)
-            {
-                tson::Vector2i size = goomba->getSize();
-                tson::Vector2i position = goomba->getPosition();
-
-                //If you have set a custom property, you can also get this
-                int hp = goomba->get<int>("hp");
-
-                //Using size and position you can can create a Rectangle object by your library of choice.
-                //An example if you were about to use SFML for drawing:
-                //sf::RectangleShape rect;
-                //rect.setSize(sf::Vector2f(size.x, size.y));
-                //rect.setPosition(sf::Vector2f(position.x, position.y));
-            }
-            else if (objType == tson::ObjectType::Polygon)
-            {
-                for (auto const& poly : goomba->getPolygons())
-                {
-                    //Set a point on a shape taking polygons
+                    //Just iterate through all the objects
                 }
-                tson::Vector2i position = goomba->getPosition();
-            }
-            else if (objType == tson::ObjectType::Polyline)
-            {
-                std::vector<tson::Vector2i> polys = goomba->getPolylines();
-                for (auto const& poly : goomba->getPolylines())
-                {
+                //Or use these queries:
 
-                }
-                tson::Vector2i position = goomba->getPosition();
+                //Gets the first object it finds with the name specified
+                tson::Object* player = layer.firstObj("player"); //Does not exist in demo map->..
+
+                //Gets all objects with a matching name
+                std::vector<tson::Object> enemies = layer.getObjectsByName("goomba"); //But we got two of those
+
+                //Gets all objects of a specific type
+                std::vector<tson::Object> objects = layer.getObjectsByType(tson::ObjectType::Object);
+
+                //Gets an unique object by its name.
+                tson::Object* uniqueObj = layer.getObj(2);
             }
         }
 
-        tson::Layer* tileLayer = map->getLayer("Main Layer"); //This is a Tile Layer.
-
-        //You can get your tileset like this, but in v1.2.0
-        //The tiles themselves holds a pointer to their related tileset.
+        //Or get a specific object if you know its name (or id)
+        tson::Layer* layer = map->getLayer("Main Layer");
         tson::Tileset* tileset = map->getTileset("demo-tileset");
+        tson::Tile* tile = tileset->getTile(1); //Tileson tile-IDs starts with 1, to be consistent
+        // with IDs in data lists. This is in other words the
+        //first tile.
 
-        //Example from a Tile Layer
-        //I know for a fact that this is a Tile Layer, but you can check it this way to be sure.
-        if (tileLayer->getType() == tson::LayerType::TileLayer)
+        //For tile layers, you can get the tiles presented as a 2D map by calling getTileData()
+        //Using x and y positions in tile units.
+        if (layer->getType() == tson::LayerType::TileLayer)
         {
-            //pos = position in tile units
-            for (auto& [pos, tileObject] : tileLayer->getTileObjects()) //Loops through absolutely all existing tileObjects
+            //When the map is of a fixed size, you can get the tiles like this
+            if (!map->isInfinite())
             {
-                tson::Tileset* tileset = tileObject.getTile()->getTileset();
-                tson::Rect drawingRect = tileObject.getDrawingRect();
-                tson::Vector2f position = tileObject.getPosition();
+                std::map<std::tuple<int, int>, tson::Tile*> tileData = layer->getTileData();
 
-                //Here you can determine the offset that should be set on a sprite
-                //Example on how it would be done using SFML (where sprite presumably is a member of a generated game object):
-                //sf::Sprite *sprite = storeAndLoadImage(tileset->getImage().u8string(), {0, 0});
-                //if (sprite != nullptr)
-                //{
-                //    sprite->setTextureRect({drawingRect.x, drawingRect.y, drawingRect.width, drawingRect.height});
-                //    sprite->setPosition({position.x, position.y});
-                //    m_window.draw(*sprite);
-                //}
+                //Unsafe way to get a tile
+                tson::Tile* invalidTile = tileData[{0, 4}]; // x:0,  y:4  - There is no tile here, so this will be nullptr.
+                                                                   // Be careful with this, as it expands the map with an ID of {0,4} pointing
+                                                                   // to a nullptr...
+
+                //Individual tiles should be retrieved by calling the safe version:
+                tson::Tile* safeInvalid = layer->getTileData(0, 5); //Another non-existent tile, but with safety check.
+                                                                         //Will not expand the map with a nullptr
+
+                tson::Tile* tile1 = layer->getTileData(4, 4);       //x:4,  y:4  - Points to tile with ID 1 (Tiled internal ID: 0)
+                tson::Tile* tile2 = layer->getTileData(5, 4);       //x:5,  y:4  - Points to tile with ID 3 (Tiled internal ID: 2)
+                tson::Tile* tile3 = layer->getTileData(8, 14);      //x:8,  y:14 - Points to tile with ID 2 (Tiled internal ID: 1)
+                tson::Tile* tile4 = layer->getTileData(17, 5);      //x:17, y:5  - Points to tile with ID 5 (Tiled internal ID: 4)
+
+                //New in v1.2.0
+                //You can now get tiles with positions and drawing rect via tson::TileObject
+                //Drawing rects are also accessible through tson::Tile.
+                tson::TileObject* tileobj1 = layer->getTileObject(4, 4);
+                tson::Vector2f position = tileobj1->getPosition();
+                tson::Rect drawingRect = tileobj1->getDrawingRect();
+
+                //You can of course also loop through every tile!
+                for (const auto& [id, tile] : tileData)
+                {
+                    //Must check for nullptr, due to how we got the first invalid tile (pos: 0, 4)
+                    //Would be unnecessary otherwise.
+                    if (tile != nullptr)
+                        int tileId = tile->getId(); //A bit verbose, as this is the same as id from the key, but you get the idea.
+                }
             }
         }
-    }
 
+        //If an object supports properties, you can easily get a property value by calling get<T>() or the property itself with getProp()
+        int myInt = layer->get<int>("my_int");
+        float myFloat = layer->get<float>("my_float");
+        bool myBool = layer->get<bool>("my_bool");
+        std::string myString = layer->get<std::string>("my_string");
+        tson::Colori myColor = layer->get<tson::Colori>("my_color");
+
+        fs::path file = layer->get<fs::path>("my_file");
+
+        tson::Property* prop = layer->getProp("my_property");
+    }
+    else //Error occured
+    {
+        std::cout << map->getStatusMessage();
+    }
 }
 
 void MapMgr::MakeObject(MAPOBJECT_TYPE _type)

@@ -91,7 +91,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)Output\bin\Res\core\inc;D:\GitHub\GitHub\WinApi-PJ\2023_winapi_framework\tileson-master;D:\GitHub\GitHub\WinApi-PJ\2023_winapi_framework\tileson-master\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Output\bin\Res\core\inc;D:\GitHub\GitHub\WinApi-PJ\Library\tileson-master\include;D:\GitHub\GitHub\WinApi-PJ\Library\tileson-master</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -112,7 +112,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)Output\bin\Res\core\inc;D:\GitHub\GitHub\WinApi-PJ\2023_winapi_framework\tileson-master;D:\GitHub\GitHub\WinApi-PJ\2023_winapi_framework\tileson-master\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Output\bin\Res\core\inc;D:\GitHub\GitHub\WinApi-PJ\Library\tileson-master\include;D:\GitHub\GitHub\WinApi-PJ\Library\tileson-master</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -134,7 +134,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)Output\bin\Res\core\inc;D:\GitHub\GitHub\WinApi-PJ\2023_winapi_framework\tileson-master;D:\GitHub\GitHub\WinApi-PJ\2023_winapi_framework\tileson-master\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Output\bin\Res\core\inc;D:\GitHub\GitHub\WinApi-PJ\Library\tileson-master\include;D:\GitHub\GitHub\WinApi-PJ\Library\tileson-master</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -154,7 +154,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)Output\bin\Res\core\inc;D:\GitHub\GitHub\WinApi-PJ\2023_winapi_framework\tileson-master;D:\GitHub\GitHub\WinApi-PJ\2023_winapi_framework\tileson-master\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Output\bin\Res\core\inc;D:\GitHub\GitHub\WinApi-PJ\Library\tileson-master\include;D:\GitHub\GitHub\WinApi-PJ\Library\tileson-master</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -172,6 +172,8 @@
     <ClInclude Include="Animator.h" />
     <ClInclude Include="BaseWindow.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraMgr.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="CollisionMgr.h" />
     <ClInclude Include="Core.h" />
@@ -186,7 +188,6 @@
     <ClInclude Include="MapFactory.h" />
     <ClInclude Include="MapMgr.h" />
     <ClInclude Include="MapObject.h" />
-    <ClInclude Include="MapParsingMgr.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="MouseObj.h" />
     <ClInclude Include="Object.h" />
@@ -213,6 +214,8 @@
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="BaseWindow.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraMgr.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Core.cpp" />
@@ -225,7 +228,6 @@
     <ClCompile Include="MapFactory.cpp" />
     <ClCompile Include="MapMgr.cpp" />
     <ClCompile Include="MapObject.cpp" />
-    <ClCompile Include="MapParsingMgr.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="MouseObj.cpp" />
     <ClCompile Include="Object.cpp" />

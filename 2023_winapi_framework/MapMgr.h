@@ -6,6 +6,7 @@ class MapMgr
 	SINGLE(MapMgr);
 public:
 	void Init();
+	void MakeMap();
 	void MakeObject(MAPOBJECT_TYPE _type);
 	void MovingObject();
 	void ReleaseObject();
@@ -19,5 +20,4 @@ private:
 	Object* m_mouseObj;
 	Object* m_currentSelectObj;
 	vector<Object*> m_mapObjs;
-	FILE* mapFile;
 };
