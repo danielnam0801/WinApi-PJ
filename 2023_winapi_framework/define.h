@@ -22,3 +22,5 @@ public:							\
 #define KEY_UP(key) KEY_CHECK(key, KEY_STATE::UP)
 #define KEY_DOWN(key) KEY_CHECK(key, KEY_STATE::DOWN)
 #define KEY_PRESS(key) KEY_CHECK(key, KEY_STATE::PRESS)
+#define StrToWstr(string) std::wstring().assign(string.begin(), string.end())
+#define WstrToStr(string) std::string().assign(string.begin(), string.end())

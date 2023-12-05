@@ -44,7 +44,7 @@ void MapMgr::CreateJsonBoard()
 			tson::Tileset* tileset = tileObject.getTile()->getTileset();
 			tson::Rect rect = tileObject.getDrawingRect();
 			tson::Vector2f realposition = tileObject.getPosition();
-			MapObject* sprite = StoreAndLoadImage(tileset->getImage().u(), { 0,0 });
+			MapObject* sprite = StoreAndLoadImage(tileset->getImage().u8string(), { 0,0 });
 			if (sprite != nullptr)
 			{
 				sprite->setTextureRect({ rect.x, rect.y, rect.width, rect.height });
@@ -62,7 +62,7 @@ MapObject* MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
 		if (fs::exists(path) && fs::is_regular_file(path))
 		{
 			std::unique_ptr<Texture> tex = std::make_unique<Texture>();
-			bool imageFound = tex->LoadFromFile(path.generic_string());
+			bool imageFound = tex->LoadFromFile(StrToWstr(path.generic_string()));
 			if (imageFound)
 			{
 				std::unique_ptr<MapObject> spr = std::make_unique<MapObject>();
