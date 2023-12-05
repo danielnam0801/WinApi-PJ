@@ -30,6 +30,7 @@ enum class OBJECT_GROUP
 	MAP,
 	GROUND,
 	OBSTACLE,
+	CAMERA,
 	END = 30
 };
 
