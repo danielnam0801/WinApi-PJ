@@ -10,8 +10,8 @@ public:							\
 		return &m_pInst;		\
 	}
 #define WINDOW_CLASS_NAME L"Gamep"
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720 
+#define WINDOW_WIDTH 1920
+#define WINDOW_HEIGHT 1080 
 #define RECT_RENDER(posx, posy, scalex, scaley, hdc) Rectangle(hdc, (int)(posx-scalex/2), (int)(posy-scaley/2), (int)(posx+scalex/2), (int)(posy+scaley/2))
 #define ELLIPSE_RENDER(posx, posy, scalex, scaley, hdc) Ellipse(hdc, (int)(posx-scalex/2), (int)(posy-scaley/2), (int)(posx+scalex/2), (int)(posy+scaley/2))
 
@@ -22,3 +22,5 @@ public:							\
 #define KEY_UP(key) KEY_CHECK(key, KEY_STATE::UP)
 #define KEY_DOWN(key) KEY_CHECK(key, KEY_STATE::DOWN)
 #define KEY_PRESS(key) KEY_CHECK(key, KEY_STATE::PRESS)
+#define StrToWstr(string) std::wstring().assign(string.begin(), string.end())
+#define WstrToStr(string) std::string().assign(string.begin(), string.end())
