@@ -4,7 +4,7 @@
 class Texture :
     public Res
 {
-private:
+public:
     Texture();
     ~Texture();
     friend class ResMgr;

@@ -13,8 +13,7 @@
 
 void Start_Scene::Init()
 {
-	MapMgr::GetInst()->Init();
-
+	MapMgr::GetInst()->CreateJsonBoard();
 	Vec2 vResolution = Core::GetInst()->GetResolution();
 	Object* m_Player = new Player;
 	m_Player->SetPos((Vec2({vResolution.x /2, vResolution.y / 2})));
@@ -69,6 +68,7 @@ void Start_Scene::Update()
 void Start_Scene::Render(HDC _dc)
 {
 	Scene::Render(_dc);
+	MapMgr::GetInst()->Render();
 }
 
 void Start_Scene::Release()

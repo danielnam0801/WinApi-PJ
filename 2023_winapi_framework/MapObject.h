@@ -6,7 +6,8 @@ class MapObject : public Object
 public:
 	MapObject();
 	~MapObject();
-	void Render(HDC _dc);
+public:
+	void Render(HDC _dc) override;
 private:
 	MAPOBJECT_TYPE m_type;
 };

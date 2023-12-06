@@ -22,10 +22,12 @@ public:
 	void Component_Render(HDC _dc);
 public:
 	void SetTexture(Texture* _Tex) { m_tex = _Tex; }
+	void SetTextureRect(RECT _rect) { m_texRect = _rect; }
 	void SetPos(Vec2 _vPos) { m_vPos = _vPos; }
 	void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
 	const Vec2& GetPos() const { return m_vPos; }
 	const Vec2& GetScale() const { return m_vScale; }
+	const RECT& GetTextureRect() const { return m_texRect; }
 	Collider* GetCollider() const 
 	{ 
 		return m_pCollider;
@@ -55,7 +57,8 @@ public:
 	void CreateRigidbody();
 	void CreateAnimator();
 	void CreateGravity();
-private:
+protected:
+	RECT m_texRect;
 	Texture* m_tex;
 	Vec2 m_vPos; // 위치
 	Vec2 m_vScale; // 크기

@@ -2,6 +2,7 @@
 #include "BaseWindow.h"
 #include "Resource.h"
 #include "Core.h"
+
 BaseWindow::BaseWindow(POINT _ptResolution)
 	: m_hWnd(0)
 	, m_hInst(0)
@@ -15,6 +16,8 @@ BaseWindow::~BaseWindow()
 
 int BaseWindow::Run(HINSTANCE _hInst, LPWSTR _lpCmdline, int _nCmdShow)
 {
+
+
     //this->m_hWnd;
     m_hInst = _hInst;
     this->MyRegisterClass();

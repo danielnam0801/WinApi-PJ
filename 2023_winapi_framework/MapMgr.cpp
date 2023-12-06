@@ -7,11 +7,17 @@
 #include <stdio.h>
 #include <string.h>
 #include "tileson.hpp"
+#include "Texture.h"
+#include "ResMgr.h"
+#include "Core.h"
 
 
 void MapMgr::Init()
 {
-	m_uptrMap = m_tson.parse(fs::path("./Map/TestMap.json"));
+	//BackGroundLayer
+	//ObjectLayer
+	//std::cout << fs::absolute(fs::path("./"));
+	m_uptrMap = m_tson.parse(fs::path("./Map/JumpMapChange.json"));
 	if (m_uptrMap->getStatus() != tson::ParseStatus::OK)
 	{
 		std::cout << "json file error " << std::endl;
@@ -23,12 +29,11 @@ void MapMgr::CreateJsonBoard()
 	if (m_uptrMap->getStatus() == tson::ParseStatus::OK)
 	{
 		int a = 0;
-		tson::Layer* tileLayer = m_uptrMap->getLayer("Ground");
-		tson::Layer* objLayer = m_uptrMap->getLayer("Object Layer 1");
-		if (objLayer->getName() == "Mario")
-		{
-
-		}
+		tson::Layer* fg = m_uptrMap->getLayer("FG");
+		tson::Layer* bg = m_uptrMap->getLayer("BG");
+		tson::Layer* bgLayer = &bg->getLayers()[0];
+		tson::Layer* ShellLayer = &fg->getLayers()[0];
+		tson::Layer* objLayer = &fg->getLayers()[1];
 
 		for (auto& obj : objLayer->getObjects())
 		{
@@ -39,35 +44,35 @@ void MapMgr::CreateJsonBoard()
 
 			}
 		}
-		for (auto& [pos, tileObject] : m_uptrMap->getLayer("Ground")->getTileObjects())
+		for (auto& [pos, tileObject] : bgLayer->getTileObjects())
 		{
 			tson::Tileset* tileset = tileObject.getTile()->getTileset();
 			tson::Rect rect = tileObject.getDrawingRect();
 			tson::Vector2f realposition = tileObject.getPosition();
-			MapObject* sprite = StoreAndLoadImage(tileset->getImage().u8string(), { 0,0 });
+			Object* sprite = StoreAndLoadImage(tileset->getImage().u8string(), { 0,0 });
 			if (sprite != nullptr)
 			{
-				sprite->setTextureRect({ rect.x, rect.y, rect.width, rect.height });
-				sprite->setPosition({});
+				sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });
+				sprite->SetPos({});
 			}
 		}
 	}
 }
 
-MapObject* MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
+Object* MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
 {
 	fs::path path = _image;
 	if (m_maptex.count(_image) == 0)
 	{
 		if (fs::exists(path) && fs::is_regular_file(path))
 		{
-			std::unique_ptr<Texture> tex = std::make_unique<Texture>();
+			Texture* tex = ResMgr::GetInst()->TexFind(L"Map");
 			bool imageFound = tex->LoadFromFile(StrToWstr(path.generic_string()));
 			if (imageFound)
 			{
-				std::unique_ptr<MapObject> spr = std::make_unique<MapObject>();
-				spr->setTexture(*tex);
-				spr->setPosition(_pos);
+				Object* spr = new Object;
+				spr->SetTexture(tex);
+				spr->SetPos(_pos);
 				m_maptex[_image] = std::move(tex);
 				m_mapsprite[_image] = std::move(spr);
 			}
@@ -78,7 +83,7 @@ MapObject* MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
 		}
 	}
 	if (m_mapsprite.count(_image) > 0)
-		return m_mapsprite[_image].get();
+		return m_mapsprite[_image];
 	return nullptr;
 }
 
@@ -144,32 +149,22 @@ void MapMgr::RenderTileLayer(tson::Layer& layer)
 
 		tson::Vector2f realPos = tileObj.getPosition();
 		tson::Vector2i imageSize = tileSet->getImageSize();
-		sf::Sprite* sprite = StoreAndLoadImage(tileSet->getImage().u8string(), { 0, 0 });
+		Object* sprite = StoreAndLoadImage(tileSet->getImage().u8string(), { 0, 0 });
 
-		if (sprite != nullptr) {
-			tson::Animation ani = tileObj.getTile()->getAnimation();
-			if (ani.any()) {
-				static int frame = 0;
-				if (frame > ani.getFrames().size()) {
-					frame = 0;
-				}
-				sprite->setTextureRect({ rect.x + frame * tileObj.getTile()->getTileSize().x, rect.y, rect.width, rect.height });
-				frame++;
-			}
+		//	// texture 입히기
+		sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });
 
-			// texture 입히기
-			sprite->setTextureRect({ rect.x, rect.y, rect.width, rect.height });
-
-			// origin 세팅
+		//	// origin 세팅
 			Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
-			sprite->setOrigin(origin);
+		//	sprite->setOrigin(origin);
 
-			// position 세팅
+		//	// position 세팅
 			realPos = { realPos.x + origin.x, realPos.y + origin.y };
-			sprite->setPosition({ realPos.x, realPos.y });
+			sprite->SetPos({ realPos.x, realPos.y });
 
-			GET_WINDOW.draw(*sprite);
-		}
+			sprite->Render(Core::GetInst()->GetMainDC());
+		//	GET_WINDOW.draw(*sprite);
+		//}
 	}
 }
 
