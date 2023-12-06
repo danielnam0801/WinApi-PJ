@@ -31,11 +31,11 @@ void MapMgr::CreateJsonBoard()
 		int a = 0;
 		tson::Layer* fg = m_uptrMap->getLayer("FG");
 		tson::Layer* bg = m_uptrMap->getLayer("BG");
-		tson::Layer* bgLayer = &bg->getLayers()[0];
-		tson::Layer* ShellLayer = &fg->getLayers()[0];
-		tson::Layer* objLayer = &fg->getLayers()[1];
+		tson::Layer bgLayer = bg->getLayers()[0];
+		tson::Layer ShellLayer = fg->getLayers()[0];
+		tson::Layer objLayer = fg->getLayers()[1];
 
-		for (auto& obj : objLayer->getObjects())
+		for (auto& obj : objLayer.getObjects())
 		{
 			tson::Vector2i pos = obj.getPosition();
 			if (obj.getName() == "Mario")
@@ -44,7 +44,7 @@ void MapMgr::CreateJsonBoard()
 
 			}
 		}
-		for (auto& [pos, tileObject] : bgLayer->getTileObjects())
+		for (auto& [pos, tileObject] : bgLayer.getTileObjects())
 		{
 			tson::Tileset* tileset = tileObject.getTile()->getTileset();
 			tson::Rect rect = tileObject.getDrawingRect();
