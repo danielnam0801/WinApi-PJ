@@ -50,9 +50,6 @@
     <Filter Include="Engine\03. Manager\ResMgr">
       <UniqueIdentifier>{d478c39a-9d43-4a1b-b9f4-226747582b1c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\07. Component">
-      <UniqueIdentifier>{a72219c4-1f53-4d42-868c-88db0b756faf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\03. Manager\CollisionMgr">
       <UniqueIdentifier>{f563c11d-b9a3-47c6-b8ee-28920e51bc3f}</UniqueIdentifier>
     </Filter>
@@ -62,8 +59,26 @@
     <Filter Include="Engine\08. Module">
       <UniqueIdentifier>{b8698270-780f-4bb6-bf63-bf69c99fa2ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\09.UI">
-      <UniqueIdentifier>{cc763052-fae9-4082-8b20-e3270394a6f1}</UniqueIdentifier>
+    <Filter Include="Engine\03. Manager\MapMgr">
+      <UniqueIdentifier>{6a458794-cd6e-4692-b8b6-17046ee73559}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\07. Component">
+      <UniqueIdentifier>{a72219c4-1f53-4d42-868c-88db0b756faf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\08. Module\Factory">
+      <UniqueIdentifier>{210bf1be-6448-487d-a166-d69560eee2db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Map">
+      <UniqueIdentifier>{a5baec83-bff6-4b7a-9e39-0a4ad828e269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Map\MapObject">
+      <UniqueIdentifier>{f9da4e9c-2274-4bf5-be2c-f456ec076f2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\PlayerMgr">
+      <UniqueIdentifier>{6587818d-b572-40d4-86a9-1a88b946ae2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\CameraMgr">
+      <UniqueIdentifier>{c53d4dd0-8d86-4b78-a8ab-1c5035104859}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -157,8 +172,38 @@
     <ClInclude Include="2023_winapi_framework.h">
       <Filter>Default</Filter>
     </ClInclude>
-    <ClInclude Include="Btn.h">
-      <Filter>Engine\09.UI</Filter>
+    <ClInclude Include="MapMgr.h">
+      <Filter>Engine\03. Manager\MapMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="MouseObj.h">
+      <Filter>Engine\04. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="MapFactory.h">
+      <Filter>Engine\08. Module\Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="MapObject.h">
+      <Filter>Engine\04. Object\Map\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolScene.h">
+      <Filter>Engine\05. Scene\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Rigidbody.h">
+      <Filter>Engine\07. Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMgr.h">
+      <Filter>Engine\03. Manager\PlayerMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>Engine\04. Object\Map\MapObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Gravity.h">
+      <Filter>Engine\07. Component</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraMgr.h">
+      <Filter>Engine\03. Manager\CameraMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Engine\04. Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -247,8 +292,38 @@
     <ClCompile Include="Animator.cpp">
       <Filter>Engine\07. Component</Filter>
     </ClCompile>
-    <ClCompile Include="Btn.cpp">
-      <Filter>Engine\09.UI</Filter>
+    <ClCompile Include="MapMgr.cpp">
+      <Filter>Engine\03. Manager\MapMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="MouseObj.cpp">
+      <Filter>Engine\04. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="MapFactory.cpp">
+      <Filter>Engine\08. Module\Factory</Filter>
+    </ClCompile>
+    <ClCompile Include="MapObject.cpp">
+      <Filter>Engine\04. Object\Map\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolScene.cpp">
+      <Filter>Engine\05. Scene\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Rigidbody.cpp">
+      <Filter>Engine\07. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMgr.cpp">
+      <Filter>Engine\03. Manager\PlayerMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>Engine\04. Object\Map\MapObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Gravity.cpp">
+      <Filter>Engine\07. Component</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraMgr.cpp">
+      <Filter>Engine\03. Manager\CameraMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine\04. Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -10,15 +10,22 @@ public:
 public:
     void Update() override;
     void Render(HDC _dc) override;
+    void EnterCollision(Collider* _pOther) override;
+    void ExitCollision(Collider* _pOther) override;
+    void StayCollision(Collider* _pOther) override;
 private:
     void Jump();
     void DoubleJump();
-    bool CheckGroundCollider(float yValue);
+    //bool CheckGroundCollider();
     void Land();
+    void CreateInit();
+    //void SetOffSetPos(Vec2 _offsetPos) { m_offsetPos = _offsetPos; }
 private:
+    float _isCreateEnd;
+    float _jumpTime;
+    float _curTime;
     bool _isJump;
     bool _isDoubleJump;
-    float _gravityScale;
     float _jumpPower;
     bool _isGround;
     Vec2 _moveDir;

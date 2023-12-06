@@ -7,6 +7,8 @@
 #include "ResMgr.h"
 #include "CollisionMgr.h"
 #include "EventMgr.h"
+#include "MapMgr.h"
+
 bool Core::Init(HWND _hWnd, POINT _ptResolution)
 {
 	// === 변수 초기화 === 
@@ -35,6 +37,7 @@ bool Core::Init(HWND _hWnd, POINT _ptResolution)
 	TimeMgr::GetInst()->Init();
 	KeyMgr::GetInst()->Init();
 	ResMgr::GetInst()->Init();
+	MapMgr::GetInst()->Init();
 	SceneMgr::GetInst()->Init();
 
 	return true;
@@ -64,6 +67,7 @@ void Core::Update()
 	KeyMgr::GetInst()->Update();
 	SceneMgr::GetInst()->Update();
 	CollisionMgr::GetInst()->Update();
+	//MapMgr::GetInst()->Update();
 //	Vec2 vPos = m_obj.GetPos();
 //
 ////	if (GetAsyncKeyState(VK_LEFT) & 0x8000)

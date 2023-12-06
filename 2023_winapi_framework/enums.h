@@ -26,7 +26,17 @@ enum class OBJECT_GROUP
 	PLAYER,
 	BULLET,
 	MONSTER,
+	MOUSE,
+	MAP,
+	GROUND,
+	OBSTACLE,
+	CAMERA,
 	END = 30
+};
+
+enum class MAPOBJECT_TYPE
+{
+	SQUARE, CIRCLE, TRIANGLE
 };
 
 enum class PEN_TYPE

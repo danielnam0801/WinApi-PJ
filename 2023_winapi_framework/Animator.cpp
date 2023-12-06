@@ -27,6 +27,10 @@ void Animator::Update()
 	}
 }
 
+void Animator::FinalUpdate()
+{
+}
+
 void Animator::Render(HDC _dc)
 {
 	if (nullptr != m_pCurAnim)
