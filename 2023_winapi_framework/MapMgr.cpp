@@ -17,7 +17,7 @@ void MapMgr::Init()
 	//BackGroundLayer
 	//ObjectLayer
 	//std::cout << fs::absolute(fs::path("./"));
-	m_uptrMap = m_tson.parse(fs::path("./Map/JumpMapChange.json"));
+	m_uptrMap = m_tson.parse(fs::path("./Map/ddJumpMapChange.json"));
 	if (m_uptrMap->getStatus() != tson::ParseStatus::OK)
 	{
 		std::cout << "json file error " << std::endl;
@@ -29,22 +29,21 @@ void MapMgr::CreateJsonBoard()
 	if (m_uptrMap->getStatus() == tson::ParseStatus::OK)
 	{
 		int a = 0;
-		tson::Layer* fg = m_uptrMap->getLayer("FG");
-		tson::Layer* bg = m_uptrMap->getLayer("BG");
-		tson::Layer bgLayer = bg->getLayers()[0];
-		tson::Layer ShellLayer = fg->getLayers()[0];
-		tson::Layer objLayer = fg->getLayers()[1];
+		tson::Layer* bgLayer = m_uptrMap->getLayer("BackGroundLayer");
+		tson::Layer* ShellLayer = m_uptrMap->getLayer("ShellLayer");;
+		tson::Layer* objLayer = m_uptrMap->getLayer("ObjectLayer");;
 
-		for (auto& obj : objLayer.getObjects())
-		{
-			tson::Vector2i pos = obj.getPosition();
-			if (obj.getName() == "Mario")
-			{
-				//마리오 세팅
+		//for (auto& obj : objLayer->getObjects())
+		//{
+		//	tson::Vector2i pos = obj.getPosition();
+		//	if (obj.getName() == "Mario")
+		//	{
+		//		//마리오 세팅
 
-			}
-		}
-		for (auto& [pos, tileObject] : bgLayer.getTileObjects())
+		//	}
+		//}
+		std::cout << bgLayer->getTileObjects().size();
+		for (auto& [pos, tileObject] : bgLayer->getTileObjects())
 		{
 			tson::Tileset* tileset = tileObject.getTile()->getTileset();
 			tson::Rect rect = tileObject.getDrawingRect();
