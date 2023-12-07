@@ -9,6 +9,7 @@
 #include "tileson.hpp"
 #include "Texture.h"
 #include "ResMgr.h"
+#include "PathMgr.h"
 #include "Core.h"
 
 
@@ -17,7 +18,8 @@ void MapMgr::Init()
 	//BackGroundLayer
 	//ObjectLayer
 	//std::cout << fs::absolute(fs::path("./"));
-	m_uptrMap = m_tson.parse(fs::path("./Map/ddJumpMapChange.json"));
+	
+	m_uptrMap = m_tson.parse(fs::path("./Map/3JumpMapChange.json"));
 	if (m_uptrMap->getStatus() != tson::ParseStatus::OK)
 	{
 		std::cout << "json file error " << std::endl;
@@ -42,13 +44,16 @@ void MapMgr::CreateJsonBoard()
 
 		//	}
 		//}
-		std::cout << bgLayer->getTileObjects().size();
 		for (auto& [pos, tileObject] : bgLayer->getTileObjects())
 		{
 			tson::Tileset* tileset = tileObject.getTile()->getTileset();
 			tson::Rect rect = tileObject.getDrawingRect();
 			tson::Vector2f realposition = tileObject.getPosition();
-			Object* sprite = StoreAndLoadImage(tileset->getImage().u8string(), { 0,0 });
+			std::string path = tileset->getImage().u8string();
+			path = PathMgr::GetInst()->GetPathWithOutRes(path);
+			path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
+
+			Object* sprite = StoreAndLoadImage(path, { 0,0 });
 			if (sprite != nullptr)
 			{
 				sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });
@@ -63,10 +68,10 @@ Object* MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
 	fs::path path = _image;
 	if (m_maptex.count(_image) == 0)
 	{
-		if (fs::exists(path) && fs::is_regular_file(path))
-		{
-			Texture* tex = ResMgr::GetInst()->TexFind(L"Map");
-			bool imageFound = tex->LoadFromFile(StrToWstr(path.generic_string()));
+		//if (fs::exists(path) && fs::is_regular_file(path))
+	
+			Texture* tex = ResMgr::GetInst()->TexLoad(L"Map", path);
+			bool imageFound = tex->LoadFromFile(tex->GetRelativePath());
 			if (imageFound)
 			{
 				Object* spr = new Object;
@@ -75,11 +80,11 @@ Object* MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
 				m_maptex[_image] = std::move(tex);
 				m_mapsprite[_image] = std::move(spr);
 			}
-		}
-		else
-		{
-			std::cout << "can't find" << path.generic_string() << std::endl;
-		}
+			else
+			{
+				std::cout << "can't find" << path.generic_string() << std::endl;
+			}
+		
 	}
 	if (m_mapsprite.count(_image) > 0)
 		return m_mapsprite[_image];
@@ -173,6 +178,16 @@ void MapMgr::UpdateTileAnimation(float _dt)
 	{
 		animation->update(_dt * 1000);
 	}
+}
+
+std::string MapMgr::WstrToStr(const std::wstring& source)
+{
+	return std::string().assign(source.begin(), source.end());
+}
+
+std::wstring MapMgr::StrToWstr(const std::string& source)
+{
+	return std::wstring().assign(source.begin(), source.end());
 }
 
 //void MapMgr::MakeObject(MAPOBJECT_TYPE _type)
