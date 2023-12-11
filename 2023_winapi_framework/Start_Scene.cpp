@@ -10,23 +10,30 @@
 #include "MapObject.h"
 #include "Ground.h"
 #include "MapMgr.h"
+#include "CameraMgr.h"
 
 void Start_Scene::Init()
 {
 	MapMgr::GetInst()->CreateJsonBoard();
 	Vec2 vResolution = Core::GetInst()->GetResolution();
-	Object* m_Player = new Player;
+	std::shared_ptr<Object> m_Player(new Player);
 	m_Player->SetPos((Vec2({vResolution.x /2, vResolution.y / 2})));
 	m_Player->SetScale(Vec2(100.f,100.f));
 	m_Player->SetName(L"Player");
 	AddObject(m_Player, OBJECT_GROUP::PLAYER);
 
-	Object* pGroundObj = new Ground;
+	std::shared_ptr<Object> pGroundObj(new Ground);
 	pGroundObj->SetName(L"Ground");
 	pGroundObj->SetPos((Vec2({ vResolution.x / 2, vResolution.y / 6 * 4})));
 	pGroundObj->SetScale(Vec2(1000.f, 100.f));
 	AddObject(pGroundObj, OBJECT_GROUP::GROUND);
 	// 몬스터 세팅 마구마구 배치를 해봅시다.
+
+	std::vector<std::shared_ptr<MapObject>> m_mapObjs(MapMgr::GetInst()->GetMapObjs());
+	for (int i = 0; i < m_mapObjs.size(); i++)
+	{
+		AddObject(m_mapObjs[i], OBJECT_GROUP::GROUND);
+	}
 
 	//Monster* pMonster = nullptr;
 	//int iMonster = 10;		// 몬스터 수 
@@ -55,6 +62,7 @@ void Start_Scene::Init()
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::BULLET, OBJECT_GROUP::MONSTER);
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::MOUSE, OBJECT_GROUP::MAP);
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GROUND);
+	CameraMgr::GetInst()->SetLook(Vec2(vResolution.x / 2, vResolution.y / 2));
 }
 
 
@@ -68,7 +76,7 @@ void Start_Scene::Update()
 void Start_Scene::Render(HDC _dc)
 {
 	Scene::Render(_dc);
-	MapMgr::GetInst()->Render();
+	//MapMgr::GetInst()->Render();
 }
 
 void Start_Scene::Release()

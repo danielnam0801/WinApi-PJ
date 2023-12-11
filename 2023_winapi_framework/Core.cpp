@@ -8,6 +8,7 @@
 #include "CollisionMgr.h"
 #include "EventMgr.h"
 #include "MapMgr.h"
+#include "CameraMgr.h"
 
 bool Core::Init(HWND _hWnd, POINT _ptResolution)
 {
@@ -67,6 +68,7 @@ void Core::Update()
 	KeyMgr::GetInst()->Update();
 	SceneMgr::GetInst()->Update();
 	CollisionMgr::GetInst()->Update();
+	CameraMgr::GetInst()->Update();
 	//MapMgr::GetInst()->Update();
 //	Vec2 vPos = m_obj.GetPos();
 //

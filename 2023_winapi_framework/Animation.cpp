@@ -4,6 +4,8 @@
 #include "Object.h"
 #include "Texture.h"
 #include "TimeMgr.h"
+#include "CameraMgr.h"
+
 Animation::Animation()
 	: m_pAnimator(nullptr)
 	, m_CurFrame(0)
@@ -45,6 +47,8 @@ void Animation::Render(HDC _dc)
 
 	// 오프셋 적용
 	vPos = vPos + m_vecAnimFrame[m_CurFrame].vOffset;
+	vPos = CameraMgr::GetInst()->GetLocalPos(vPos);
+
 	TransparentBlt(_dc
 		,(int)(vPos.x - m_vecAnimFrame[m_CurFrame].vSlice.x /2.f)
 		,(int)(vPos.y - m_vecAnimFrame[m_CurFrame].vSlice.y / 2.f)

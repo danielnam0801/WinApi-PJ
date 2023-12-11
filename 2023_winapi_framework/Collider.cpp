@@ -2,6 +2,8 @@
 #include "Collider.h"
 #include "Object.h"
 #include "SelectGDI.h"
+#include "CameraMgr.h"
+
 UINT Collider::m_sNextID = 0;
 Collider::Collider()
 	: m_pOwner(nullptr)
@@ -35,9 +37,11 @@ void Collider::Render(HDC _dc)
 	PEN_TYPE ePen = PEN_TYPE::GREEN;
 	if (m_check)
 		ePen = PEN_TYPE::RED;
+	wstring name = GetObj()->GetName();
 	SelectGDI pen(_dc, ePen);
 	SelectGDI brush(_dc, BRUSH_TYPE::HOLLOW);
-	RECT_RENDER(m_vFinalPos.x, m_vFinalPos.y, m_vScale.x, m_vScale.y, _dc);
+	Vec2 vLocalPos = CameraMgr::GetInst()->GetLocalPos(m_vFinalPos);
+	RECT_RENDER(vLocalPos.x, vLocalPos.y, m_vScale.x, m_vScale.y, _dc);
 }
 
 void Collider::EnterCollision(Collider* _pOther)
@@ -66,6 +70,7 @@ bool Collider::OverlapSquare(Vec2 point, Vec2 size)
 void Collider::FinalUpdate()
 {
 	// Object위치를 따라가야 하는거야.
+	wstring name = m_pOwner->GetName();
 	Vec2 vObjPos = m_pOwner->GetPos();
 	m_vFinalPos = vObjPos + m_vOffsetPos;
 }

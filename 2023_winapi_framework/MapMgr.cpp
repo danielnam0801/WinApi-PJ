@@ -19,7 +19,7 @@ void MapMgr::Init()
 	//ObjectLayer
 	//std::cout << fs::absolute(fs::path("./"));
 	
-	m_uptrMap = m_tson.parse(fs::path("./Map/3JumpMapChange.json"));
+	m_uptrMap = m_tson.parse(fs::path("./Map/4JumpMapChange.json"));
 	if (m_uptrMap->getStatus() != tson::ParseStatus::OK)
 	{
 		std::cout << "json file error " << std::endl;
@@ -30,8 +30,7 @@ void MapMgr::CreateJsonBoard()
 {
 	if (m_uptrMap->getStatus() == tson::ParseStatus::OK)
 	{
-		int a = 0;
-		tson::Layer* bgLayer = m_uptrMap->getLayer("BackGroundLayer");
+		//tson::Layer* bgLayer = m_uptrMap->getLayer("BackGroundLayer");
 		tson::Layer* ShellLayer = m_uptrMap->getLayer("ShellLayer");;
 		tson::Layer* objLayer = m_uptrMap->getLayer("ObjectLayer");;
 
@@ -44,39 +43,62 @@ void MapMgr::CreateJsonBoard()
 
 		//	}
 		//}
-		for (auto& [pos, tileObject] : bgLayer->getTileObjects())
+		for (auto& [pos, tileObject] : objLayer->getTileObjects())
 		{
-			tson::Tileset* tileset = tileObject.getTile()->getTileset();
+			tson::Tileset* tileSet = tileObject.getTile()->getTileset();
+			tson::Rect rect = tileObject.getDrawingRect();
+
+			tson::Vector2f realPos = tileObject.getPosition();
+			tson::Vector2i imageSize = tileSet->getImageSize();
+			std::string path = tileSet->getImage().u8string();
+			path = PathMgr::GetInst()->GetPathWithOutRes(path);
+			path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
+			std::shared_ptr<MapObject> sprite = StoreAndLoadImage(path, { 0, 0 });
+
+			////	// texture 입히기
+			sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });
+
+			////	// origin 세팅
+			Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
+			//	sprite->setOrigin(origin);
+
+			////	// position 세팅
+			realPos = { realPos.x + origin.x, realPos.y + origin.y };
+			sprite->SetPos({ realPos.x, realPos.y });
+			/*tson::Tileset* tileset = tileObject.getTile()->getTileset();
 			tson::Rect rect = tileObject.getDrawingRect();
 			tson::Vector2f realposition = tileObject.getPosition();
 			std::string path = tileset->getImage().u8string();
 			path = PathMgr::GetInst()->GetPathWithOutRes(path);
 			path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
 
-			std::shared_ptr<Object> sprite = StoreAndLoadImage(path, { 0,0 });
-			if (sprite != nullptr)
+			std::shared_ptr<MapObject> sprite = StoreAndLoadImage(path, { 0,0 });*/
+			m_mapObjs.push_back(sprite);
+			m_mapObjs.push_back(sprite);
+
+			/*if (sprite != nullptr)
 			{
 				sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });
 				sprite->SetPos({});
-			}
+			}*/
 		}
 	}
 }
 
-std::shared_ptr<Object> MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
+std::shared_ptr<MapObject> MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
 {
 	fs::path path = _image;
 	if (m_maptex.count(_image) == 0)
 	{
 		//if (fs::exists(path) && fs::is_regular_file(path))
 	
-			std::shared_ptr<Texture> tex = ResMgr::GetInst()->TexLoad(L"Map", path);
+			std::shared_ptr<Texture> tex = ResMgr::GetInst()->TexLoad(StrToWstr(_image), path);
 			//bool imageFound = tex->LoadFromFile(tex->GetRelativePath());
 			if (tex != nullptr)
 			{
-				std::shared_ptr<Object> spr(new Object);
+				std::shared_ptr<MapObject> spr(new MapObject);
+				spr->SetName(L"MapObject");
 				spr->SetTexture(tex);
-				spr->SetPos(_pos);
 				m_maptex[_image] = tex;
 				m_mapsprite[_image] = spr;
 			}
@@ -119,57 +141,34 @@ void MapMgr::RenderLayers(tson::Layer& layer)
 
 void MapMgr::RenderTileLayer(tson::Layer& layer)
 {
-	for (auto& [pos, tileObj] : layer.getTileObjects()) {
-		tson::Tileset* tileSet = tileObj.getTile()->getTileset();
-		tson::Rect rect;
+	for (int i = 0; i < m_mapObjs.size(); i++)
+		m_mapObjs[i]->Render(nullptr);
+	//for (auto& [pos, tileObj] : layer.getTileObjects()) {
+	//	tson::Tileset* tileSet = tileObj.getTile()->getTileset();
+	//	tson::Rect rect = tileObj.getDrawingRect();
 
-		bool isAnimation = tileObj.getTile()->getAnimation().any();
-		if (!isAnimation) {
-			rect = tileObj.getDrawingRect();
-		}
-		else {
-			UINT tileId = tileObj.getTile()->getId();
-			if (m_maptsonAnim.count(tileId) == 0) {
-				m_maptsonAnim[tileId] = &tileObj.getTile()->getAnimation();
-			}
+	//	tson::Vector2f realPos = tileObj.getPosition();
+	//	tson::Vector2i imageSize = tileSet->getImageSize();
+	//	std::string path = tileSet->getImage().u8string();
+	//	path = PathMgr::GetInst()->GetPathWithOutRes(path);
+	//	path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
+	//	std::shared_ptr<MapObject> sprite = StoreAndLoadImage(path, {0, 0});
+	//	
+	//	//	// texture 입히기
+	//	sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });
 
+	//	//	// origin 세팅
+	//		Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
+	//	//	sprite->setOrigin(origin);
 
-			UINT curId = tileObj.getTile()->getAnimation().getCurrentTileId();
-			tson::Tile* animationTile;
-			for (auto& [id, animation] : m_maptsonAnim) {
-				animationTile = tileSet->getTile(1);
-				rect = animationTile->getDrawingRect();
-			}
+	//	//	// position 세팅
+	//		realPos = { realPos.x + origin.x, realPos.y + origin.y };
+	//		sprite->SetPos({ realPos.x, realPos.y });
 
-			for (auto& [id, animation] : m_maptsonAnim)
-			{
-				std::cout << "Frame: " << animation->getCurrentFrameNumber() << "Duration: " << animation->getCurrentFrame()->getDuration()
-					<< "Tile: " << animation->getCurrentTileId() << std::endl;
-				tileId = animation->getCurrentTileId();
-				if (tileId)
-					break;
-			}
-		}
-
-		tson::Vector2f realPos = tileObj.getPosition();
-		tson::Vector2i imageSize = tileSet->getImageSize();
-		std::shared_ptr<Object> sprite = StoreAndLoadImage(tileSet->getImage().u8string(), {0, 0});
-
-		//	// texture 입히기
-		sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });
-
-		//	// origin 세팅
-			Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
-		//	sprite->setOrigin(origin);
-
-		//	// position 세팅
-			realPos = { realPos.x + origin.x, realPos.y + origin.y };
-			sprite->SetPos({ realPos.x, realPos.y });
-
-			sprite->Render(Core::GetInst()->GetMainDC());
-		//	GET_WINDOW.draw(*sprite);
-		//}
-	}
+	//		sprite->Render(Core::GetInst()->GetMainDC());
+	//	//	GET_WINDOW.draw(*sprite);
+	//	//}
+	//}
 }
 
 void MapMgr::UpdateTileAnimation(float _dt)
