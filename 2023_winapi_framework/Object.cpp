@@ -31,7 +31,7 @@ Object::~Object()
 		delete m_pAnimator;
 	if (nullptr != m_pGravity)
 		delete m_pGravity;
-	delete m_tex;
+	//delete m_tex;
 }
 
 //bool Object::CheckInclude(Object obj1, Object obj2)

@@ -21,7 +21,7 @@ public:
 	virtual void StayCollision(Collider* _pOther);
 	void Component_Render(HDC _dc);
 public:
-	void SetTexture(Texture* _Tex) { m_tex = _Tex; }
+	void SetTexture(std::shared_ptr<Texture> _Tex) { m_tex = _Tex; }
 	void SetTextureRect(RECT _rect) { m_texRect = _rect; }
 	void SetPos(Vec2 _vPos) { m_vPos = _vPos; }
 	void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
@@ -59,7 +59,7 @@ public:
 	void CreateGravity();
 protected:
 	RECT m_texRect;
-	Texture* m_tex;
+	std::shared_ptr<Texture> m_tex;
 	Vec2 m_vPos; // 위치
 	Vec2 m_vScale; // 크기
 	wstring m_strName; // 이름.

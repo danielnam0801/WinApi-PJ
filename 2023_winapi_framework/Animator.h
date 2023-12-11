@@ -13,7 +13,7 @@ public:
 	void Render(HDC _dc);
 public:
 	// 애니메이션 생성함수
-	void CreateAnim(const wstring& _strName, Texture* _pTex,
+	void CreateAnim(const wstring& _strName, std::shared_ptr<Texture> _pTex,
 					Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep,
 					UINT _framecount, float _fDuration);
 	// 애니메이션 찾기함수

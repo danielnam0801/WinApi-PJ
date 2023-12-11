@@ -2,10 +2,10 @@
 #include "ResMgr.h"
 #include "PathMgr.h"
 #include "Texture.h"
-Texture* ResMgr::TexLoad(const wstring& _strKey, const wstring& _strRelativePath)
+std::shared_ptr<Texture> ResMgr::TexLoad(const wstring& _strKey, const wstring& _strRelativePath)
 {
     // 잘 찾았으면 그거 던져주기
-    Texture* pTex = TexFind(_strKey);
+    std::shared_ptr<Texture> pTex = TexFind(_strKey);
     if (nullptr != pTex)
         return pTex;
 
@@ -13,15 +13,15 @@ Texture* ResMgr::TexLoad(const wstring& _strKey, const wstring& _strRelativePath
     wstring strFilepath = PathMgr::GetInst()->GetResPath();
     strFilepath += _strRelativePath;
     // 만들어줘가지고..
-    pTex = new Texture;
+    pTex = std::make_shared<Texture>();
     pTex->Load(strFilepath); // 텍스처 자체를 로드..
     pTex->SetKey(_strKey); // 키 경로 세팅해두고..
     pTex->SetRelativePath(_strRelativePath);
-    m_mapTex.insert({ _strKey,pTex }); // 그거를 맵에다가 저장.
+    m_mapTex[_strKey] = pTex; // 그거를 맵에다가 저장.
     return pTex;
 }
 
-Texture* ResMgr::TexFind(const wstring& _strKey)
+std::shared_ptr<Texture> ResMgr::TexFind(const wstring& _strKey)
 {
     // 찾아서 return
     auto iter = m_mapTex.find(_strKey);
@@ -35,12 +35,12 @@ Texture* ResMgr::TexFind(const wstring& _strKey)
 void ResMgr::Release()
 {
     // Texture
-    map<wstring, Texture*>::iterator iter;
+   /* map<wstring, std::shared_ptr<Texture>>::iterator iter;
     for (iter = m_mapTex.begin(); iter != m_mapTex.end(); ++iter)
     {
         if (nullptr != iter->second)
             delete iter->second;
-    }
+    }*/
     m_mapTex.clear();
 
     // SOUND

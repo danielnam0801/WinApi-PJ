@@ -39,7 +39,7 @@ void Animator::Render(HDC _dc)
 	}
 }
 
-void Animator::CreateAnim(const wstring& _strName, Texture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, UINT _framecount, float _fDuration)
+void Animator::CreateAnim(const wstring& _strName, std::shared_ptr<Texture> _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, UINT _framecount, float _fDuration)
 {
 	Animation* pAnim = FindAnim(_strName);
 	if (pAnim != nullptr)

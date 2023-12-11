@@ -29,6 +29,6 @@ private:
     float _jumpPower;
     bool _isGround;
     Vec2 _moveDir;
-    Texture* m_pTex;
+    std::shared_ptr<Texture> m_pTex;
 };
 

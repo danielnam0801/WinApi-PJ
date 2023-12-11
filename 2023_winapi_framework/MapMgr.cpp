@@ -53,7 +53,7 @@ void MapMgr::CreateJsonBoard()
 			path = PathMgr::GetInst()->GetPathWithOutRes(path);
 			path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
 
-			Object* sprite = StoreAndLoadImage(path, { 0,0 });
+			std::shared_ptr<Object> sprite = StoreAndLoadImage(path, { 0,0 });
 			if (sprite != nullptr)
 			{
 				sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });
@@ -63,22 +63,22 @@ void MapMgr::CreateJsonBoard()
 	}
 }
 
-Object* MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
+std::shared_ptr<Object> MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
 {
 	fs::path path = _image;
 	if (m_maptex.count(_image) == 0)
 	{
 		//if (fs::exists(path) && fs::is_regular_file(path))
 	
-			Texture* tex = ResMgr::GetInst()->TexLoad(L"Map", path);
-			bool imageFound = tex->LoadFromFile(tex->GetRelativePath());
-			if (imageFound)
+			std::shared_ptr<Texture> tex = ResMgr::GetInst()->TexLoad(L"Map", path);
+			//bool imageFound = tex->LoadFromFile(tex->GetRelativePath());
+			if (tex != nullptr)
 			{
-				Object* spr = new Object;
+				std::shared_ptr<Object> spr(new Object);
 				spr->SetTexture(tex);
 				spr->SetPos(_pos);
-				m_maptex[_image] = std::move(tex);
-				m_mapsprite[_image] = std::move(spr);
+				m_maptex[_image] = tex;
+				m_mapsprite[_image] = spr;
 			}
 			else
 			{
@@ -153,7 +153,7 @@ void MapMgr::RenderTileLayer(tson::Layer& layer)
 
 		tson::Vector2f realPos = tileObj.getPosition();
 		tson::Vector2i imageSize = tileSet->getImageSize();
-		Object* sprite = StoreAndLoadImage(tileSet->getImage().u8string(), { 0, 0 });
+		std::shared_ptr<Object> sprite = StoreAndLoadImage(tileSet->getImage().u8string(), {0, 0});
 
 		//	// texture ÀÔÈ÷±â
 		sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });

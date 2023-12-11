@@ -15,12 +15,12 @@ class ResMgr
 {
 	SINGLE(ResMgr);
 public:
-	Texture* TexLoad(const wstring& _strKey,
+	std::shared_ptr<Texture> TexLoad(const wstring& _strKey,
 		const wstring& _strRelativePath);
-	Texture* TexFind(const wstring& _strKey);
+	std::shared_ptr<Texture> TexFind(const wstring& _strKey);
 	void Release();
 private:
-	map<wstring, Texture*> m_mapTex;
+	map<wstring, std::shared_ptr<Texture>> m_mapTex;
 	FMOD::System* m_pSystem; // 사운드 시스템
 	map<wstring, tSoundInfo*> m_mapSod;
 	FMOD::Channel* m_pChannel[(UINT)SOUND_CHANNEL::END]; // 오디오 채널

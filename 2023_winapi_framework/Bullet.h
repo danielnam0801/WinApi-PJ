@@ -20,6 +20,6 @@ private:
 //    float m_fDir; // 총알 방향(-1 위, 1 아래);
     float m_fTheta; // 삼각함수 방향.
     Vec2 m_vDir;
-    Texture* m_pTex;
+    std::shared_ptr<Texture> m_pTex;
 };
 

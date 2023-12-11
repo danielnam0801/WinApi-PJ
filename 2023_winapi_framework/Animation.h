@@ -17,7 +17,7 @@ public:
 	void Update();
 	void Render(HDC _dc);
 public:
-	void Create(Texture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, 
+	void Create(std::shared_ptr<Texture> _pTex, Vec2 _vLT, Vec2 _vSliceSize, 
 		Vec2 _vStep, int _framecount, float _fDuration);
 public:
 	const wstring& GetName() const { return m_strName; }
@@ -29,7 +29,7 @@ private:
 	UINT   m_CurFrame; // 현재 프레임
 	float  m_fAccTime; // 누적 시간
 	int	   m_repeatcnt; // 반복 횟수
-	Texture* m_pTex; // 애니메이션 텍스처
+	std::shared_ptr<Texture> m_pTex; // 애니메이션 텍스처
 	vector<tAnimFrame> m_vecAnimFrame;
 	wstring m_strName;
 	Animator* m_pAnimator;

@@ -58,7 +58,7 @@ void Animation::Render(HDC _dc)
 		,RGB(255,0,255));
 }
 
-void Animation::Create(Texture* _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, int _framecount, float _fDuration)
+void Animation::Create(std::shared_ptr<Texture> _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, int _framecount, float _fDuration)
 {
 	m_pTex = _pTex;
 	for (int i = 0; i < _framecount; ++i)

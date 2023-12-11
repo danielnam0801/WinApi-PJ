@@ -12,7 +12,7 @@ class MapMgr
 public:
 	void Init();
 	void CreateJsonBoard();
-	Object* StoreAndLoadImage(const std::string& _image, const Vec2 _pos);
+	std::shared_ptr<Object> StoreAndLoadImage(const std::string & _image, const Vec2 _pos);
 	void Render();
 	void RenderLayers(tson::Layer& layer);
 	void RenderTileLayer(tson::Layer& layer);
@@ -25,9 +25,9 @@ public:
 	void Render(HDC _dc);
 private:
 	tson::Tileson m_tson;
-	std::unique_ptr<tson::Map> m_uptrMap;
-	std::map<std::string, Texture*> m_maptex;
-	std::map<std::string, Object*> m_mapsprite;
+	std::shared_ptr<tson::Map> m_uptrMap;
+	std::map<std::string, std::shared_ptr<Texture>> m_maptex;
+	std::map<std::string, std::shared_ptr<Object>> m_mapsprite;
 	tson::Map* m_curMap;
 	std::map<UINT, tson::Animation*> m_maptsonAnim;
 };
