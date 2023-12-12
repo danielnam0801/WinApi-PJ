@@ -10,6 +10,7 @@
 #include "Texture.h"
 #include "ResMgr.h"
 #include "PathMgr.h"
+#include "Collider.h"
 #include "Core.h"
 
 
@@ -34,15 +35,6 @@ void MapMgr::CreateJsonBoard()
 		tson::Layer* ShellLayer = m_uptrMap->getLayer("ShellLayer");;
 		tson::Layer* objLayer = m_uptrMap->getLayer("ObjectLayer");;
 
-		//for (auto& obj : objLayer->getObjects())
-		//{
-		//	tson::Vector2i pos = obj.getPosition();
-		//	if (obj.getName() == "Mario")
-		//	{
-		//		//마리오 세팅
-
-		//	}
-		//}
 		for (auto& [pos, tileObject] : objLayer->getTileObjects())
 		{
 			tson::Tileset* tileSet = tileObject.getTile()->getTileset();
@@ -56,34 +48,58 @@ void MapMgr::CreateJsonBoard()
 			std::shared_ptr<MapObject> image = StoreAndLoadImage(path, { 0, 0 });
 			std::shared_ptr<MapObject> sprite = std::make_shared<MapObject>();
 			sprite->DeepCopy(image);
-			//std::shared_ptr<MapObject> sprite{ image };
-			//sprite = std::move(image);
-			////	// texture 입히기
-			sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });
 
+			Vec2 m_Scale = { 1.5f, 1.5f };
+
+			sprite->SetTextureRect({ rect.x, rect.y, rect.width , rect.height });
+
+			sprite->SetScale(m_Scale);
 			////	// origin 세팅
+			//Vec2 origin = { 0.f, 0.f };
 			Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
-			//	sprite->setOrigin(origin);
-
+			origin *= m_Scale;
+			sprite->GetCollider()->SetOffSetPos(origin);
+			Vec2 size = Vec2((float)rect.width, (float)rect.height);
+			size *= m_Scale;
+			sprite->GetCollider()->SetScale(size);
 			////	// position 세팅
-			realPos = { realPos.x + origin.x, realPos.y + origin.y };
+			realPos = { (realPos.x + origin.x) * m_Scale.x , (realPos.y + origin.y) * m_Scale.y };
 			sprite->SetPos({ realPos.x, realPos.y });
-			/*tson::Tileset* tileset = tileObject.getTile()->getTileset();
+			m_mapObjs.push_back(sprite);
+		}
+
+		for (auto& [pos, tileObject] : objLayer->getTileObjects())
+		{
+			tson::Tileset* tileSet = tileObject.getTile()->getTileset();
 			tson::Rect rect = tileObject.getDrawingRect();
-			tson::Vector2f realposition = tileObject.getPosition();
-			std::string path = tileset->getImage().u8string();
+
+			tson::Vector2f realPos = tileObject.getPosition();
+			tson::Vector2i imageSize = tileSet->getImageSize();
+			std::string path = tileSet->getImage().u8string();
 			path = PathMgr::GetInst()->GetPathWithOutRes(path);
 			path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
+			std::shared_ptr<MapObject> image = StoreAndLoadImage(path, { 0, 0 });
+			std::shared_ptr<MapObject> sprite = std::make_shared<MapObject>();
+			sprite->DeepCopy(image);
 
-			std::shared_ptr<MapObject> sprite = StoreAndLoadImage(path, { 0,0 });*/
+			Vec2 m_Scale = { 1.5f, 1.5f };
+
+			sprite->SetTextureRect({ rect.x, rect.y, rect.width , rect.height });
+
+			sprite->SetScale(m_Scale);
+			////	// origin 세팅
+			//Vec2 origin = { 0.f, 0.f };
+			Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
+			origin *= m_Scale;
+			sprite->GetCollider()->SetOffSetPos(origin);
+			Vec2 size = Vec2((float)rect.width, (float)rect.height);
+			size *= m_Scale;
+			sprite->GetCollider()->SetScale(size);
+			////	// position 세팅
+			realPos = { (realPos.x + origin.x) * m_Scale.x , (realPos.y + origin.y) * m_Scale.y };
+			sprite->SetPos({ realPos.x, realPos.y });
 			m_mapObjs.push_back(sprite);
-			//m_mapObjs.push_back(sprite);
 
-			/*if (sprite != nullptr)
-			{
-				sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });
-				sprite->SetPos({});
-			}*/
 		}
 	}
 }

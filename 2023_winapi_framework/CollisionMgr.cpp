@@ -113,7 +113,10 @@ void CollisionMgr::CheckGroup(OBJECT_GROUP _eLeft, OBJECT_GROUP _eRight)
 	// 작은쪽을 행으로 씁시다.
 	UINT Row = (UINT)_eLeft;
 	UINT Col = (UINT)_eRight;
-	Row = min(Row, Col);
+	//Row = min(Row, Col);
+
+	if (Row > Col)
+		std::swap(Row, Col);
 
 	//// 비트 연산
 	// 체크가 되어있다면
