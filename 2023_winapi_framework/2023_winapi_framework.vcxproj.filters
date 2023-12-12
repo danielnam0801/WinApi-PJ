@@ -205,6 +205,7 @@
     <ClInclude Include="Camera.h">
       <Filter>Engine\04. Object</Filter>
     </ClInclude>
+    <ClInclude Include="ShellObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2023_winapi_framework.rc">
@@ -325,5 +326,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Engine\04. Object</Filter>
     </ClCompile>
+    <ClCompile Include="ShellObject.cpp" />
   </ItemGroup>
 </Project>

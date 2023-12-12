@@ -16,20 +16,20 @@ void Start_Scene::Init()
 {
 	MapMgr::GetInst()->CreateJsonBoard();
 	Vec2 vResolution = Core::GetInst()->GetResolution();
-	std::shared_ptr<Object> m_Player(new Player);
+	Object* m_Player = new Player;
 	m_Player->SetPos((Vec2({vResolution.x /2, vResolution.y / 2})));
 	m_Player->SetScale(Vec2(100.f,100.f));
 	m_Player->SetName(L"Player");
 	AddObject(m_Player, OBJECT_GROUP::PLAYER);
 
-	std::shared_ptr<Object> pGroundObj(new Ground);
+	Object* pGroundObj = new Ground;
 	pGroundObj->SetName(L"Ground");
 	pGroundObj->SetPos((Vec2({ vResolution.x / 2, vResolution.y / 6 * 4})));
 	pGroundObj->SetScale(Vec2(1000.f, 100.f));
 	AddObject(pGroundObj, OBJECT_GROUP::GROUND);
 	// 몬스터 세팅 마구마구 배치를 해봅시다.
 
-	std::vector<std::shared_ptr<MapObject>> m_mapObjs(MapMgr::GetInst()->GetMapObjs());
+	std::vector<MapObject*> m_mapObjs(MapMgr::GetInst()->GetMapObjs());
 	for (int i = 0; i < m_mapObjs.size(); i++)
 	{
 		AddObject(m_mapObjs[i], OBJECT_GROUP::GROUND);

@@ -37,35 +37,38 @@ void MapMgr::CreateJsonBoard()
 
 		for (auto& [pos, tileObject] : objLayer->getTileObjects())
 		{
-			tson::Tileset* tileSet = tileObject.getTile()->getTileset();
-			tson::Rect rect = tileObject.getDrawingRect();
+			//tson::Tileset* tileSet = tileObject.getTile()->getTileset();
+			//tson::Rect rect = tileObject.getDrawingRect();
 
-			tson::Vector2f realPos = tileObject.getPosition();
-			tson::Vector2i imageSize = tileSet->getImageSize();
-			std::string path = tileSet->getImage().u8string();
-			path = PathMgr::GetInst()->GetPathWithOutRes(path);
-			path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
-			std::shared_ptr<MapObject> image = StoreAndLoadImage(path, { 0, 0 });
-			std::shared_ptr<MapObject> sprite = std::make_shared<MapObject>();
-			sprite->DeepCopy(image);
+			//tson::Vector2f realPos = tileObject.getPosition();
+			//tson::Vector2i imageSize = tileSet->getImageSize();
+			//std::string path = tileSet->getImage().u8string();
+			//path = PathMgr::GetInst()->GetPathWithOutRes(path);
+			//path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
+			//MapObject* image = StoreAndLoadImage(path, { 0, 0 });
+			//MapObject* sprite = new MapObject;
+			//sprite->DeepCopy(image);
 
-			Vec2 m_Scale = { 1.5f, 1.5f };
+			//delete image;
 
-			sprite->SetTextureRect({ rect.x, rect.y, rect.width , rect.height });
+			//Vec2 m_Scale = { 1.5f, 1.5f };
 
-			sprite->SetScale(m_Scale);
-			////	// origin 세팅
-			//Vec2 origin = { 0.f, 0.f };
-			Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
-			origin *= m_Scale;
-			sprite->GetCollider()->SetOffSetPos(origin);
-			Vec2 size = Vec2((float)rect.width, (float)rect.height);
-			size *= m_Scale;
-			sprite->GetCollider()->SetScale(size);
-			////	// position 세팅
-			realPos = { (realPos.x + origin.x) * m_Scale.x , (realPos.y + origin.y) * m_Scale.y };
-			sprite->SetPos({ realPos.x, realPos.y });
-			m_mapObjs.push_back(sprite);
+			//sprite->SetTextureRect({ rect.x, rect.y, rect.width , rect.height });
+
+			//sprite->SetScale(m_Scale);
+			//////	// origin 세팅
+			////Vec2 origin = { 0.f, 0.f };
+			//Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
+			//origin *= m_Scale;
+			//sprite->GetCollider()->SetOffSetPos(origin);
+			//Vec2 size = Vec2((float)rect.width, (float)rect.height);
+			//size *= m_Scale;
+			//sprite->GetCollider()->SetScale(size);
+			//////	// position 세팅
+			//realPos = { (realPos.x + origin.x) * m_Scale.x , (realPos.y + origin.y) * m_Scale.y };
+			//sprite->SetPos({ realPos.x, realPos.y });
+			//m_mapObjs.push_back(sprite);
+
 		}
 
 		for (auto& [pos, tileObject] : objLayer->getTileObjects())
@@ -78,8 +81,8 @@ void MapMgr::CreateJsonBoard()
 			std::string path = tileSet->getImage().u8string();
 			path = PathMgr::GetInst()->GetPathWithOutRes(path);
 			path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
-			std::shared_ptr<MapObject> image = StoreAndLoadImage(path, { 0, 0 });
-			std::shared_ptr<MapObject> sprite = std::make_shared<MapObject>();
+			MapObject* image = StoreAndLoadImage(path, { 0, 0 });
+			MapObject* sprite = new MapObject;
 			sprite->DeepCopy(image);
 
 			Vec2 m_Scale = { 1.5f, 1.5f };
@@ -87,24 +90,28 @@ void MapMgr::CreateJsonBoard()
 			sprite->SetTextureRect({ rect.x, rect.y, rect.width , rect.height });
 
 			sprite->SetScale(m_Scale);
+			sprite->SetName(L"MapObject");
 			////	// origin 세팅
-			//Vec2 origin = { 0.f, 0.f };
+
 			Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
 			origin *= m_Scale;
 			sprite->GetCollider()->SetOffSetPos(origin);
-			Vec2 size = Vec2((float)rect.width, (float)rect.height);
-			size *= m_Scale;
-			sprite->GetCollider()->SetScale(size);
+			
 			////	// position 세팅
 			realPos = { (realPos.x + origin.x) * m_Scale.x , (realPos.y + origin.y) * m_Scale.y };
 			sprite->SetPos({ realPos.x, realPos.y });
 			m_mapObjs.push_back(sprite);
+				
+			////	// collider 세팅
+			Vec2 size = Vec2((float)rect.width, (float)rect.height);
+			size *= m_Scale;
+			sprite->GetCollider()->SetScale(size);
 
 		}
 	}
 }
 
-std::shared_ptr<MapObject> MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
+MapObject* MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
 {
 	fs::path path = _image;
 	if (m_maptex.count(_image) == 0)
@@ -115,8 +122,7 @@ std::shared_ptr<MapObject> MapMgr::StoreAndLoadImage(const std::string& _image, 
 			//bool imageFound = tex->LoadFromFile(tex->GetRelativePath());
 			if (tex != nullptr)
 			{
-				std::shared_ptr<MapObject> spr(new MapObject);
-				spr->SetName(L"MapObject");
+				MapObject* spr = new MapObject;
 				spr->SetTexture(tex);
 				m_maptex[_image] = tex;
 				m_mapsprite[_image] = spr;
@@ -132,71 +138,6 @@ std::shared_ptr<MapObject> MapMgr::StoreAndLoadImage(const std::string& _image, 
 	return nullptr;
 }
 
-void MapMgr::Render()
-{
-	m_curMap = m_uptrMap.get();
-	if (m_curMap != nullptr)
-	{
-		for (auto& layer : m_curMap->getLayers())
-			RenderLayers(layer);
-	}
-}
-
-void MapMgr::RenderLayers(tson::Layer& layer)
-{
-	switch (layer.getType())
-	{
-	case::tson::LayerType::TileLayer:
-		RenderTileLayer(layer);
-		break;
-	case::tson::LayerType::ObjectGroup:
-		break;
-	case::tson::LayerType::ImageLayer:
-		break;
-	default:
-		break;
-	}
-}
-
-void MapMgr::RenderTileLayer(tson::Layer& layer)
-{
-	for (int i = 0; i < m_mapObjs.size(); i++)
-		m_mapObjs[i]->Render(nullptr);
-	//for (auto& [pos, tileObj] : layer.getTileObjects()) {
-	//	tson::Tileset* tileSet = tileObj.getTile()->getTileset();
-	//	tson::Rect rect = tileObj.getDrawingRect();
-
-	//	tson::Vector2f realPos = tileObj.getPosition();
-	//	tson::Vector2i imageSize = tileSet->getImageSize();
-	//	std::string path = tileSet->getImage().u8string();
-	//	path = PathMgr::GetInst()->GetPathWithOutRes(path);
-	//	path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
-	//	std::shared_ptr<MapObject> sprite = StoreAndLoadImage(path, {0, 0});
-	//	
-	//	//	// texture 입히기
-	//	sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });
-
-	//	//	// origin 세팅
-	//		Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
-	//	//	sprite->setOrigin(origin);
-
-	//	//	// position 세팅
-	//		realPos = { realPos.x + origin.x, realPos.y + origin.y };
-	//		sprite->SetPos({ realPos.x, realPos.y });
-
-	//		sprite->Render(Core::GetInst()->GetMainDC());
-	//	//	GET_WINDOW.draw(*sprite);
-	//	//}
-	//}
-}
-
-void MapMgr::UpdateTileAnimation(float _dt)
-{
-	for (auto& [id, animation] : m_maptsonAnim)
-	{
-		animation->update(_dt * 1000);
-	}
-}
 
 std::string MapMgr::WstrToStr(const std::wstring& source)
 {
@@ -206,73 +147,4 @@ std::string MapMgr::WstrToStr(const std::wstring& source)
 std::wstring MapMgr::StrToWstr(const std::string& source)
 {
 	return std::wstring().assign(source.begin(), source.end());
-}
-
-//void MapMgr::MakeObject(MAPOBJECT_TYPE _type)
-//{
-//	//MapObject* obj = new MapObject(_type);
-//	//obj->SetPos(Vec2{ WINDOW_WIDTH / 2 , WINDOW_HEIGHT / 2 });
-//	//m_mapObjs.push_back(obj);
-//}
-//
-//
-//void MapMgr::MovingObject()
-//{
-//	if (m_currentSelectObj == NULL) return;
-//	m_currentSelectObj->SetPos(m_mouseObj->GetPos());
-//}
-//
-//void MapMgr::ReleaseObject()
-//{
-//	m_currentSelectObj->SetIsClicked(false);
-//	m_currentSelectObj = NULL;
-//}
-
-//void MapMgr::SaveObjectInfo(int idx)
-//{
-//
-//}
-
-//void MapMgr::LoadObjectInfo()
-//{
-//}
-//
-//Object* MapMgr::FindObject(Vec2 m_mousePos)
-//{
-//	for (int i = 0; i < m_mapObjs.size(); i++)
-//	{
-//		if (CollisionMgr::GetInst()->CheckContainObject(m_mousePos, m_mapObjs[i]->GetCollider()))
-//		{
-//			return m_mapObjs[i];
-//		}
-//	}
-//	return NULL;
-//}
-
-void MapMgr::Update()
-{
-	/*m_mouseObj->SetPos(KeyMgr::GetInst()->GetMousePos());
-	if(KeyMgr::GetInst()->GetKey(KEY_TYPE::LBUTTON) == KEY_STATE::DOWN)
-	{
-		m_currentSelectObj = FindObject(m_mouseObj->GetPos());
-		if (m_currentSelectObj != NULL)
-		{
-			m_mouseObj->SetIsClicked(true);
-			m_currentSelectObj->SetIsClicked(true);
-		}
-	}
-	else if (KeyMgr::GetInst()->GetKey(KEY_TYPE::LBUTTON) == KEY_STATE::UP)
-	{
-		if(m_currentSelectObj != NULL)
-			ReleaseObject();
-	}
-	MovingObject();*/
-}
-
-void MapMgr::Render(HDC _dc)
-{
-	/*for (auto& object : m_mapObjs)
-	{
-		object->Render(_dc);
-	}*/
 }

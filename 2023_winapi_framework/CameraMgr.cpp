@@ -6,6 +6,7 @@
 #include "Core.h"
 #include "KeyMgr.h"
 #include "TimeMgr.h"
+#include <iostream>
 
 void CameraMgr::Update()
 {
@@ -62,6 +63,7 @@ void CameraMgr::CalDiff()
     // 보고 있는 위치와 중심위치와 차이 값.
     //m_vDiff = m_vLootAt - vCenterPos;
     m_vDiff = m_vCurLookAt - vCenterPos;
+    std::cout << m_vDiff.x << m_vDiff.y;
     //m_vPrevLookAt = m_vLootAt;
     m_vPrevLookAt = m_vCurLookAt;
 }

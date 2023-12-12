@@ -42,8 +42,11 @@ void Scene::Render(HDC _dc)
 		{
 			if (!m_vecObj[i][j]->GetIsDead())
 			{
-				m_vecObj[i][j]->Render(_dc);
-				++j;
+				if (m_vecObj[i][j]->GetIsCanRender())
+				{
+					m_vecObj[i][j]->Render(_dc);
+					++j;
+				}
 			}
 			else
 				m_vecObj[i].erase(m_vecObj[i].begin() + j);
@@ -57,7 +60,8 @@ void Scene::Release()
 	{
 		for (size_t j = 0; j < m_vecObj[i].size(); ++j)
 		{
-			//delete m_vecObj[i][j];
+			if (nullptr != m_vecObj[i][j])
+				delete m_vecObj[i][j];
 		}
 		m_vecObj[i].clear();
 	}

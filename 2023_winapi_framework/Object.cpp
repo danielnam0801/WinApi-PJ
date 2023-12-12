@@ -7,6 +7,7 @@
 #include "Animator.h"
 #include "Gravity.h"
 #include "Texture.h"
+#include "CameraMgr.h"
 
 Object::Object()
 	: m_pCollider(nullptr)
@@ -66,12 +67,7 @@ void Object::CreateGravity()
 
 void Object::Update()
 {
-	//Vec2 vPos = m_obj.GetPos();
-
-//	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-//	if(KeyMgr::GetInst()->GetKey(KEY_TYPE::LEFT) == KEY_STATE::UP)
-
-	//m_obj.SetPos(vPos);
+	//if(CameraMgr::GetInst()->GetLocalPos()
 }
 
 void Object::FinalUpdate()

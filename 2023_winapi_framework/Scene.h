@@ -13,17 +13,17 @@ public:
 	virtual void Render(HDC _dc);
 	virtual void Release();
 public:
-	const vector<std::shared_ptr<Object>>& GetGroupObject(OBJECT_GROUP _etype) const
+	const vector<Object*>& GetGroupObject(OBJECT_GROUP _etype) const
 	{
 		return m_vecObj[(UINT)_etype];
 	}
 public:
-	void AddObject(std::shared_ptr<Object> _pObj, OBJECT_GROUP _eType)
+	void AddObject(Object* _pObj, OBJECT_GROUP _eType)
 	{
 		m_vecObj[(UINT)_eType].push_back(_pObj);
 	}
 private:
 //	Object*  m_obj;
-	vector<std::shared_ptr<Object>> m_vecObj[(UINT)OBJECT_GROUP::END];
+	vector<Object*> m_vecObj[(UINT)OBJECT_GROUP::END];
 };
 

@@ -20,8 +20,8 @@ void CollisionMgr::Update()
 void CollisionMgr::CollisionGroupUpdate(OBJECT_GROUP _eLeft, OBJECT_GROUP _eRight)
 {
 	std::shared_ptr<Scene> pCurScene = SceneMgr::GetInst()->GetCurScene();
-	const vector<std::shared_ptr<Object>>& vecLeft = pCurScene->GetGroupObject(_eLeft);
-	const vector<std::shared_ptr<Object>>& vecRight = pCurScene->GetGroupObject(_eRight);
+	const vector<Object*>& vecLeft = pCurScene->GetGroupObject(_eLeft);
+	const vector<Object*>& vecRight = pCurScene->GetGroupObject(_eRight);
 	// 충돌 검사를 해보자.
 	for (size_t i = 0; i < vecLeft.size(); ++i)
 	{
