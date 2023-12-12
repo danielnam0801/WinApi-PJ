@@ -53,8 +53,11 @@ void MapMgr::CreateJsonBoard()
 			std::string path = tileSet->getImage().u8string();
 			path = PathMgr::GetInst()->GetPathWithOutRes(path);
 			path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
-			std::shared_ptr<MapObject> sprite = StoreAndLoadImage(path, { 0, 0 });
-
+			std::shared_ptr<MapObject> image = StoreAndLoadImage(path, { 0, 0 });
+			std::shared_ptr<MapObject> sprite = std::make_shared<MapObject>();
+			sprite->DeepCopy(image);
+			//std::shared_ptr<MapObject> sprite{ image };
+			//sprite = std::move(image);
 			////	// texture ÀÔÈ÷±â
 			sprite->SetTextureRect({ rect.x, rect.y, rect.width, rect.height });
 
@@ -74,7 +77,7 @@ void MapMgr::CreateJsonBoard()
 
 			std::shared_ptr<MapObject> sprite = StoreAndLoadImage(path, { 0,0 });*/
 			m_mapObjs.push_back(sprite);
-			m_mapObjs.push_back(sprite);
+			//m_mapObjs.push_back(sprite);
 
 			/*if (sprite != nullptr)
 			{
