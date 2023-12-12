@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "MapMgr.h"
 #include "MapObject.h"
+#include "ShellObject.h"
 #include "KeyMgr.h"
 #include "CollisionMgr.h"
 #include <assert.h>
@@ -12,6 +13,7 @@
 #include "PathMgr.h"
 #include "Collider.h"
 #include "Core.h"
+#include "ShellObject.h"
 
 
 void MapMgr::Init()
@@ -20,7 +22,7 @@ void MapMgr::Init()
 	//ObjectLayer
 	//std::cout << fs::absolute(fs::path("./"));
 	
-	m_uptrMap = m_tson.parse(fs::path("./Map/4JumpMapChange.json"));
+	m_uptrMap = m_tson.parse(fs::path("./Map/4JumpMapChange (1).json"));
 	if (m_uptrMap->getStatus() != tson::ParseStatus::OK)
 	{
 		std::cout << "json file error " << std::endl;
@@ -35,40 +37,43 @@ void MapMgr::CreateJsonBoard()
 		tson::Layer* ShellLayer = m_uptrMap->getLayer("ShellLayer");;
 		tson::Layer* objLayer = m_uptrMap->getLayer("ObjectLayer");;
 
-		for (auto& [pos, tileObject] : objLayer->getTileObjects())
+		for (auto& [pos, tileObject] : ShellLayer->getTileObjects())
 		{
-			//tson::Tileset* tileSet = tileObject.getTile()->getTileset();
-			//tson::Rect rect = tileObject.getDrawingRect();
+			tson::Tileset* tileSet = tileObject.getTile()->getTileset();
+			tson::Rect rect = tileObject.getDrawingRect();
 
-			//tson::Vector2f realPos = tileObject.getPosition();
-			//tson::Vector2i imageSize = tileSet->getImageSize();
-			//std::string path = tileSet->getImage().u8string();
-			//path = PathMgr::GetInst()->GetPathWithOutRes(path);
-			//path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
-			//MapObject* image = StoreAndLoadImage(path, { 0, 0 });
-			//MapObject* sprite = new MapObject;
-			//sprite->DeepCopy(image);
+			tson::Vector2f realPos = tileObject.getPosition();
+			tson::Vector2i imageSize = tileSet->getImageSize();
+			std::string path = tileSet->getImage().u8string();
+			path = PathMgr::GetInst()->GetPathWithOutRes(path);
+			path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
 
-			//delete image;
+			MapObject* image = StoreAndLoadImageMapObject(path, { 0, 0 });
+			MapObject* sprite = new MapObject;
+			sprite->DeepCopy(image);
 
-			//Vec2 m_Scale = { 1.5f, 1.5f };
+			Vec2  m_Scale = { 1.5f, 1.5f };
 
-			//sprite->SetTextureRect({ rect.x, rect.y, rect.width , rect.height });
+			sprite->SetTextureRect({ rect.x, rect.y, rect.width , rect.height });
 
-			//sprite->SetScale(m_Scale);
-			//////	// origin 技泼
-			////Vec2 origin = { 0.f, 0.f };
-			//Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
-			//origin *= m_Scale;
-			//sprite->GetCollider()->SetOffSetPos(origin);
-			//Vec2 size = Vec2((float)rect.width, (float)rect.height);
-			//size *= m_Scale;
-			//sprite->GetCollider()->SetScale(size);
-			//////	// position 技泼
-			//realPos = { (realPos.x + origin.x) * m_Scale.x , (realPos.y + origin.y) * m_Scale.y };
-			//sprite->SetPos({ realPos.x, realPos.y });
-			//m_mapObjs.push_back(sprite);
+			sprite->SetScale(m_Scale);
+			sprite->SetName(L"Shell");
+			////	// origin 技泼
 
+			Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
+			origin *= m_Scale;
+			sprite->GetCollider()->SetOffSetPos(origin);
+
+			////	// position 技泼
+			realPos = { (realPos.x + origin.x) * m_Scale.x , (realPos.y + origin.y) * m_Scale.y };
+			sprite->SetPos({ realPos.x, realPos.y });
+
+			////	// collider 技泼
+			Vec2 size = Vec2((float)rect.width, (float)rect.height);
+			size *= m_Scale;
+			sprite->GetCollider()->SetScale(size);
+
+			m_mapObjs.push_back(sprite);
 		}
 
 		for (auto& [pos, tileObject] : objLayer->getTileObjects())
@@ -81,16 +86,17 @@ void MapMgr::CreateJsonBoard()
 			std::string path = tileSet->getImage().u8string();
 			path = PathMgr::GetInst()->GetPathWithOutRes(path);
 			path = PathMgr::GetInst()->ReplaceAll(path, "/", "\\");
-			MapObject* image = StoreAndLoadImage(path, { 0, 0 });
+		
+			MapObject* image = StoreAndLoadImageMapObject(path, { 0, 0 });
 			MapObject* sprite = new MapObject;
 			sprite->DeepCopy(image);
 
-			Vec2 m_Scale = { 1.5f, 1.5f };
+			Vec2  m_Scale = { 1.5f, 1.5f };
 
 			sprite->SetTextureRect({ rect.x, rect.y, rect.width , rect.height });
 
 			sprite->SetScale(m_Scale);
-			sprite->SetName(L"MapObject");
+			sprite->SetName(L"Ground");
 			////	// origin 技泼
 
 			Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
@@ -100,18 +106,19 @@ void MapMgr::CreateJsonBoard()
 			////	// position 技泼
 			realPos = { (realPos.x + origin.x) * m_Scale.x , (realPos.y + origin.y) * m_Scale.y };
 			sprite->SetPos({ realPos.x, realPos.y });
-			m_mapObjs.push_back(sprite);
 				
 			////	// collider 技泼
 			Vec2 size = Vec2((float)rect.width, (float)rect.height);
 			size *= m_Scale;
 			sprite->GetCollider()->SetScale(size);
 
+			m_mapObjs.push_back(sprite);
+
 		}
 	}
 }
 
-MapObject* MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
+MapObject* MapMgr::StoreAndLoadImageMapObject(const std::string& _image, const Vec2 _pos)
 {
 	fs::path path = _image;
 	if (m_maptex.count(_image) == 0)
@@ -131,13 +138,38 @@ MapObject* MapMgr::StoreAndLoadImage(const std::string& _image, const Vec2 _pos)
 			{
 				std::cout << "can't find" << path.generic_string() << std::endl;
 			}
-		
 	}
 	if (m_mapsprite.count(_image) > 0)
 		return m_mapsprite[_image];
 	return nullptr;
 }
 
+
+//ShellObject* MapMgr::StoreAndLoadImageShellObject(const std::string& _image, const Vec2 _pos)
+//{
+//	fs::path path = _image;
+//	if (m_maptex.count(_image) == 0)
+//	{
+//		//if (fs::exists(path) && fs::is_regular_file(path))
+//
+//		std::shared_ptr<Texture> tex = ResMgr::GetInst()->TexLoad(StrToWstr(_image), path);
+//		//bool imageFound = tex->LoadFromFile(tex->GetRelativePath());
+//		if (tex != nullptr)
+//		{
+//			ShellObject* spr = new ShellObject;
+//			spr->SetTexture(tex);
+//			m_maptex[_image] = tex;
+//			m_shellsprite[_image] = spr;
+//		}
+//		else
+//		{
+//			std::cout << "can't find" << path.generic_string() << std::endl;
+//		}
+//	}
+//	if (m_shellsprite.count(_image) > 0)
+//		return m_shellsprite[_image];
+//	return nullptr;
+//}
 
 std::string MapMgr::WstrToStr(const std::wstring& source)
 {

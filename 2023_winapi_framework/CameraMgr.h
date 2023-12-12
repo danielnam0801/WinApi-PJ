@@ -29,6 +29,7 @@ public:
     }
 public:
     void Update();
+    bool InScreen(const Vec2& pos);
 private:
     Vec2 m_vLootAt; // 카메라가 보는 위치
     Vec2 m_vPrevLookAt; // 카메라가 보는 이전 프레임 위치
@@ -37,6 +38,9 @@ private:
 
     Object* m_pTargetObj; // 카메라 타겟 오브젝트
     Vec2 m_vDiff; // 해상도 중심위치와 카메라 Lootat간의 차이값
+    Vec2 m_minPos;
+    Vec2 m_maxPos;
+
 private:
     void CalDiff(); // 차이 계산
 };

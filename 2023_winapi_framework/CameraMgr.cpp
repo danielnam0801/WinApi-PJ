@@ -34,6 +34,19 @@ void CameraMgr::Update()
     CalDiff();
 }
 
+bool CameraMgr::InScreen(const Vec2& pos)
+{
+    m_minPos = Vec2{ 0,0 };
+    m_maxPos = Core::GetInst()->GetResolution();
+    Vec2 m_localPos = GetLocalPos(pos);
+    if (m_localPos.x > m_minPos.x && m_localPos.x < m_maxPos.x
+        && m_localPos.y > m_minPos.y && m_localPos.y < m_maxPos.y)
+    {
+        return true;
+    }
+    return false;
+}
+
 void CameraMgr::CalDiff()
 {  
     //// 이전 LookAt과 현재 LookAt의 차이값을 보정해서 현재 LookaT을 구한다.
@@ -63,7 +76,6 @@ void CameraMgr::CalDiff()
     // 보고 있는 위치와 중심위치와 차이 값.
     //m_vDiff = m_vLootAt - vCenterPos;
     m_vDiff = m_vCurLookAt - vCenterPos;
-    std::cout << m_vDiff.x << m_vDiff.y;
     //m_vPrevLookAt = m_vLootAt;
     m_vPrevLookAt = m_vCurLookAt;
 }

@@ -1,8 +1,12 @@
 ﻿#pragma once
 
+class Object;
 class MapObject;
+class ShellObject;
+
 #include "Texture.h"
 #include "tileson.h"
+
 
 class MapMgr
 {
@@ -11,11 +15,12 @@ class MapMgr
 public:
 	void Init();
 	void CreateJsonBoard();
-	MapObject* StoreAndLoadImage(const std::string & _image, const Vec2 _pos);
+	MapObject* StoreAndLoadImageMapObject(const std::string & _image, const Vec2 _pos);
 public:
 	std::string WstrToStr(const std::wstring& source);
 	std::wstring StrToWstr(const std::string& source);
 	const vector<MapObject*>& GetMapObjs() const { return m_mapObjs; }
+	//const vector<Object*>& GetShellObjs() const { return m_shellObjs; }
 private:
 	tson::Tileson m_tson;
 	std::shared_ptr<tson::Map> m_uptrMap;
@@ -25,3 +30,4 @@ private:
 	std::vector<MapObject*> m_mapObjs;
 	tson::Map* m_curMap;
 };
+

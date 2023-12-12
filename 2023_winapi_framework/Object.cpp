@@ -67,7 +67,6 @@ void Object::CreateGravity()
 
 void Object::Update()
 {
-	//if(CameraMgr::GetInst()->GetLocalPos()
 }
 
 void Object::FinalUpdate()

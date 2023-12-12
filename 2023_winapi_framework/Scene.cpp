@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Scene.h"
 #include "Object.h"
+#include "CameraMgr.h"
 
 Scene::Scene()
 {
@@ -42,7 +43,7 @@ void Scene::Render(HDC _dc)
 		{
 			if (!m_vecObj[i][j]->GetIsDead())
 			{
-				if (m_vecObj[i][j]->GetIsCanRender())
+				//if (CameraMgr::GetInst()->InScreen(m_vecObj[i][j]->GetPos()))
 				{
 					m_vecObj[i][j]->Render(_dc);
 					++j;
