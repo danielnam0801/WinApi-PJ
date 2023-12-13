@@ -4,7 +4,7 @@ class CameraMgr
 {
 	SINGLE(CameraMgr);
 private:
-    float m_fTime = 2.f; // 타겟 따라가는데 걸리는 시간
+    float m_fTime = 8.f; // 타겟 따라가는데 걸리는 시간
     float m_fSpeed = 0.f; // 타겟 따라가는 속도
     float m_fAccTime = 0.f; // 누적시간
 public:
@@ -14,6 +14,11 @@ public:
         float fMoveDist = (m_vLootAt - m_vPrevLookAt).Length();
         m_fSpeed = fMoveDist / m_fTime; // 이동속도
         m_fAccTime = 0.f;
+    }
+
+    void SetPrevLook(Vec2 _vLoot)
+    {
+        m_vPrevLookAt = _vLoot;
     }
     void SetTarget(Object* _pTargetObj)
     {
@@ -27,6 +32,12 @@ public:
     {
         return _vRenderpos + m_vDiff;
     }
+
+    const bool& EndCameraMove() const
+    {
+        return m_endCameraMove;
+    }
+
 public:
     void Update();
     bool InScreen(const Vec2& pos);
@@ -40,6 +51,7 @@ private:
     Vec2 m_vDiff; // 해상도 중심위치와 카메라 Lootat간의 차이값
     Vec2 m_minPos;
     Vec2 m_maxPos;
+    bool m_endCameraMove = false;
 
 private:
     void CalDiff(); // 차이 계산

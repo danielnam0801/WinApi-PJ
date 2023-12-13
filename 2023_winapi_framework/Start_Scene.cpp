@@ -35,10 +35,10 @@ void Start_Scene::Init()
 		AddObject(MapMgr::GetInst()->GetMapObjs()[i], OBJECT_GROUP::GROUND);
 	}
 
-	/*for (int i = 0; i < MapMgr::GetInst()->GetShellObjs().size(); i++)
+	for (int i = 0; i < MapMgr::GetInst()->GetShellObjs().size(); i++)
 	{
 		AddObject(MapMgr::GetInst()->GetShellObjs()[i], OBJECT_GROUP::SHELL);
-	}*/
+	}
 
 
 

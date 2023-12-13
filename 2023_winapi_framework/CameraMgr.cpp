@@ -36,8 +36,9 @@ void CameraMgr::Update()
 
 bool CameraMgr::InScreen(const Vec2& pos)
 {
-    m_minPos = Vec2{ 0,0 };
+    m_minPos = Vec2{ -100,-100 };
     m_maxPos = Core::GetInst()->GetResolution();
+    m_maxPos += Vec2{ 100,100 };
     Vec2 m_localPos = GetLocalPos(pos);
     if (m_localPos.x > m_minPos.x && m_localPos.x < m_maxPos.x
         && m_localPos.y > m_minPos.y && m_localPos.y < m_maxPos.y)
@@ -56,15 +57,15 @@ void CameraMgr::CalDiff()
 
     // 시간에 따라 이동
     m_fAccTime += fDT;
-    if (m_fAccTime >= m_fTime)
+    if (m_fAccTime >= m_fTime || m_pTargetObj != nullptr)
     {
         m_vCurLookAt = m_vLootAt; // 시간되면 이렇게 현재Look을 세팅
+        m_endCameraMove = true;
     }
     else
     {
         Vec2 vLookDir = m_vLootAt - m_vPrevLookAt; // 쫓아갈 방향 벡터
         m_vCurLookAt = m_vPrevLookAt + vLookDir.Normalize() * m_fSpeed * fDT;
-
     }
     //// 그냥 쫓아가게
     //Vec2 vLookDir = m_vLootAt - m_vPrevLookAt; // 쫓아갈 방향 벡터

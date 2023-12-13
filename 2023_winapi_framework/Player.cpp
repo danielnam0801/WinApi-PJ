@@ -18,9 +18,10 @@
 
 Player::Player()
 	: m_pTex(nullptr)
+	, m_idleTex(nullptr)
 	, _isJump(false)
 	, _isDoubleJump(false)
-	, _jumpPower(-800.f)
+	, _jumpPower(-550.f)
 	, _isGround(true)
 	, _moveDir{ 0.0f,0.0f }
 	, _jumpTime{ 0.f }
@@ -32,7 +33,7 @@ Player::Player()
 	//strFilePath += L"Texture\\plane.bmp";
 	//m_pTex->Load(strFilePath);
 	//m_pTex = ResMgr::GetInst()->TexLoad(L"Player", L"Texture\\plane.bmp");
-	m_pTex = ResMgr::GetInst()->TexLoad(L"Player", L"Texture\\jiwoo.bmp");
+	m_pTex = ResMgr::GetInst()->TexLoad(L"Player", L"Texture\\Allplayer.bmp");
 	CreateCollider();
 	CreateRigidbody();
 	CreateGravity();
@@ -41,20 +42,16 @@ Player::Player()
 	//GetCollider()->SetOffSetPos(Vec2(0.f,-20.f));
 	
 	CreateAnimator();
-	GetAnimator()->CreateAnim(L"Jiwoo_Front", m_pTex,Vec2(0.f, 150.f),
-		Vec2(50.f, 50.f), Vec2(50.f, 0.f), 5, 0.2f);
-	GetAnimator()->CreateAnim(L"Jiwoo_Back", m_pTex, Vec2(0.f, 100.f),
-		Vec2(50.f, 50.f), Vec2(50.f, 0.f), 5, 0.2f);
-	GetAnimator()->CreateAnim(L"Jiwoo_Left", m_pTex, Vec2(0.f, 0.f),
-		Vec2(50.f, 50.f), Vec2(50.f, 0.f), 5, 0.2f);
-	GetAnimator()->CreateAnim(L"Jiwoo_Right", m_pTex, Vec2(0.f, 50.f),
-		Vec2(50.f, 50.f), Vec2(50.f, 0.f), 5, 0.2f);
-	GetAnimator()->CreateAnim(L"Jiwoo_Attack", m_pTex, Vec2(0.f, 200.f),
-		Vec2(50.f, 50.f), Vec2(50.f, 0.f), 5, 0.2f);
-	GetAnimator()->PlayAnim(L"Jiwoo_Front",true);
+	GetAnimator()->CreateAnim(L"_Left", m_pTex,Vec2(0.f, 0.f),
+		Vec2(25.f, 25.f), Vec2(25.f, 0.f), 13, 0.2f);
+	GetAnimator()->CreateAnim(L"_Right", m_pTex, Vec2(0.f, 0.f),
+		Vec2(325.f, 25.f), Vec2(25.f, 0.f), 13, 0.2f);
+	GetAnimator()->CreateAnim(L"_Idle", m_pTex, Vec2(0.f, 0.f),
+		Vec2(375.f, 25.f), Vec2(25.f, 0.f), 1, 0.2f);
+	GetAnimator()->PlayAnim(L"_Idle",true);
 
 	//// 오프셋 건드리기
-	Animation* pAnim = GetAnimator()->FindAnim(L"Jiwoo_Front");
+	Animation* pAnim = GetAnimator()->FindAnim(L"_Left");
 	//// 하나만
 	//pAnim->SetFrameOffset(0, Vec2(0.f, 20.f));
 
@@ -72,28 +69,20 @@ Player::~Player()
 
 void Player::Update()
 {
-	if (_isCreateEnd == false)
-	{
-		return;
-	}
-	else
-	{
-		GetGravity()->SetGravity(1600.f);
-	}
-
+	Object::Update();
 	Rigidbody* rb = GetRigidbody();
 
 	if (KEY_PRESS(KEY_TYPE::LEFT))
 	{
-		rb->SetVelocity(Vec2(-300.f, rb->GetVelocity().y));
+		rb->SetVelocity(Vec2(-200.f, rb->GetVelocity().y));
 		//vPos.x -= 100.f * fDT;
-		GetAnimator()->PlayAnim(L"Jiwoo_Left", true);
+		GetAnimator()->PlayAnim(L"_Left", true);
 	}
 	if (KEY_PRESS(KEY_TYPE::RIGHT))
 	{
-		rb->SetVelocity(Vec2(300.f, rb->GetVelocity().y));
+		rb->SetVelocity(Vec2(200.f, rb->GetVelocity().y));
 		//vPos.x += 100.f * fDT;
-		GetAnimator()->PlayAnim(L"Jiwoo_Right", true);
+		GetAnimator()->PlayAnim(L"_Right", true);
 	}
 
 	if (KEY_DOWN(KEY_TYPE::SPACE))
@@ -148,30 +137,30 @@ void Player::CreateInit()
 
 void Player::Render(HDC _dc)
 {
-	//Vec2 vPos = GetPos();
-	//Vec2 vScale = GetScale();
-	//int Width = m_pTex->GetWidth();
-	//int Height = m_pTex->GetHeight();
+	Vec2 vPos = GetPos();
+	Vec2 vScale = GetScale();
+	int Width = m_pTex->GetWidth();
+	int Height = m_pTex->GetHeight();
 	//// 1. 기본 옮기기
-	//BitBlt(_dc
-	//	,(int)(vPos.x - vScale.x /2)
-	//	,(int)(vPos.y - vScale.y /2)
-	//	, Width,Height, m_pTex->GetDC()
-	//	,0,0,SRCCOPY);
+	BitBlt(_dc
+		,(int)(vPos.x - vScale.x /2)
+		,(int)(vPos.y - vScale.y /2)
+		, Width,Height, m_pTex->GetDC()
+		,0,0,SRCCOPY);
 
 	//// 2. 색상 걷어내기
-	//TransparentBlt(_dc
-	//	, (int)(vPos.x - vScale.x / 2)
-	//	, (int)(vPos.y - vScale.y / 2)
-	//	, Width, Height, m_pTex->GetDC()
-	//	, 0, 0, Width,Height, RGB(255,0,255));
+	TransparentBlt(_dc
+		, (int)(vPos.x - vScale.x / 2)
+		, (int)(vPos.y - vScale.y / 2)
+		, Width, Height, m_pTex->GetDC()
+		, 0, 0, Width,Height, RGB(255,255,255));
 
 	//// 3. 확대 및 축소
-	//StretchBlt(_dc
-	//	, (int)(vPos.x - vScale.x / 2)
-	//	, (int)(vPos.y - vScale.y / 2)
-	//	, Width ,Height, m_pTex->GetDC()
-	//	, 0, 0, Width, Height, SRCCOPY);
+	StretchBlt(_dc
+		, (int)(vPos.x - vScale.x / 2)
+		, (int)(vPos.y - vScale.y / 2)
+		, Width ,Height, m_pTex->GetDC()
+		, 0, 0, Width, Height, SRCCOPY);
 
 	// 4. 회전
 	// 삼각함수, 회전행렬
@@ -180,7 +169,7 @@ void Player::Render(HDC _dc)
 	//	, (int)(vPos.y - vScale.y / 2)
 	//	, Width, Height, m_pTex->GetDC()
 	//	, 0, 0, Width, Height, RGB(255, 0, 255));
-	Component_Render(_dc);
+	//Component_Render(_dc);
 }
 
 void Player::EnterCollision(Collider* _pOther)

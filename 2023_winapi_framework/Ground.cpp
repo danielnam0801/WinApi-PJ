@@ -19,7 +19,7 @@ void Ground::Update()
 
 void Ground::Render(HDC _dc)
 {
-	Component_Render(_dc);
+	//Component_Render(_dc);
 }
 
 void Ground::EnterCollision(Collider* other)

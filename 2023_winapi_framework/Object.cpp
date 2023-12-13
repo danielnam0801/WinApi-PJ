@@ -67,6 +67,7 @@ void Object::CreateGravity()
 
 void Object::Update()
 {
+	m_IsCollisionCheck = CameraMgr::GetInst()->InScreen(GetPos());
 }
 
 void Object::FinalUpdate()

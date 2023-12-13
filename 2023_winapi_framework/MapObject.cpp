@@ -50,5 +50,5 @@ void MapObject::Render(HDC _dc)
 		, Width * m_vScale.x, Height * m_vScale.y, m_tex->GetDC()
 		, 0, 0, Width, Height, SRCCOPY);
 	//RECT_RENDER(m_vPos.x, m_vPos.y, m_vScale.x, m_vScale.y, _dc);
-	Component_Render(_dc);
+	//Component_Render(_dc);
 }

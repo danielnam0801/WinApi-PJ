@@ -49,6 +49,7 @@ public:
 	void SetIsClicked(bool value) { m_IsClicked = value; }
 	bool GetIsDead() const { return !m_IsAlive; }
 	bool GetIsClicked() const { return !m_IsClicked; }
+	bool GetCollisionCheck() const { return m_IsCollisionCheck; }
 private:
 	void SetDead() { m_IsAlive = false; }
 	friend class EventMgr;
@@ -65,6 +66,7 @@ protected:
 	wstring m_strName; // ¿Ã∏ß.
 	bool m_IsAlive;
 	bool m_IsClicked;
+	bool m_IsCollisionCheck;
 	Collider* m_pCollider;
 	Rigidbody* m_pRigidbody;
 	Animator* m_pAnimator;

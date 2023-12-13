@@ -7,7 +7,7 @@ Rigidbody::Rigidbody()
 	: m_fMass(1.f)
 	, m_Force(Vec2(0.f, 0.f))
 	, m_Velocity(Vec2(0.f, 0.f))
-	, m_fricCoef(1000.f)
+	, m_fricCoef(250.f)
 	, m_MaxVelocity(400.f, 1200.f)
 {
 

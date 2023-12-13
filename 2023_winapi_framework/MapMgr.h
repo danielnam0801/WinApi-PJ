@@ -20,7 +20,10 @@ public:
 	std::string WstrToStr(const std::wstring& source);
 	std::wstring StrToWstr(const std::string& source);
 	const vector<MapObject*>& GetMapObjs() const { return m_mapObjs; }
-	//const vector<Object*>& GetShellObjs() const { return m_shellObjs; }
+	const vector<ShellObject*>& GetShellObjs() const { return m_shellObjs; }
+	const Vec2& GetSpawnPoint() const { return spawnPoint; }
+	const Vec2& GetEndPoint() const { return endPoint; }
+
 private:
 	tson::Tileson m_tson;
 	std::shared_ptr<tson::Map> m_uptrMap;
@@ -28,6 +31,10 @@ private:
 	std::map<std::string, MapObject*> m_mapsprite;
 
 	std::vector<MapObject*> m_mapObjs;
+	std::vector<ShellObject*> m_shellObjs;
+
+	Vec2 spawnPoint;
+	Vec2 endPoint;
 	tson::Map* m_curMap;
 };
 

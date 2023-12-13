@@ -7,7 +7,6 @@ public:
 	ShellObject();
 	~ShellObject();
 public:
-	void DeepCopy(ShellObject* rhs);
 	void Render(HDC _dc) override;
 };
 

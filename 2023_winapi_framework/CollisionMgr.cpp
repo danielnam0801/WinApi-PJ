@@ -4,6 +4,8 @@
 #include "Object.h"
 #include "Scene.h"
 #include "Collider.h"
+#include "CameraMgr.h"
+
 void CollisionMgr::Update()
 {
 	for (UINT Row = 0; Row < (UINT)OBJECT_GROUP::END; ++Row)
@@ -26,7 +28,8 @@ void CollisionMgr::CollisionGroupUpdate(OBJECT_GROUP _eLeft, OBJECT_GROUP _eRigh
 	for (size_t i = 0; i < vecLeft.size(); ++i)
 	{
 		// 충돌체가 없는 경우
-		if (vecLeft[i]->GetCollider() == nullptr)
+		if (vecLeft[i]->GetCollider() == nullptr 
+			|| vecLeft[i]->GetCollisionCheck() == false)
 			continue;
 		for (size_t j = 0; j < vecRight.size(); ++j)
 		{
