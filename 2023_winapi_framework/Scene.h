@@ -22,8 +22,13 @@ public:
 	{
 		m_vecObj[(UINT)_eType].push_back(_pObj);
 	}
+	void ADDBG(Object* _pObj)
+	{
+		m_bgObj = _pObj;
+	}
 private:
 //	Object*  m_obj;
 	vector<Object*> m_vecObj[(UINT)OBJECT_GROUP::END];
+	Object* m_bgObj;
 };
 

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "MapObject.h"
-#include "Collider.h"
 #include "ResMgr.h"
 #include "Texture.h"
 #include "Collider.h"

@@ -178,9 +178,6 @@
     <ClInclude Include="MouseObj.h">
       <Filter>Engine\04. Object</Filter>
     </ClInclude>
-    <ClInclude Include="MapFactory.h">
-      <Filter>Engine\08. Module\Factory</Filter>
-    </ClInclude>
     <ClInclude Include="MapObject.h">
       <Filter>Engine\04. Object\Map\MapObject</Filter>
     </ClInclude>
@@ -206,6 +203,7 @@
       <Filter>Engine\04. Object</Filter>
     </ClInclude>
     <ClInclude Include="ShellObject.h" />
+    <ClInclude Include="Background.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2023_winapi_framework.rc">
@@ -299,9 +297,6 @@
     <ClCompile Include="MouseObj.cpp">
       <Filter>Engine\04. Object</Filter>
     </ClCompile>
-    <ClCompile Include="MapFactory.cpp">
-      <Filter>Engine\08. Module\Factory</Filter>
-    </ClCompile>
     <ClCompile Include="MapObject.cpp">
       <Filter>Engine\04. Object\Map\MapObject</Filter>
     </ClCompile>
@@ -327,5 +322,6 @@
       <Filter>Engine\04. Object</Filter>
     </ClCompile>
     <ClCompile Include="ShellObject.cpp" />
+    <ClCompile Include="Background.cpp" />
   </ItemGroup>
 </Project>

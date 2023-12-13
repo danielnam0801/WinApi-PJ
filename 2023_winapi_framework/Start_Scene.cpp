@@ -66,8 +66,6 @@ void Start_Scene::Init()
 	ResMgr::GetInst()->Play(L"BGM");
 
 	// 충돌체크해야되는것들을 설정하자.
-	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::BULLET, OBJECT_GROUP::MONSTER);
-	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::MOUSE, OBJECT_GROUP::MAP);
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GROUND);
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SHELL);
 	CameraMgr::GetInst()->SetLook(Vec2(vResolution.x / 2, vResolution.y / 2));

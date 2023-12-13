@@ -54,6 +54,10 @@ void Scene::Render(HDC _dc)
 				m_vecObj[i].erase(m_vecObj[i].begin() + j);
 		}
 	}
+
+	if(m_bgObj != nullptr)
+		m_bgObj->Render(_dc);
+
 }
 
 void Scene::Release()
