@@ -172,6 +172,7 @@
     <ClInclude Include="Animator.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="BaseWindow.h" />
+    <ClInclude Include="Btn.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraMgr.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="BaseWindow.cpp" />
+    <ClCompile Include="Btn.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraMgr.cpp" />
@@ -254,6 +256,9 @@
   <ItemGroup>
     <Image Include="2023_winapi_framework.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="..\..\..\..\Downloads\easy-lifestyle-137766.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
