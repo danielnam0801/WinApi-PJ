@@ -17,48 +17,34 @@ using namespace std;
 
 void Start_Scene::Init()
 {
-	wstring asciiArt = LR"(
-   _________
-  //  ||  \\  \
- //   ||   \\  \
-||    ||    ||   _______  _______  _______  __   __
-||    ||    ||  |  _____||  _____||  _____||  | |  |
-||    ||    ||  | |_____ | |_____ | |_____ |  |_|  |
- \\__ || __//   |_____  ||_____  ||_____  ||       |
-  ||__||//      |_____| | _____| | _____| ||____||_|
-   ||||
-)";
-
-	// 화면에 출력합니다.
-	wcout << asciiArt << endl;
-
 
 	Btn* Btn1 = new Btn([]()
 		{
 			SceneMgr::GetInst()->LoadScene(L"Game_Scene");
 		}
-	, L"게임 시작");
+	, L"게임 시작",L"ASDF", L"Texture\\Button1.bmp");
 	Btn1->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y / 4 * 2 - 70 })));
+
 	Btn1->SetScale(Vec2(100.f, 30.f));
 	AddObject(Btn1, OBJECT_GROUP::UI);
 
-	Btn* Btn2 = new Btn([]()
-		{
-			SceneMgr::GetInst()->LoadScene(L"ExplainScene");
-		}
-	, L"게임 설명");
-	Btn2->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y / 2 })));
-	Btn2->SetScale(Vec2(100.f, 30.f));
-	AddObject(Btn2, OBJECT_GROUP::UI);
+	//Btn* Btn2 = new Btn([]()
+	//	{
+	//		SceneMgr::GetInst()->LoadScene(L"ExplainScene");
+	//	}
+	//, L"게임 설명");
+	//Btn2->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y / 2 })));
+	//Btn2->SetScale(Vec2(100.f, 30.f));
+	//AddObject(Btn2, OBJECT_GROUP::UI);
 
-	Btn* Btn3 = new Btn([]()
-		{
-			SceneMgr::GetInst()->LoadScene(L"GameOverScene");
-		}
-	, L"게임 종료");
-	Btn3->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y /6*4-110})));
-	Btn3->SetScale(Vec2(100.f, 30.f));
-	AddObject(Btn3, OBJECT_GROUP::UI);
+	//Btn* Btn3 = new Btn([]()
+	//	{
+	//		SceneMgr::GetInst()->LoadScene(L"GameOverScene");
+	//	}
+	//, L"게임 종료");
+	//Btn3->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y /6*4-110})));
+	//Btn3->SetScale(Vec2(100.f, 30.f));
+	//AddObject(Btn3, OBJECT_GROUP::UI);
 
 	//MapMgr::GetInst()->CreateJsonBoard();
 	//Vec2 vResolution = Core::GetInst()->GetResolution();
@@ -98,7 +84,7 @@ void Start_Scene::Init()
 	// 사운드 세팅
 	ResMgr::GetInst()->LoadSound(L"BGM", L"Sound\\Retro_bgm.wav", true);
 	ResMgr::GetInst()->LoadSound(L"Shoot", L"Sound\\laserShoot.wav", false);
-	ResMgr::GetInst()->Play(L"BGM");
+	//ResMgr::GetInst()->Play(L"BGM");
 
 	// 충돌체크해야되는것들을 설정하자.
 	//CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GROUND);
@@ -115,6 +101,11 @@ void Start_Scene::Update()
 void Start_Scene::Render(HDC _dc)
 {
 	Scene::Render(_dc);
+	StretchBlt(_dc
+		, (int)(x - m_vScale.x / 2)
+		, (int)(vPos.y - m_vScale.y / 2)
+		, Width * m_vScale.x, Height * m_vScale.y, m_tex->GetDC()
+		, 0, 0, Width, Height, SRCCOPY);
 }
 
 void Start_Scene::Release()

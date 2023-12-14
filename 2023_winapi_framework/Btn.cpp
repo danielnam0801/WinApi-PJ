@@ -6,10 +6,13 @@
 
 
 
-Btn::Btn(void(*_action)(), wstring _text)
+Btn::Btn(void(*_action)(), wstring _text, wstring _key, const wstring& _textureFilePath)
+    : m_Action(_action),m_Text(_text)
 {
-    m_Action = _action;
-    m_Text = _text; 
+    //m_Action = _action;
+    //m_Text = _text; 
+    
+    m_Texture = ResMgr::GetInst()->TexLoad(_key, _textureFilePath);
 }
 Btn::~Btn()
 {
@@ -41,7 +44,9 @@ void Btn::Render(HDC _hdc)
 
     
 
-    RECT_RENDER(vPos.x, vPos.y, vScale.x, vScale.y, _hdc);
+    BitBlt(_hdc,rt.left,rt.top,vScale.x,vScale.y, m_Texture->GetDC(), 0, 0, SRCCOPY);
+
+    //RECT_RENDER(vPos.x, vPos.y, vScale.x, vScale.y, _hdc);
 
     
 

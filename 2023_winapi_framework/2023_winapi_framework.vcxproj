@@ -254,11 +254,9 @@
     <ResourceCompile Include="2023_winapi_framework.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\..\..\..\Desktop\42527-removebg-preview_preview_rev_1.bmp" />
     <Image Include="2023_winapi_framework.ico" />
     <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Media Include="..\..\..\..\Downloads\easy-lifestyle-137766.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
