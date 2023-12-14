@@ -28,6 +28,7 @@ enum class OBJECT_GROUP
 	GROUND,
 	CAMERA,
 	SHELL,
+	UI,
 	END = 10
 };
 

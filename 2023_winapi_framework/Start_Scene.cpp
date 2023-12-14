@@ -12,15 +12,33 @@
 #include "MapMgr.h"
 #include "Btn.h"
 #include "SceneMgr.h"
+#include<io.h>
+using namespace std;
 
 void Start_Scene::Init()
 {
+	wstring asciiArt = LR"(
+   _________
+  //  ||  \\  \
+ //   ||   \\  \
+||    ||    ||   _______  _______  _______  __   __
+||    ||    ||  |  _____||  _____||  _____||  | |  |
+||    ||    ||  | |_____ | |_____ | |_____ |  |_|  |
+ \\__ || __//   |_____  ||_____  ||_____  ||       |
+  ||__||//      |_____| | _____| | _____| ||____||_|
+   ||||
+)";
+
+	// 화면에 출력합니다.
+	wcout << asciiArt << endl;
+
+
 	Btn* Btn1 = new Btn([]()
 		{
-			SceneMgr::GetInst()->LoadScene(L"GameScene");
+			SceneMgr::GetInst()->LoadScene(L"Game_Scene");
 		}
 	, L"게임 시작");
-	Btn1->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y / 4*2-70 })));
+	Btn1->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y / 4 * 2 - 70 })));
 	Btn1->SetScale(Vec2(100.f, 30.f));
 	AddObject(Btn1, OBJECT_GROUP::UI);
 
@@ -42,21 +60,21 @@ void Start_Scene::Init()
 	Btn3->SetScale(Vec2(100.f, 30.f));
 	AddObject(Btn3, OBJECT_GROUP::UI);
 
-	MapMgr::GetInst()->CreateJsonBoard();
-	Vec2 vResolution = Core::GetInst()->GetResolution();
-	Object* m_Player = new Player;
-	m_Player->SetPos((Vec2({vResolution.x /2, vResolution.y / 2})));
-	m_Player->SetScale(Vec2(100.f,100.f));
-	m_Player->SetName(L"Player");
-	AddObject(m_Player, OBJECT_GROUP::PLAYER);
+	//MapMgr::GetInst()->CreateJsonBoard();
+	//Vec2 vResolution = Core::GetInst()->GetResolution();
+	//Object* m_Player = new Player;
+	//m_Player->SetPos((Vec2({vResolution.x /2, vResolution.y / 2})));
+	//m_Player->SetScale(Vec2(100.f,100.f));
+	//m_Player->SetName(L"Player");
+	////AddObject(m_Player, OBJECT_GROUP::PLAYER);
 
 
 
-	Object* pGroundObj = new Ground;
-	pGroundObj->SetName(L"Ground");
-	pGroundObj->SetPos((Vec2({ vResolution.x / 2, vResolution.y / 6 * 4})));
-	pGroundObj->SetScale(Vec2(1000.f, 100.f));
-	AddObject(pGroundObj, OBJECT_GROUP::GROUND);
+	//Object* pGroundObj = new Ground;
+	//pGroundObj->SetName(L"Ground");
+	//pGroundObj->SetPos((Vec2({ vResolution.x / 2, vResolution.y / 6 * 4})));
+	//pGroundObj->SetScale(Vec2(1000.f, 100.f));
+	//AddObject(pGroundObj, OBJECT_GROUP::GROUND);
 	// 몬스터 세팅 마구마구 배치를 해봅시다.
 
 	//Monster* pMonster = nullptr;
@@ -83,9 +101,7 @@ void Start_Scene::Init()
 	ResMgr::GetInst()->Play(L"BGM");
 
 	// 충돌체크해야되는것들을 설정하자.
-	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::BULLET, OBJECT_GROUP::MONSTER);
-	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::MOUSE, OBJECT_GROUP::MAP);
-	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GROUND);
+	//CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GROUND);
 }
 
 
@@ -99,7 +115,6 @@ void Start_Scene::Update()
 void Start_Scene::Render(HDC _dc)
 {
 	Scene::Render(_dc);
-	MapMgr::GetInst()->Render();
 }
 
 void Start_Scene::Release()

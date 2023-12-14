@@ -28,7 +28,7 @@ void Game_Scene::Init()
 	m_Player->SetScale(Vec2(1.f, 1.f));
 	m_Player->SetName(L"Player");
 
-	AddObject(m_Player, OBJECT_GROUP::PLAYER);
+	//AddObject(m_Player, OBJECT_GROUP::PLAYER);
 
 	int size = MapMgr::GetInst()->GetMapObjs().size();
 	for (int i = 0; i < MapMgr::GetInst()->GetMapObjs().size(); i++)
@@ -38,18 +38,18 @@ void Game_Scene::Init()
 
 	for (int i = 0; i < MapMgr::GetInst()->GetShellObjs().size(); i++)
 	{
-		AddObject(MapMgr::GetInst()->GetShellObjs()[i], OBJECT_GROUP::SHELL);
+		//AddObject(MapMgr::GetInst()->GetShellObjs()[i], OBJECT_GROUP::SHELL);
 	}
 
 	ResMgr::GetInst()->LoadSound(L"BGM", L"Sound\\Retro_bgm.wav", true);
 	ResMgr::GetInst()->LoadSound(L"Shoot", L"Sound\\laserShoot.wav", false);
 	ResMgr::GetInst()->Play(L"BGM");
 
-	// 충돌체크해야되는것들을 설정하자
+	//// 충돌체크해야되는것들을 설정하자
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GROUND);
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SHELL);
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::SHELL, OBJECT_GROUP::GROUND);
 	CameraMgr::GetInst()->SetTarget(m_Player);
-	//CameraMgr::GetInst()->SetPrevLook(MapMgr::GetInst()->GetEndPoint());
-	//CameraMgr::GetInst()->SetLook(m_Player->GetPos());
+	CameraMgr::GetInst()->SetPrevLook(MapMgr::GetInst()->GetEndPoint());
+	CameraMgr::GetInst()->SetLook(m_Player->GetPos());
 }

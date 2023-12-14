@@ -5,7 +5,7 @@
 class Btn : public Object
 {
 public:
-	Btn(void(*_action)(),wstring _text,Texture _tex);
+	Btn(void(*_action)(),wstring _text);
 	virtual ~Btn();
 
 	virtual void Update() override;
@@ -13,6 +13,5 @@ public:
 private:
 	void (*m_Action)();
 	wstring m_Text;
-	Texture m_Tex;
 ;};
 

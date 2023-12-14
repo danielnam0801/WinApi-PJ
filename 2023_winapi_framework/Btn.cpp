@@ -6,7 +6,7 @@
 
 
 
-Btn::Btn(void(*_action)(), wstring _text,Texture _tex)
+Btn::Btn(void(*_action)(), wstring _text)
 {
     m_Action = _action;
     m_Text = _text; 
