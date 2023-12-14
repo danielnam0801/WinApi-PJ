@@ -28,7 +28,8 @@ enum class OBJECT_GROUP
 	GROUND,
 	CAMERA,
 	SHELL,
-	END = 10
+	UI,
+	END = 15
 };
 
 enum class PEN_TYPE
@@ -49,4 +50,12 @@ enum class EVENT_TYPE
 	CREATE_OBJECT,
 	SCENE_CHANGE,
 	END
+};
+
+enum class SCENE_TYPE
+{
+	START_SCENE,
+	GAME_SCENE,
+	GAMEOVER_SCENE,
+	EXPLAIN_SCENE,
 };

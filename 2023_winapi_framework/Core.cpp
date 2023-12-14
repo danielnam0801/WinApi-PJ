@@ -68,7 +68,8 @@ void Core::Update()
 	KeyMgr::GetInst()->Update();
 	SceneMgr::GetInst()->Update();
 	CollisionMgr::GetInst()->Update();
-	CameraMgr::GetInst()->Update();
+	if(SceneMgr::GetInst()->GetCurSceneType() == SCENE_TYPE::GAME_SCENE)
+		CameraMgr::GetInst()->Update();
 	//MapMgr::GetInst()->Update();
 //	Vec2 vPos = m_obj.GetPos();
 //
