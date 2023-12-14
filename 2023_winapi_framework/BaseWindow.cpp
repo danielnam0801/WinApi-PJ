@@ -1,7 +1,12 @@
+#include<iostream>
+#include <conio.h>
 #include "pch.h"
 #include "BaseWindow.h"
 #include "Resource.h"
 #include "Core.h"
+#include "Btn.h"
+using namespace std;
+
 
 BaseWindow::BaseWindow(POINT _ptResolution)
 	: m_hWnd(0)
@@ -62,6 +67,7 @@ void BaseWindow::WindowCreate()
     RECT rt = { iWinposx, iWinposy, iWinposx + m_ptResolution.x, iWinposy + m_ptResolution.y };
     AdjustWindowRect(&rt, WS_OVERLAPPEDWINDOW, false);
     MoveWindow(m_hWnd, iWinposx, iWinposy, rt.right - rt.left, rt.bottom - rt.top, true);
+
 }
 
 void BaseWindow::WindowShow(int _nCmdShow)
@@ -76,8 +82,26 @@ void BaseWindow::WindowUpdate()
 
 LRESULT BaseWindow::WndProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lParam)
 {
+    HDC hdc;
+    HINSTANCE hInst; 
     switch (_message)
     {
+    case WM_CREATE:
+        break;
+    case WM_LBUTTONDOWN:
+        hdc = GetDC(_hWnd);
+
+        ReleaseDC(_hWnd, hdc);
+    case WM_PAINT:
+    {
+        PAINTSTRUCT ps;
+        HDC hdc = BeginPaint(_hWnd, &ps);
+        // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+        TextOutW(hdc, 100, 100, L"Hello World", 12);
+        TextOutA(hdc, 200, 200, "Hello World", 12);
+        EndPaint(_hWnd, &ps);
+    }
+    break;
     //    // 우리가 PAINT를 쓸까..?
     //case WM_PAINT:
     //{

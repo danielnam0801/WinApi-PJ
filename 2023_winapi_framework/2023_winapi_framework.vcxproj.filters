@@ -205,6 +205,7 @@
     <ClInclude Include="Camera.h">
       <Filter>Engine\04. Object</Filter>
     </ClInclude>
+    <ClInclude Include="Btn.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2023_winapi_framework.rc">
@@ -325,5 +326,11 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Engine\04. Object</Filter>
     </ClCompile>
+    <ClCompile Include="Btn.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="..\..\..\..\Downloads\easy-lifestyle-137766.mp3">
+      <Filter>리소스 파일</Filter>
+    </Media>
   </ItemGroup>
 </Project>

@@ -10,9 +10,38 @@
 #include "MapObject.h"
 #include "Ground.h"
 #include "MapMgr.h"
+#include "Btn.h"
+#include "SceneMgr.h"
 
 void Start_Scene::Init()
 {
+	Btn* Btn1 = new Btn([]()
+		{
+			SceneMgr::GetInst()->LoadScene(L"GameScene");
+		}
+	, L"게임 시작");
+	Btn1->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y / 4*2-70 })));
+	Btn1->SetScale(Vec2(100.f, 30.f));
+	AddObject(Btn1, OBJECT_GROUP::UI);
+
+	Btn* Btn2 = new Btn([]()
+		{
+			SceneMgr::GetInst()->LoadScene(L"ExplainScene");
+		}
+	, L"게임 설명");
+	Btn2->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y / 2 })));
+	Btn2->SetScale(Vec2(100.f, 30.f));
+	AddObject(Btn2, OBJECT_GROUP::UI);
+
+	Btn* Btn3 = new Btn([]()
+		{
+			SceneMgr::GetInst()->LoadScene(L"GameOverScene");
+		}
+	, L"게임 종료");
+	Btn3->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y /6*4-110})));
+	Btn3->SetScale(Vec2(100.f, 30.f));
+	AddObject(Btn3, OBJECT_GROUP::UI);
+
 	MapMgr::GetInst()->CreateJsonBoard();
 	Vec2 vResolution = Core::GetInst()->GetResolution();
 	Object* m_Player = new Player;
@@ -20,6 +49,8 @@ void Start_Scene::Init()
 	m_Player->SetScale(Vec2(100.f,100.f));
 	m_Player->SetName(L"Player");
 	AddObject(m_Player, OBJECT_GROUP::PLAYER);
+
+
 
 	Object* pGroundObj = new Ground;
 	pGroundObj->SetName(L"Ground");
@@ -76,3 +107,4 @@ void Start_Scene::Release()
 	Scene::Release();
 	CollisionMgr::GetInst()->CheckReset();
 }
+

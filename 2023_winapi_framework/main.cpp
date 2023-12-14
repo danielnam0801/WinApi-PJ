@@ -1,7 +1,7 @@
-﻿
+﻿#include<iostream>
 #include "pch.h"
 #include "BaseWindow.h"
-
+using namespace std;
 #ifdef _DEBUG
 #ifdef UNICODE
     #pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
