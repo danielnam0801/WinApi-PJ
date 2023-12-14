@@ -60,6 +60,20 @@ void Animation::Render(HDC _dc)
 		,(int)(m_vecAnimFrame[m_CurFrame].vSlice.x)
 		,(int)(m_vecAnimFrame[m_CurFrame].vSlice.y)
 		,RGB(255,255,255));
+
+	if (pObj->IsBaseScale()) return;
+	Vec2 scale = pObj->GetScale();
+	StretchBlt(_dc
+		, (int)(vPos.x - m_vecAnimFrame[m_CurFrame].vSlice.x / 2.f)
+		, (int)(vPos.y - m_vecAnimFrame[m_CurFrame].vSlice.y / 2.f)
+		, (int)(m_vecAnimFrame[m_CurFrame].vSlice.x * scale.x)
+		, (int)(m_vecAnimFrame[m_CurFrame].vSlice.y * scale.y)
+		, m_pTex->GetDC()
+		, (int)(m_vecAnimFrame[m_CurFrame].vLT.x)
+		, (int)(m_vecAnimFrame[m_CurFrame].vLT.y)
+		, (int)(m_vecAnimFrame[m_CurFrame].vSlice.x)
+		, (int)(m_vecAnimFrame[m_CurFrame].vSlice.y)
+		, SRCCOPY);
 }
 
 void Animation::Create(std::shared_ptr<Texture> _pTex, Vec2 _vLT, Vec2 _vSliceSize, Vec2 _vStep, int _framecount, float _fDuration)

@@ -67,7 +67,7 @@ void MapMgr::CreateJsonBoard()
 			shellObj->SetPos(Vec2{ position.x, position.y });
 			m_shellObjs.push_back(shellObj);
 		}
-
+		int size = objLayer->getTileObjects().size();
 		for (auto& [pos, tileObject] : objLayer->getTileObjects())
 		{
 			tson::Tileset* tileSet = tileObject.getTile()->getTileset();

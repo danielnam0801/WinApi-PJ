@@ -8,5 +8,6 @@ public:
 	~ShellObject();
 public:
 	void Render(HDC _dc) override;
+	void EnterCollision(Collider* _pOther) override;
 };
 

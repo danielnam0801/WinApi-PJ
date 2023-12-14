@@ -8,6 +8,7 @@
 #include "Gravity.h"
 #include "CameraMgr.h"
 #include "Object.h"
+#include "Player.h"
 
 ShellObject::ShellObject()
 {
@@ -50,4 +51,17 @@ void ShellObject::Render(HDC _dc)
 		, 0, 0, Width, Height, SRCCOPY);
 	RECT_RENDER(m_vPos.x, m_vPos.y, m_vScale.x, m_vScale.y, _dc);
 	Component_Render(_dc);
+}
+
+void ShellObject::EnterCollision(Collider* _pOther)
+{
+	if (_pOther->GetObj()->GetName() == L"Player")
+	{
+		Player* pPlayer = reinterpret_cast<Player*>(_pOther->GetObj());
+		if (!pPlayer->GetShell())
+		{
+			pPlayer->SetShell();
+			m_IsAlive = false;
+		}
+	}
 }

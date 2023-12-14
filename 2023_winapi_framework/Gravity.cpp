@@ -6,7 +6,7 @@
 
 Gravity::Gravity()
 	: m_useGravity(true)
-	, m_gravity(9.8f)
+	, m_gravity(1400.f)
 {
 
 }

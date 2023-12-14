@@ -23,13 +23,14 @@ void Game_Scene::Init()
 
 
 	Object* m_Player = new Player;
-	m_Player->GetGravity()->SetGravity(100.f);
+	m_Player->GetGravity()->SetGravity(1400.f);
 	m_Player->SetPos(MapMgr::GetInst()->GetSpawnPoint());
-	m_Player->SetScale(Vec2(100.f, 100.f));
+	m_Player->SetScale(Vec2(1.f, 1.f));
 	m_Player->SetName(L"Player");
 
 	AddObject(m_Player, OBJECT_GROUP::PLAYER);
 
+	int size = MapMgr::GetInst()->GetMapObjs().size();
 	for (int i = 0; i < MapMgr::GetInst()->GetMapObjs().size(); i++)
 	{
 		AddObject(MapMgr::GetInst()->GetMapObjs()[i], OBJECT_GROUP::GROUND);
@@ -48,7 +49,7 @@ void Game_Scene::Init()
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GROUND);
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SHELL);
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::SHELL, OBJECT_GROUP::GROUND);
-	//CameraMgr::GetInst()->SetTarget(m_Player);
+	CameraMgr::GetInst()->SetTarget(m_Player);
 	//CameraMgr::GetInst()->SetPrevLook(MapMgr::GetInst()->GetEndPoint());
-	CameraMgr::GetInst()->SetLook(m_Player->GetPos());
+	//CameraMgr::GetInst()->SetLook(m_Player->GetPos());
 }

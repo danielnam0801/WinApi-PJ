@@ -28,6 +28,7 @@ public:
 	const Vec2& GetPos() const { return m_vPos; }
 	const Vec2& GetScale() const { return m_vScale; }
 	const RECT& GetTextureRect() const { return m_texRect; }
+	const bool& IsBaseScale() const { return m_vScale.x == 1 && m_vScale.y == 1; }
 	Collider* GetCollider() const 
 	{ 
 		return m_pCollider;
@@ -48,6 +49,7 @@ public:
 	void SetName(wstring _name) { m_strName = _name; }
 	void SetIsClicked(bool value) { m_IsClicked = value; }
 	bool GetIsDead() const { return !m_IsAlive; }
+	void SetIsDead(bool value) { m_IsAlive = value; }
 	bool GetIsClicked() const { return !m_IsClicked; }
 	bool GetCollisionCheck() const { return m_IsCollisionCheck; }
 private:
