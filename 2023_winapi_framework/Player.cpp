@@ -17,20 +17,23 @@
 #include "PathMgr.h"
 #include "ResMgr.h"
 #include "MapMgr.h"
+#include <iostream>
 
 Player::Player()
 	: m_pTex(nullptr)
 	, m_idleTex(nullptr)
 	, _isJump(false)
 	, _isDoubleJump(false)
-	, _jumpPower(-1000.f)
+	, m_curState(PLAYER_STATE::IDLE)
+	, _jumpPower(-600.f)
 	, _isGround(true)
 	, _dir{ 0.0f }
 	, _jumpTime{ 0.f }
+	, _acc {0.f}
 	, _curTime{ 0.f }
 	, _isCreateEnd{ false }
 	, _shellOn{ false }
-	, m_curState(PLAYER_STATE::IDLE)
+
 {
 	m_pTex = ResMgr::GetInst()->TexLoad(L"Player", L"Texture\\AllPlayer.bmp");
 	CreateCollider();
@@ -86,20 +89,12 @@ void Player::Update()
 	GetAnimator()->Update();
 }
 
-UINT Player::GetJumpLevel(float& _acc)
-{
-	if (_acc >= 2.f)
-	{
-		return 1;
-	}
-	else if (_acc >= 1.f)
-	{
-		return 2;
-	}
-	else
-	{
-		return 3;
-	}
+float Player::GetJumpLevel(float& _acc)
+{	
+	if (_acc < 0.2f)
+		return 0;
+	else 
+		return std::clamp(_acc, 0.5f, 2.f);
 }
 
 void Player::Jump()
@@ -126,7 +121,8 @@ void Player::CreateInit()
 
 void Player::UpdateState()
 {
-	if (m_curState == PLAYER_STATE::FALL || m_curState == PLAYER_STATE::JUMP)
+	//std::cout << (int)m_curState;
+	if (m_curState == PLAYER_STATE::FALL || m_curState == PLAYER_STATE::JUMP || m_curState == PLAYER_STATE::OFF)
 		return;
 
 	if (m_curState == PLAYER_STATE::JUMP)
@@ -160,12 +156,11 @@ void Player::UpdateState()
 		m_curState = PLAYER_STATE::IDLE;
 	}
 
-	float _acc = 0.f;
 	if (KEY_PRESS(KEY_TYPE::SPACE))
 	{
 		/*GetCollider()->SetOffsetPos(Vector2{ 0.f, 30.f });
 		GetCollider()->SetColliderScale(Vector2{ 60.f, 40.f });*/
-
+		m_curState = PLAYER_STATE::CHARGE;
 		_acc += fDT;
 
 	}
@@ -173,9 +168,12 @@ void Player::UpdateState()
 	{
 		/*GetCollider()->SetOffsetPos(Vector2{ 0.f, 10.f });
 		GetCollider()->SetColliderScale(Vector2{ 60.f, 80.f });*/
+		_jumpLevel = GetJumpLevel(_acc);
+		std::cout << _jumpLevel;
+		if (_jumpLevel == 0) return;
 
 		m_curState = PLAYER_STATE::JUMP;
-
+		_acc = 0;
 		ResMgr::GetInst()->LoadSound(L"Jump", L"Sound\\cartoon-jump-6462.wav", false);
 
 		bool left = false;
@@ -198,23 +196,23 @@ void Player::UpdateState()
 			{
 				if (!_isJump)
 				{
-					_jumpLevel = GetJumpLevel(_acc);
 					
 					Vec2 dir = Vec2{ 0,0 };
-					dir.y = -2200.f / _jumpLevel;
+					dir.y = _jumpPower * _jumpLevel;
 
-					if (left && right)
+					if ((left && right) || (!left && !right))
 					{
+						_dir = 0;
 						dir.x = 0;
-						dir.y += -2200.f / _jumpLevel;
+						dir.y += _jumpPower * _jumpLevel;
 					}
 					else if (right)
 					{
-						dir.x = 300.f;
+						dir.x = 200.f;
 					}
 					else if (left)
 					{
-						dir.x = -300.f;
+						dir.x = -200.f;
 					}
 
 					GetRigidbody()->AddVelocity(dir);
@@ -222,7 +220,7 @@ void Player::UpdateState()
 				}
 				else
 				{
-					GetRigidbody()->SetVelocity({ GetRigidbody()->GetVelocity().x, -500.f });
+					GetRigidbody()->SetVelocity({ GetRigidbody()->GetVelocity().x, _jumpPower * _jumpLevel / 2 });
 					DoubleJump();
 				}
 			}
@@ -232,32 +230,39 @@ void Player::UpdateState()
 
 void Player::UpdateMove()
 {
-	if (m_curState == PLAYER_STATE::JUMP || m_curState == PLAYER_STATE::FALL)
+	if (m_curState == PLAYER_STATE::OFF || m_curState == PLAYER_STATE::FALL || m_curState == PLAYER_STATE::CHARGE)
 		return;
 
 	Rigidbody* rb = GetRigidbody();
 
-	if (KEY_PRESS(KEY_TYPE::LEFT))
+	if (m_curState == PLAYER_STATE::JUMP)
 	{
-		// rd->AddForce(Vector2(-200.f, 0.f));
-		rb->SetVelocity(Vec2(-300.f, rb->GetVelocity().y));
+		rb->SetVelocity(Vec2(200.f * _dir, rb->GetVelocity().y));
 	}
-	if (KEY_PRESS(KEY_TYPE::RIGHT))
+	else
 	{
-		// rd->AddForce(Vector2(200.f, 0.f));
-		rb->SetVelocity(Vec2(300.f, rb->GetVelocity().y));
-	}
+		if (KEY_PRESS(KEY_TYPE::LEFT))
+		{
+			// rd->AddForce(Vector2(-200.f, 0.f));
+			rb->SetVelocity(Vec2(-200.f, rb->GetVelocity().y));
+		}
+		if (KEY_PRESS(KEY_TYPE::RIGHT))
+		{
+			// rd->AddForce(Vector2(200.f, 0.f));
+			rb->SetVelocity(Vec2(200.f, rb->GetVelocity().y));
+		}
 
-	if (KEY_DOWN(KEY_TYPE::LEFT))
-	{
-		// rd->AddVelocity(Vector2(-200.f, 0.f));
-		rb->SetVelocity(Vec2(-300.f, rb->GetVelocity().y));
+		if (KEY_DOWN(KEY_TYPE::LEFT))
+		{
+			// rd->AddVelocity(Vector2(-200.f, 0.f));
+			rb->SetVelocity(Vec2(-200.f, rb->GetVelocity().y));
 
-	}
-	if (KEY_DOWN(KEY_TYPE::RIGHT))
-	{
-		// rd->AddVelocity(Vector2(200.f, 0.f));
-		rb->SetVelocity(Vec2(300.f, rb->GetVelocity().y));
+		}
+		if (KEY_DOWN(KEY_TYPE::RIGHT))
+		{
+			// rd->AddVelocity(Vector2(200.f, 0.f));
+			rb->SetVelocity(Vec2(200.f, rb->GetVelocity().y));
+		}
 	}
 }
 
@@ -271,7 +276,7 @@ void Player::SetShellOff()
 {
 	_shellOn = false;
 	m_vScale = Vec2{ 1.f,1.f };
-	
+	//m_OffsetPos = 
 }
 
 void Player::Render(HDC _dc)
@@ -308,7 +313,7 @@ void Player::Render(HDC _dc)
 	//	, (int)(vPos.y - vScale.y / 2)
 	//	, Width, Height, m_pTex->GetDC()
 	//	, 0, 0, Width, Height, RGB(255, 0, 255));
-	//RECT_RENDER(m_vPos.x, m_vPos.y, m_tex->GetWidth() * m_vScale.x, m_tex->GetHeight() * m_vScale.y, _dc);
+	//RECT_RENDER(m_vPos.x, m_vPos.y, m_v->GetWidth() * m_vScale.x, m_tex->GetHeight() * m_vScale.y, _dc);
 	Component_Render(_dc);
 }
 
@@ -333,39 +338,36 @@ void Player::EnterCollision(Collider* _pOther)
 		}
 		else
 		{
-			//Vec2 curVelocity = GetRigidbody()->GetVelocity();
-			//Vec2 percentValue = VelocityToPercent(curVelocity);
-			//GetRigidbody()->SetVelocity(Vec2(0.f, 0.f));
+			ResMgr::GetInst()->LoadSound(L"Bump", L"Sound\\bump.wav", false);
 
-			//// JUMP, FALL OFF 일 경우 Enter발생하면 무조건 OFF
-			//if (playerState == PLAYER_STATE::JUMP)
-			//{
-			//	//ResMgr::GetInst()->LoadSound(L"Bump", L"Sound\\land-81509.wav", false);
+			GetRigidbody()->StopImmediately();
+			if (playerState == PLAYER_STATE::FALL)
+			{
+				if (_dir == -1)
+				{
+					GetRigidbody()->SetVelocity(Vec2((_dir * -1) * (200.f), 0.f));
+				}
 
-			//	if (_dir == -1)
-			//	{
-			//		GetRigidbody()->AddVelocity(Vec2(_dir * -1 * (percentValue.x + 200.f), curVelocity.y / _jumpLevel));
-			//	}
+				if (_dir == 1)
+				{
+					GetRigidbody()->SetVelocity(Vec2(_dir * 200.f * -1, 0.f));
+				}
+			}
+			if(playerState == PLAYER_STATE::JUMP)
+			{
+				if (_dir == -1)
+				{
+					GetRigidbody()->AddVelocity(Vec2((_dir * -1) * (200.f), 200.f * -1));
+				}
 
-			//	if (_dir == 1)
-			//	{
-			//		GetRigidbody()->AddVelocity(Vec2(_dir * ((percentValue.x + 200.f) * -1), curVelocity.y / _jumpLevel));
-			//	}
-			//}
+				if (_dir == 1)
+				{
+					GetRigidbody()->AddVelocity(Vec2(_dir * 200.f * -1, 200.f * -1));
+				}
+			}
 			
-			//p_bump->Play();
-
-			if (_dir == -1)
-			{
-				GetRigidbody()->AddVelocity(Vec2((_dir * -1) * (200.f), 200.f * -1));
-			}
-
-			if (_dir == 1)
-			{
-				GetRigidbody()->AddVelocity(Vec2(_dir * 200.f * -1, 200.f * -1));
-			}
+			m_curState = PLAYER_STATE::OFF;
 		}
-		_isGround = true;
 		
 		//if (pGround->GetCollider()->GetFinalPos().y > GetCollider()->GetFinalPos().y) // 플레이어가 위에있을때.
 		//{
@@ -403,14 +405,13 @@ void Player::ExitCollision(Collider* _pOther)
 	if (_pOther->GetObj()->GetName() == L"Ground")
 	{
 		GetGravity()->SetApplyGravity(true);
-		/*PLAYER_STATE playerState = m_curState;
+		PLAYER_STATE playerState = m_curState;
 
 		if (_isGround)
 		{
 			if (playerState == PLAYER_STATE::MOVE || playerState == PLAYER_STATE::IDLE)
 				m_curState = PLAYER_STATE::FALL;
-		}*/
-
+		}
 		_isGround = false;
 	}
 	
@@ -430,7 +431,7 @@ bool Player::CheckColDir(Object* otherObj)
 {
 	PLAYER_STATE playerState = GetCurState();
 
-	Ground* ground = dynamic_cast<Ground*>(otherObj);
+	Ground* ground = reinterpret_cast<Ground*>(otherObj);
 
 	Vec2 playerPos = GetCollider()->GetFinalPos();
 	Vec2 playerScale = GetCollider()->GetScale();

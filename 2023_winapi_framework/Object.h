@@ -25,6 +25,7 @@ public:
 	void SetTextureRect(RECT _rect) { m_texRect = _rect; }
 	void SetPos(Vec2 _vPos) { m_vPos = _vPos; }
 	void SetScale(Vec2 _vScale) { m_vScale = _vScale; }
+	void SetOffSetPos(Vec2 _offsetPos) { m_OffsetPos = _offsetPos; }
 	const Vec2& GetPos() const { return m_vPos; }
 	const Vec2& GetScale() const { return m_vScale; }
 	const RECT& GetTextureRect() const { return m_texRect; }
@@ -64,6 +65,7 @@ protected:
 	RECT m_texRect;
 	std::shared_ptr<Texture> m_tex;
 	Vec2 m_vPos; // 위치
+	Vec2 m_OffsetPos; // 크기
 	Vec2 m_vScale; // 크기
 	wstring m_strName; // 이름.
 	bool m_IsAlive;

@@ -102,6 +102,7 @@ void Ground::CheckColDir(Object* otherObj)
 			playerPos.y -= valueY;
 
 			otherObj->SetPos(playerPos);
+			player->SetPlayerState(PLAYER_STATE::IDLE);
 			return;
 		}
 	}

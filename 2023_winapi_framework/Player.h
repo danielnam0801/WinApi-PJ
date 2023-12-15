@@ -23,7 +23,8 @@ public:
     void SetPlayerColInfo(PLAYER_COL_INFO _colInfo) { m_colInfo = _colInfo; }
     const bool& GetShell() { return _shellOn; }
     const PLAYER_STATE& GetCurState() { return m_curState; }
-    UINT GetJumpLevel(float& _acc);
+    float GetJumpLevel(float& _acc);
+    void SetPlayerState(PLAYER_STATE _state) { m_curState = _state; }
 private:
     void Jump();
     void DoubleJump();
@@ -33,7 +34,6 @@ private:
     void SetShellOff();
     void InitJump() { _jumpPower = -550.f; }
     void ReStart() { m_vPos = MapMgr::GetInst()->GetSpawnPoint(); }
-    //void SetOffSetPos(Vec2 _offsetPos) { m_offsetPos = _offsetPos; }
 private:
     float _isCreateEnd;
     float _jumpTime;
@@ -42,9 +42,10 @@ private:
     bool _isJump;
     bool _isDoubleJump;
     float _jumpPower;
+    float _acc;
     bool _isGround;
     float _dir;
-    UINT _jumpLevel;
+    float _jumpLevel;
     std::shared_ptr<Texture> m_pTex;
     std::shared_ptr<Texture> m_idleTex;
     PLAYER_STATE m_curState;

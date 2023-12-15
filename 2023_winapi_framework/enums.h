@@ -67,6 +67,6 @@ enum class PLAYER_STATE
 	JUMP,
 	CHARGE,
 	FALL,
-
+	OFF,
 	END
 };
