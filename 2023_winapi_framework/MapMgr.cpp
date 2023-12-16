@@ -65,8 +65,10 @@ void MapMgr::CreateJsonBoard()
 			ShellObject* shellObj = new ShellObject;
 			//shellObj->SetPos(Vec2{ (position.x + origin.x) * m_Scale.x, (position.y + origin.y) * m_Scale.y});
 			shellObj->SetPos(Vec2{ position.x, position.y });
+			shellObj->spawnPoint = Vec2{ position.x, position.y };
 			m_shellObjs.push_back(shellObj);
 		}
+
 		int size = objLayer->getTileObjects().size();
 		for (auto& [pos, tileObject] : objLayer->getTileObjects())
 		{
@@ -114,21 +116,18 @@ MapObject* MapMgr::StoreAndLoadImageMapObject(const std::string& _image, const V
 	fs::path path = _image;
 	if (m_maptex.count(_image) == 0)
 	{
-		//if (fs::exists(path) && fs::is_regular_file(path))
-	
-			std::shared_ptr<Texture> tex = ResMgr::GetInst()->TexLoad(StrToWstr(_image), path);
-			//bool imageFound = tex->LoadFromFile(tex->GetRelativePath());
-			if (tex != nullptr)
-			{
-				MapObject* spr = new MapObject;
-				spr->SetTexture(tex);
-				m_maptex[_image] = tex;
-				m_mapsprite[_image] = spr;
-			}
-			else
-			{
-				std::cout << "can't find" << path.generic_string() << std::endl;
-			}
+		std::shared_ptr<Texture> tex = ResMgr::GetInst()->TexLoad(StrToWstr(_image), path);
+		if (tex != nullptr)
+		{
+			MapObject* spr = new MapObject;
+			spr->SetTexture(tex);
+			m_maptex[_image] = tex;
+			m_mapsprite[_image] = spr;
+		}
+		else
+		{
+			std::cout << "can't find" << path.generic_string() << std::endl;
+		}
 	}
 	if (m_mapsprite.count(_image) > 0)
 		return m_mapsprite[_image];

@@ -16,7 +16,8 @@ public:
 	virtual void StayCollision(Collider* other) override;
 	virtual void ExitCollision(Collider* other) override;
 public:
-	void CheckColDir(Object* otherObj);
+	void CheckColDirPlayer(Object* otherObj);
+	void CheckColDirShell(Object* otherObj);
 private:
 	bool _onGround;
 	bool _isCollision;

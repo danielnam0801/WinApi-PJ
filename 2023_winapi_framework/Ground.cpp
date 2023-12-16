@@ -3,6 +3,7 @@
 #include "Collider.h"
 #include "Gravity.h"
 #include "Player.h"
+#include "ShellObject.h"
 
 Ground::Ground()
 {
@@ -31,21 +32,19 @@ void Ground::EnterCollision(Collider* other)
 		Player* player = dynamic_cast<Player*>(otherObj);
 		PLAYER_STATE playerCurState = player->GetCurState();
 
-		// =============================================
-		// JUMP 아닐 경우 충돌체크
-		// =============================================
 		if (playerCurState == PLAYER_STATE::MOVE || playerCurState == PLAYER_STATE::IDLE)
 		{
 			return;
 		}
 
-		// =============================================
-		// JUMP일 경우 충돌체크
-		// =============================================
 		if (playerCurState == PLAYER_STATE::JUMP || playerCurState == PLAYER_STATE::FALL)
 		{
-			CheckColDir(otherObj);
+			CheckColDirPlayer(otherObj);
 		}
+	}
+	if (otherObj->GetName() == L"Shell")
+	{
+		CheckColDirShell(otherObj);
 	}
 }
 
@@ -55,7 +54,11 @@ void Ground::StayCollision(Collider* other)
 
 	if (otherObj->GetName() == L"Player")
 	{
-		CheckColDir(otherObj);
+		CheckColDirPlayer(otherObj);
+	}
+	if (otherObj->GetName() == L"Shell")
+	{
+		CheckColDirShell(otherObj);
 	}
 }
 
@@ -64,7 +67,7 @@ void Ground::ExitCollision(Collider* other)
 
 }
 
-void Ground::CheckColDir(Object* otherObj)
+void Ground::CheckColDirPlayer(Object* otherObj)
 {
 	Player* player = dynamic_cast<Player*>(otherObj);
 	PLAYER_STATE playerCurState = player->GetCurState();
@@ -160,5 +163,31 @@ void Ground::CheckColDir(Object* otherObj)
 
 			return;
 		}
+	}
+}
+
+void Ground::CheckColDirShell(Object* otherObj)
+{
+	ShellObject* shell = reinterpret_cast<ShellObject*>(otherObj);
+
+	Vec2 shellPos = shell->GetCollider()->GetFinalPos();
+	Vec2 shellScale = shell->GetCollider()->GetScale();
+
+	Vec2 groundPos = GetCollider()->GetFinalPos();
+	Vec2 groundScale = GetCollider()->GetScale();
+
+	float shellBottomPosY = shellPos.y + (shellScale.y / 2.f);
+	float groundTopPosY = groundPos.y - (groundScale.y / 2.f);
+
+	if (shellBottomPosY >= groundTopPosY)
+	{
+		otherObj->GetGravity()->SetOnGround(true);
+
+		float lenY = abs(shellPos.y - groundPos.y);
+		float valueY = ((shellScale.y / 2.f) + (groundScale.y / 2.f)) - lenY;
+		shellPos = otherObj->GetPos();
+		shellPos.y -= valueY;
+
+		otherObj->SetPos(shellPos);
 	}
 }
