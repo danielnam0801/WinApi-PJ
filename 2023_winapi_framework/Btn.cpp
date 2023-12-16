@@ -6,12 +6,13 @@
 
 
 
-Btn::Btn(void(*_action)(), wstring _text)
+Btn::Btn(void(*_action)(), wstring _text, wstring _key, const wstring& _textureFilePath)
+    : m_Action(_action), m_Text(_text)
 {
     //m_Action = _action;
     //m_Text = _text; 
-    
-    m_Texture = ResMgr::GetInst()->TexLoad(_key, _textureFilePath);
+
+    m_Tex = ResMgr::GetInst()->TexLoad(_key, _textureFilePath);
 }
 Btn::~Btn()
 {
@@ -41,11 +42,11 @@ void Btn::Render(HDC _hdc)
     Vec2 vScale = GetScale();
     RECT rt = { vPos.x - vScale.x / 2, vPos.y - vScale.y / 2 , vPos.x + vScale.x / 2, vPos.y + vScale.y / 2 };
 
-    int Width = m_Texture->GetWidth();
-    int Height = m_Texture->GetHeight();
+    int Width = m_Tex->GetWidth();
+    int Height = m_Tex->GetHeight();
 
-    StretchBlt(_hdc, rt.left, rt.top, vScale.x, vScale.y, m_Texture->GetDC(), 0, 0, Width, Height, SRCCOPY);
+    StretchBlt(_hdc, rt.left, rt.top, vScale.x, vScale.y, m_Tex->GetDC(), 0, 0, Width, Height, SRCCOPY);
 
-    DrawText(_hdc, m_Text.c_str(), -1, &rt, DT_CENTER | DT_VCENTER | DT_SINGLELINE|DT_NOCLIP);
-    SetBkMode(_hdc,TRANSPARENT);
+    DrawText(_hdc, m_Text.c_str(), -1, &rt, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
+    SetBkMode(_hdc, TRANSPARENT);
 }
