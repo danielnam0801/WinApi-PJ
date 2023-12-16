@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="리소스 파일">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Engine">
       <UniqueIdentifier>{8bad4304-c32a-48ef-bcf0-36a6875db7c5}</UniqueIdentifier>
     </Filter>
@@ -79,6 +75,10 @@
     </Filter>
     <Filter Include="Engine\03. Manager\CameraMgr">
       <UniqueIdentifier>{c53d4dd0-8d86-4b78-a8ab-1c5035104859}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -204,6 +204,7 @@
     </ClInclude>
     <ClInclude Include="ShellObject.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="Btn.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2023_winapi_framework.rc">
@@ -215,6 +216,9 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="2023_winapi_framework.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Desktop\42527-removebg-preview_preview_rev_1.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>
@@ -323,5 +327,6 @@
     </ClCompile>
     <ClCompile Include="ShellObject.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Btn.cpp" />
   </ItemGroup>
 </Project>

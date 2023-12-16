@@ -1,6 +1,8 @@
 #pragma once
 #include "Object.h"
 #include<functional>
+
+class Texture;
 class Btn : public Object
 {
 public:

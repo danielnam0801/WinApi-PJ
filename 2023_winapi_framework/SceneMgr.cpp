@@ -5,11 +5,11 @@
 void SceneMgr::Init()
 {
 	m_pCurScene = nullptr;
-	// ¾À µî·Ï
+	// ï¿½ï¿½ ï¿½ï¿½ï¿½
 	RegisterScene(SCENE_TYPE::START_SCENE,std::make_shared<Start_Scene>());
 	RegisterScene(SCENE_TYPE::GAME_SCENE, std::make_shared<Game_Scene>());
 
-	// Ã¹ ¾À ÁöÁ¤
+	// Ã¹ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	LoadScene(SCENE_TYPE::START_SCENE);
 	m_curSceneType = SCENE_TYPE::START_SCENE;
 }
@@ -27,7 +27,7 @@ void SceneMgr::Render(HDC _dc)
 
 void SceneMgr::LoadScene(const SCENE_TYPE& _scenename)
 {
-	// ¾ÀÀÌ ÀÖÀ¸¸é
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 	m_curSceneType = _scenename;
 	if (m_pCurScene != nullptr)

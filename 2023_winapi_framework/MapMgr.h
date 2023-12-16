@@ -5,7 +5,7 @@ class MapObject;
 class ShellObject;
 
 #include "Texture.h"
-#include "tileson.h"
+#include "tileson.hpp"
 
 
 class MapMgr

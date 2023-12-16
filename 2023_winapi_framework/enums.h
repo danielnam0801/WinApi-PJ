@@ -2,10 +2,10 @@
 
 enum class KEY_STATE
 {
-	// NONE: ¾È´­¸²
-	// DOWN: µü ´­¸²
-	// UP: ¶À
-	// PRESS: ´©¸£´ÂÁß
+	// NONE: ï¿½È´ï¿½ï¿½ï¿½
+	// DOWN: ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// UP: ï¿½ï¿½
+	// PRESS: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	NONE, DOWN, UP, PRESS
 };
 
@@ -17,7 +17,7 @@ enum class KEY_TYPE
 	Z,X,C,V,B,N,M,
 	CTRL, LALT, LSHIFT, SPACE,
 	ENTER, TAB, ESC, LBUTTON, RBUTTON, LAST
-	// LASTÀÇ¹Ì: ³¡ÀÌ¶ó´Â ¶æÀÌ¾ß
+	// LASTï¿½Ç¹ï¿½: ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½
 };
 
 enum class OBJECT_GROUP
