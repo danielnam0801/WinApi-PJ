@@ -12,8 +12,12 @@ public:
 public:
 	void Update() override;
 	void Render(HDC _dc) override;
-	void EnterCollision(Collider* other) override;
-	void StayCollision(Collider* other) override;
+	virtual void EnterCollision(Collider* other) override;
+	virtual void StayCollision(Collider* other) override;
+	virtual void ExitCollision(Collider* other) override;
+public:
+	void CheckColDirPlayer(Object* otherObj);
+	void CheckColDirShell(Object* otherObj);
 private:
 	bool _onGround;
 	bool _isCollision;

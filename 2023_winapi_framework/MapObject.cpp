@@ -4,6 +4,7 @@
 #include "Texture.h"
 #include "Collider.h"
 #include "CameraMgr.h"
+#include "Ground.h"
 
 MapObject::MapObject()
 {
@@ -50,4 +51,19 @@ void MapObject::Render(HDC _dc)
 		, 0, 0, Width, Height, SRCCOPY);
 	//RECT_RENDER(m_vPos.x, m_vPos.y, m_vScale.x, m_vScale.y, _dc);
 	//Component_Render(_dc);
+}
+
+void MapObject::EnterCollision(Collider* other)
+{
+	Ground::EnterCollision(other);
+}
+
+void MapObject::StayCollision(Collider* other)
+{
+	Ground::StayCollision(other);
+}
+
+void MapObject::ExitCollision(Collider* other)
+{
+	Ground::ExitCollision(other);
 }

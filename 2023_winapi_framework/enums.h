@@ -59,3 +59,14 @@ enum class SCENE_TYPE
 	GAMEOVER_SCENE,
 	EXPLAIN_SCENE,
 };
+
+enum class PLAYER_STATE
+{
+	IDLE,
+	MOVE,
+	JUMP,
+	CHARGE,
+	FALL,
+	OFF,
+	END
+};

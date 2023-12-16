@@ -1,5 +1,6 @@
 #pragma once
 #include "Object.h"
+#include "MapMgr.h"
 class Texture;
 class Player :
     public Object
@@ -9,14 +10,23 @@ public:
     ~Player();
 public:
     void Update() override;
-    
     void Render(HDC _dc) override;
     void EnterCollision(Collider* _pOther) override;
     void ExitCollision(Collider* _pOther) override;
     void StayCollision(Collider* _pOther) override;
+    bool CheckColDir(Object* otherObj);
+public:
+    void UpdateState();
+    void UpdateMove();
 public:
     void SetShell();
+    void SetPlayerColInfo(PLAYER_COL_INFO _colInfo) { m_colInfo = _colInfo; }
     const bool& GetShell() { return _shellOn; }
+    const PLAYER_STATE& GetCurState() { return m_curState; }
+    float GetJumpLevel(float& _acc);
+    void SetPlayerState(PLAYER_STATE _state) { m_curState = _state; }
+    void SetAnimOffsetPos(bool shellOn);
+    void SetColliderOffsetPos();
 private:
     void Jump();
     void DoubleJump();
@@ -25,7 +35,8 @@ private:
     void CreateInit();
     void SetShellOff();
     void InitJump() { _jumpPower = -550.f; }
-    //void SetOffSetPos(Vec2 _offsetPos) { m_offsetPos = _offsetPos; }
+    void ReStart() { m_vPos = MapMgr::GetInst()->GetSpawnPoint(); }
+    const int& GetTryCnt() { return _tryCnt; }
 private:
     float _isCreateEnd;
     float _jumpTime;
@@ -34,9 +45,16 @@ private:
     bool _isJump;
     bool _isDoubleJump;
     float _jumpPower;
+    float _acc;
     bool _isGround;
-    Vec2 _moveDir;
+    float _dir;
+    float _jumpLevel;
+    float _width;
+    float _height;
+    int _tryCnt;
     std::shared_ptr<Texture> m_pTex;
     std::shared_ptr<Texture> m_idleTex;
+    PLAYER_STATE m_curState;
+    PLAYER_COL_INFO m_colInfo;
 };
 

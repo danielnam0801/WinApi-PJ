@@ -7,7 +7,12 @@ public:
 	ShellObject();
 	~ShellObject();
 public:
+	void Update();
 	void Render(HDC _dc) override;
 	void EnterCollision(Collider* _pOther) override;
+public:
+	void Reload();
+public:
+	Vec2 spawnPoint;
 };
 
