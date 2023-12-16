@@ -4,10 +4,11 @@
 #include "Texture.h"
 #include "CameraMgr.h"
 
-Background::Background()
+Background::Background(std::shared_ptr<Texture> tex)
 {
-	SetScale(Vec2{10.f,10.f});
-	m_tex = ResMgr::GetInst()->TexLoad(L"Background", L"Texture\\Background.bmp");
+	SetScale(Vec2{ 3.f, 3.f });
+	m_tex = tex;
+
 }
 
 Background::~Background()

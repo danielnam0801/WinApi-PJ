@@ -1,6 +1,7 @@
 #pragma once
 #include "Object.h"
 #include "MapMgr.h"
+#include <sstream>
 class Texture;
 class Player :
     public Object
@@ -27,6 +28,19 @@ public:
     void SetPlayerState(PLAYER_STATE _state) { m_curState = _state; }
     void SetAnimOffsetPos(bool shellOn);
     void SetColliderOffsetPos();
+    void SetTryText() 
+    {
+        std::stringstream ss;
+        ss << std::to_string(_tryCnt) << "'st";
+        std::string str = ss.str();
+        _tryText.clear();
+        _tryText.assign(str.begin(), str.end());
+    }
+    void SetTryTextHide()
+    {
+        _tryText = L"";
+    }
+
 private:
     void Jump();
     void DoubleJump();
@@ -52,6 +66,8 @@ private:
     float _width;
     float _height;
     int _tryCnt;
+    wstring _tryText;
+    float textTime;
     std::shared_ptr<Texture> m_pTex;
     std::shared_ptr<Texture> m_idleTex;
     PLAYER_STATE m_curState;

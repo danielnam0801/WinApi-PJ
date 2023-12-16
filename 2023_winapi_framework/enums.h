@@ -23,11 +23,11 @@ enum class KEY_TYPE
 enum class OBJECT_GROUP
 {
 	DEFAULT,
-	PLAYER,
 	BULLET,
-	GROUND,
+	PLAYER,
 	CAMERA,
 	SHELL,
+	GROUND,
 	UI,
 	END = 15
 };

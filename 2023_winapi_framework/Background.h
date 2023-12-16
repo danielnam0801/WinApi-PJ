@@ -4,7 +4,7 @@
 class Background : public Object
 {
 public:
-	Background();
+	Background(std::shared_ptr<Texture> tex);
 	~Background();
 public:
 	void Render(HDC _dc) override;

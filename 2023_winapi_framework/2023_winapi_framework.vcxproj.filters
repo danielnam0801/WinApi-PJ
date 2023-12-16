@@ -80,6 +80,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Engine\04. Object\UI">
+      <UniqueIdentifier>{1c509416-ba40-404f-a240-bd5ddd465ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Object\Camera">
+      <UniqueIdentifier>{1e405945-6e29-4bee-a7b5-a249f1cfd9be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -109,9 +115,6 @@
     <ClInclude Include="BaseWindow.h">
       <Filter>Engine\02. Core</Filter>
     </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>Engine\04. Object</Filter>
-    </ClInclude>
     <ClInclude Include="Vec2.h">
       <Filter>Engine\01. Header</Filter>
     </ClInclude>
@@ -131,12 +134,6 @@
       <Filter>Engine\05. Scene\MainScene</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>Engine\04. Object\MainObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>Engine\04. Object\MainObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Bullet.h">
       <Filter>Engine\04. Object\MainObject</Filter>
     </ClInclude>
     <ClInclude Include="Res.h">
@@ -175,9 +172,6 @@
     <ClInclude Include="MapMgr.h">
       <Filter>Engine\03. Manager\MapMgr</Filter>
     </ClInclude>
-    <ClInclude Include="MouseObj.h">
-      <Filter>Engine\04. Object</Filter>
-    </ClInclude>
     <ClInclude Include="MapObject.h">
       <Filter>Engine\04. Object\Map\MapObject</Filter>
     </ClInclude>
@@ -199,12 +193,21 @@
     <ClInclude Include="CameraMgr.h">
       <Filter>Engine\03. Manager\CameraMgr</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Engine\04. Object</Filter>
+    <ClInclude Include="Background.h">
+      <Filter>Engine\04. Object\Map</Filter>
     </ClInclude>
-    <ClInclude Include="ShellObject.h" />
-    <ClInclude Include="Background.h" />
-    <ClInclude Include="Btn.h" />
+    <ClInclude Include="Btn.h">
+      <Filter>Engine\04. Object\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Engine\04. Object\MainObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Engine\04. Object\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="ShellObject.h">
+      <Filter>Engine\04. Object\MainObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="2023_winapi_framework.rc">
@@ -235,9 +238,6 @@
     <ClCompile Include="BaseWindow.cpp">
       <Filter>Engine\02. Core</Filter>
     </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>Engine\04. Object</Filter>
-    </ClCompile>
     <ClCompile Include="Vec2.cpp">
       <Filter>Engine\01. Header</Filter>
     </ClCompile>
@@ -257,12 +257,6 @@
       <Filter>Engine\02. Core</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>Engine\04. Object\MainObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Engine\04. Object\MainObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster.cpp">
       <Filter>Engine\04. Object\MainObject</Filter>
     </ClCompile>
     <ClCompile Include="Res.cpp">
@@ -298,9 +292,6 @@
     <ClCompile Include="MapMgr.cpp">
       <Filter>Engine\03. Manager\MapMgr</Filter>
     </ClCompile>
-    <ClCompile Include="MouseObj.cpp">
-      <Filter>Engine\04. Object</Filter>
-    </ClCompile>
     <ClCompile Include="MapObject.cpp">
       <Filter>Engine\04. Object\Map\MapObject</Filter>
     </ClCompile>
@@ -322,11 +313,20 @@
     <ClCompile Include="CameraMgr.cpp">
       <Filter>Engine\03. Manager\CameraMgr</Filter>
     </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Engine\04. Object</Filter>
+    <ClCompile Include="Background.cpp">
+      <Filter>Engine\04. Object\Map</Filter>
     </ClCompile>
-    <ClCompile Include="ShellObject.cpp" />
-    <ClCompile Include="Background.cpp" />
-    <ClCompile Include="Btn.cpp" />
+    <ClCompile Include="Btn.cpp">
+      <Filter>Engine\04. Object\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Engine\04. Object\MainObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Engine\04. Object\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="ShellObject.cpp">
+      <Filter>Engine\04. Object\MainObject</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

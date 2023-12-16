@@ -41,7 +41,7 @@ void Collider::Render(HDC _dc)
 	SelectGDI pen(_dc, ePen);
 	SelectGDI brush(_dc, BRUSH_TYPE::HOLLOW);
 	Vec2 vLocalPos = CameraMgr::GetInst()->GetLocalPos(m_vFinalPos);
-	RECT_RENDER(vLocalPos.x, vLocalPos.y, m_vScale.x, m_vScale.y, _dc);
+	//RECT_RENDER(vLocalPos.x, vLocalPos.y, m_vScale.x, m_vScale.y, _dc);
 }
 
 void Collider::EnterCollision(Collider* _pOther)

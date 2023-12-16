@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Player.h"
-#include "Bullet.h"
 #include "Scene.h"
 #include "Texture.h"
 #include "Collider.h"
@@ -10,6 +9,7 @@
 #include "Gravity.h"
 #include "Ground.h"
 
+#include "Core.h"
 #include "KeyMgr.h"
 #include "TimeMgr.h"
 #include "CollisionMgr.h"
@@ -18,6 +18,7 @@
 #include "ResMgr.h"
 #include "MapMgr.h"
 #include <iostream>
+#include <sstream>
 
 Player::Player()
 	: m_pTex(nullptr)
@@ -36,6 +37,7 @@ Player::Player()
 	, _width{70.f}
 	, _height{70.f}
 	, _tryCnt{0}
+	, textTime{0.f}
 
 {
 	m_pTex = ResMgr::GetInst()->TexLoad(L"Player", L"Texture\\AllPlayer.bmp");
@@ -73,7 +75,8 @@ Player::Player()
 	GetAnimator()->CreateAnim(L"_ChargeRight", m_pTex, Vec2(70.f, 0.f),
 		Vec2(70.f, 70.f), Vec2(70.f, 0.f), 1, 0.1f);
 	GetAnimator()->PlayAnim(L"_IdleRight",true);
-
+ 
+	SetTryText();
 	//// 오프셋 건드리기
 	//SetAnimOffsetPos(false);
 	SetColliderOffsetPos();
@@ -91,12 +94,20 @@ void Player::Update()
 	Object::Update();
 	
 	if (KEY_DOWN(KEY_TYPE::R) || m_vPos.y > 5000.f)
+	{
 		ReStart();
+		_tryCnt = GetTryCnt() + 1;
+		textTime = 0.f;
+		SetTryText();
+	}
 
 	UpdateState();
 	UpdateMove();
 	
 	GetAnimator()->Update();
+	textTime += fDT;
+	if (textTime > 2.f)
+		SetTryTextHide();
 }
 
 float Player::GetJumpLevel(float& _acc)
@@ -466,6 +477,10 @@ void Player::Render(HDC _dc)
 	//	, Width, Height, m_pTex->GetDC()
 	//	, 0, 0, Width, Height, RGB(255, 0, 255));
 	//RECT_RENDER(m_vPos.x, m_vPos.y, m_v->GetWidth() * m_vScale.x, m_tex->GetHeight() * m_vScale.y, _dc);
+	RECT rt = { -100, -100, Core::GetInst()->GetResolution().x, Core::GetInst()->GetResolution().y};
+	DrawText(_dc, _tryText.c_str(), -1, &rt, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
+	SetBkMode(_dc, TRANSPARENT);
+	
 	Component_Render(_dc);
 }
 

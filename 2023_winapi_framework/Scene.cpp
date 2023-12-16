@@ -44,20 +44,21 @@ void Scene::Render(HDC _dc)
 		{
 			if (!m_vecObj[i][j]->GetIsDead())
 			{
-				if (CameraMgr::GetInst()->InScreen(m_vecObj[i][j]->GetPos()))
+				if ((UINT)OBJECT_GROUP::UI == i)
 				{
 					m_vecObj[i][j]->Render(_dc);
 				}
+				else if (CameraMgr::GetInst()->InScreen(m_vecObj[i][j]->GetPos()))
+				{
+					m_vecObj[i][j]->Render(_dc);
+				}
+
 				++j;
 			}
 			else
 				m_vecObj[i].erase(m_vecObj[i].begin() + j);
 		}
 	}
-
-	if(m_bgObj != nullptr)
-		m_bgObj->Render(_dc);
-
 }
 
 void Scene::Release()

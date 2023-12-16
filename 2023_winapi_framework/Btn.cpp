@@ -50,3 +50,4 @@ void Btn::Render(HDC _hdc)
     DrawText(_hdc, m_Text.c_str(), -1, &rt, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
     SetBkMode(_hdc, TRANSPARENT);
 }
+    

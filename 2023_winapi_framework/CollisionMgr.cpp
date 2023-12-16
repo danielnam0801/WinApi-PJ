@@ -28,8 +28,7 @@ void CollisionMgr::CollisionGroupUpdate(OBJECT_GROUP _eLeft, OBJECT_GROUP _eRigh
 	for (size_t i = 0; i < vecLeft.size(); ++i)
 	{
 		// 충돌체가 없는 경우
-		if (vecLeft[i]->GetCollider() == nullptr 
-			|| vecLeft[i]->GetCollisionCheck() == false)
+		if (vecLeft[i]->GetCollider() == nullptr || vecLeft[i]->GetCollisionCheck() == false)
 			continue;
 		for (size_t j = 0; j < vecRight.size(); ++j)
 		{

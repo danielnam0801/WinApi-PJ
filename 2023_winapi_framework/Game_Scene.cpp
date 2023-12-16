@@ -14,17 +14,23 @@
 
 void Game_Scene::Init()
 {
+	SetBkColor(Core::GetInst()->GetMainDC(), RGB(0, 0, 0));
 	MapMgr::GetInst()->CreateJsonBoard();
 	Vec2 vResolution = Core::GetInst()->GetResolution();
 	
-	Background* m_bg = new Background;
+	std::shared_ptr<Texture> bgTex = ResMgr::GetInst()->TexLoad(L"GameBG", L"Texture\\Background.bmp");
+	Background* m_bg = new Background(bgTex);
 	m_bg->SetPos(vResolution);
-	ADDBG(m_bg);
+	AddObject(m_bg, OBJECT_GROUP::UI);
 
 
 	Object* m_Player = new Player;
 
-	//AddObject(m_Player, OBJECT_GROUP::PLAYER);
+
+	for (int i = 0; i < MapMgr::GetInst()->GetShellObjs().size(); i++)
+	{
+		AddObject(MapMgr::GetInst()->GetShellObjs()[i], OBJECT_GROUP::SHELL);
+	}
 
 	int size = MapMgr::GetInst()->GetMapObjs().size();
 	for (int i = 0; i < MapMgr::GetInst()->GetMapObjs().size(); i++)
@@ -32,10 +38,7 @@ void Game_Scene::Init()
 		AddObject(MapMgr::GetInst()->GetMapObjs()[i], OBJECT_GROUP::GROUND);
 	}
 
-	for (int i = 0; i < MapMgr::GetInst()->GetShellObjs().size(); i++)
-	{
-		//AddObject(MapMgr::GetInst()->GetShellObjs()[i], OBJECT_GROUP::SHELL);
-	}
+	AddObject(m_Player, OBJECT_GROUP::PLAYER);
 
 	//ResMgr::GetInst()->LoadSound(L"BGM", L"Sound\\Retro_bgm.wav", true);
 	ResMgr::GetInst()->LoadSound(L"Jump", L"Sound\\Jump.wav", false);

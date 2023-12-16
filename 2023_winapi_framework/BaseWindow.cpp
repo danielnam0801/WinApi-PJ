@@ -48,7 +48,7 @@ ATOM BaseWindow::MyRegisterClass()
     wcex.hInstance = m_hInst;
     wcex.hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_MY2023WINAPIFRAMEWORK22));
     wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+    wcex.hbrBackground = (HBRUSH)CreateSolidBrush(RGB(0, 0, 0));;
     wcex.lpszMenuName = nullptr;
     wcex.lpszClassName = WINDOW_CLASS_NAME;
     wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
@@ -97,8 +97,8 @@ LRESULT BaseWindow::WndProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _l
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(_hWnd, &ps);
         // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-        TextOutW(hdc, 100, 100, L"Hello World", 12);
-        TextOutA(hdc, 200, 200, "Hello World", 12);
+        //TextOutW(hdc, 100, 100, L"Hello World", 12);
+        //TextOutA(hdc, 200, 200, "Hello World", 12);
         EndPaint(_hWnd, &ps);
     }
     break;

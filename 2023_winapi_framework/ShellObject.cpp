@@ -47,21 +47,28 @@ void ShellObject::Render(HDC _dc)
 	int Width = m_tex->GetWidth();
 	int Height = m_tex->GetHeight();
 
-	// 2. 색상 걷어내기
-
-	TransparentBlt(_dc
-		, (int)(vPos.x - m_vScale.x / 2)
-		, (int)(vPos.y - m_vScale.y / 2)
-		, Width, Height, m_tex->GetDC()
-		, 0, 0, Width,Height, RGB(255,255,255));
+	//HBITMAP hMemBtiamp = CreateCompatibleBitmap(m_tex->GetDC(), m_tex->GetWidth(), m_tex->GetHeight());
+	//HDC hMemDc = CreateCompatibleDC(m_tex->GetDC());
+	//SelectObject(hMemDc, hMemBtiamp);
 	
+	//TransparentBlt(_dc
+	//	, (int)(vPos.x - m_vScale.x / 2)
+	//	, (int)(vPos.y - m_vScale.y / 2)
+	//	, Width, Height, m_tex->GetDC()
+	//	, 0, 0, Width, Height, RGB(255, 0, 255));
+
 	StretchBlt(_dc
 		, (int)(vPos.x - m_vScale.x / 2)
 		, (int)(vPos.y - m_vScale.y / 2)
 		, Width * m_vScale.x, Height * m_vScale.y, m_tex->GetDC()
 		, 0, 0, Width, Height, SRCCOPY);
 
-	RECT_RENDER(m_vPos.x, m_vPos.y, m_vScale.x, m_vScale.y, _dc);
+
+	/*DeleteObject(hMemBtiamp);
+	DeleteDC(hMemDc);*/
+
+
+	//RECT_RENDER(m_vPos.x, m_vPos.y, m_vScale.x, m_vScale.y, _dc);
 	Component_Render(_dc);
 }
 
