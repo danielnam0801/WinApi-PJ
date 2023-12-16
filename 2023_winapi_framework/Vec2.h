@@ -9,9 +9,11 @@ public:
 	Vec2(int _x, int _y);
 	Vec2(POINT _pt);
 	Vec2(const Vec2& _vec);
+
 public:
 	bool IsZero() { return x == 0 && y == 0; }
 	float Length() { return (float)(sqrt(pow(x, 2) + pow(y, 2))); }
+
 	Vec2& Normalize()
 	{
 		float fLen = Length();
@@ -70,13 +72,12 @@ public:
 		(*this) = (*this) / _vOther;
 		return *this;
 	}
-	Vec2& operator = (const Vec2& _vOther)
+	Vec2& operator=(const Vec2& _vOther)
 	{
 		x = _vOther.x;
 		y = _vOther.y;
 		return *this;
 	}
-
 public:
 	float x;
 	float y;

@@ -12,11 +12,17 @@
 #include "MapMgr.h"
 #include "Btn.h"
 #include "SceneMgr.h"
+#include "Vec2.h"
+#include"Texture.h"
+#include <functional>
 #include<io.h>
 using namespace std;
 
+Vec2 vec;
+
 void Start_Scene::Init()
 {
+	ResMgr::GetInst()->TexLoad(L"Slime.bmp", L"Texture\\Slime.bmp");
 
 	Btn* Btn1 = new Btn([]()
 		{
@@ -28,23 +34,23 @@ void Start_Scene::Init()
 	Btn1->SetScale(Vec2(100.f, 30.f));
 	AddObject(Btn1, OBJECT_GROUP::UI);
 
-	//Btn* Btn2 = new Btn([]()
-	//	{
-	//		SceneMgr::GetInst()->LoadScene(L"ExplainScene");
-	//	}
-	//, L"게임 설명");
-	//Btn2->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y / 2 })));
-	//Btn2->SetScale(Vec2(100.f, 30.f));
-	//AddObject(Btn2, OBJECT_GROUP::UI);
+	Btn* Btn2 = new Btn([]()
+		{
+			SceneMgr::GetInst()->LoadScene(L"ExplainScene");
+		}
+	, L"게임 설명",L"ASDF",L"Texture\\Button1.bmp");
+	Btn2->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y / 2 })));
+	Btn2->SetScale(Vec2(100.f, 30.f));
+	AddObject(Btn2, OBJECT_GROUP::UI);
 
-	//Btn* Btn3 = new Btn([]()
-	//	{
-	//		SceneMgr::GetInst()->LoadScene(L"GameOverScene");
-	//	}
-	//, L"게임 종료");
-	//Btn3->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y /6*4-110})));
-	//Btn3->SetScale(Vec2(100.f, 30.f));
-	//AddObject(Btn3, OBJECT_GROUP::UI);
+	Btn* Btn3 = new Btn([]()
+		{
+			SceneMgr::GetInst()->LoadScene(L"GameOverScene");
+		}
+	, L"게임 종료",L"ASDF",L"Texture\\Button1.bmp");
+	Btn3->SetPos((Vec2({ Core::GetInst()->GetResolution().x / 2, Core::GetInst()->GetResolution().y /6*4-110})));
+	Btn3->SetScale(Vec2(100.f, 30.f));
+	AddObject(Btn3, OBJECT_GROUP::UI);
 
 	//MapMgr::GetInst()->CreateJsonBoard();
 	//Vec2 vResolution = Core::GetInst()->GetResolution();
@@ -100,12 +106,30 @@ void Start_Scene::Update()
 
 void Start_Scene::Render(HDC _dc)
 {
+	
 	Scene::Render(_dc);
-	StretchBlt(_dc
-		, (int)(x - m_vScale.x / 2)
-		, (int)(vPos.y - m_vScale.y / 2)
-		, Width * m_vScale.x, Height * m_vScale.y, m_tex->GetDC()
-		, 0, 0, Width, Height, SRCCOPY);
+	shared_ptr<Texture> backgroundTexture = ResMgr::GetInst()->TexFind(L"Slime.bmp");
+	if (backgroundTexture)
+	{
+		Vec2 vPos = GetPos();
+		Vec2 vScale = GetScale();
+
+		int Width = backgroundTexture->GetWidth();
+		int Height = backgroundTexture->GetHeight();
+
+		StretchBlt(_dc, 0, 0, (int)vScale.x, (int)vScale.y, backgroundTexture->GetDC(), 0, 0, Width, Height, SRCCOPY);
+	}
+
+
+	//Vec2 vPos = Vec2(Core::GetInst()->GetResolution().x, Core::GetInst()->GetResolution().y);
+
+	//shared_ptr<Texture> texture = ResMgr::GetInst()->TexFind(L"asdf");
+
+	//if (texture)
+	//{
+	//	int Width = texture->GetWidth();
+	//	int Height = texture->GetHeight();
+	//}
 }
 
 void Start_Scene::Release()

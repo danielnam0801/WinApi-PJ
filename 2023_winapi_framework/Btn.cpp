@@ -42,13 +42,11 @@ void Btn::Render(HDC _hdc)
     Vec2 vScale = GetScale();
     RECT rt = { vPos.x - vScale.x / 2, vPos.y - vScale.y / 2 , vPos.x + vScale.x / 2, vPos.y + vScale.y / 2 };
 
-    
+    int Width = m_Texture->GetWidth();
+    int Height = m_Texture->GetHeight();
 
-    BitBlt(_hdc,rt.left,rt.top,vScale.x,vScale.y, m_Texture->GetDC(), 0, 0, SRCCOPY);
+    StretchBlt(_hdc, rt.left, rt.top, vScale.x, vScale.y, m_Texture->GetDC(), 0, 0, Width, Height, SRCCOPY);
 
-    //RECT_RENDER(vPos.x, vPos.y, vScale.x, vScale.y, _hdc);
-
-    
-
-    DrawText(_hdc, m_Text.c_str(), -1, &rt, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+    DrawText(_hdc, m_Text.c_str(), -1, &rt, DT_CENTER | DT_VCENTER | DT_SINGLELINE|DT_NOCLIP);
+    SetBkMode(_hdc,TRANSPARENT);
 }
