@@ -15,7 +15,7 @@ std::string PathMgr::ReplaceAll(std::string message, std::string pattern, std::s
 	std::string::size_type offset = 0;
 	while ((pos = result.find(pattern, offset)) != std::string::npos) 
 	{
-		result.replace(result.begin() + pos, result.begin() + pos + pattern.size(), replace);        offset = pos + replace.size();
+		result.replace(result.begin() + pos, result.begin() + pos + pattern.size(), replace); 
 		offset = pos + replace.size();
 	}
 	return result;

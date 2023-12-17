@@ -106,7 +106,7 @@ void Player::Update()
 	
 	GetAnimator()->Update();
 	textTime += fDT;
-	if (textTime > 2.f)
+	if (textTime > 5.f)
 		SetTryTextHide();
 }
 
