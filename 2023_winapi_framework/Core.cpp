@@ -41,15 +41,6 @@ bool Core::Init(HWND _hWnd, POINT _ptResolution)
 
 void Core::GameLoop()
 {
-	/*static int count = 0;
-	++count;
-	static int prev = GetTickCount64();
-	int cur = GetTickCount64();
-	if (cur - prev > 1000)
-	{
-		prev = cur;
-		count = 0;
-	}*/
 	Update();
 	Render();
 }
@@ -70,33 +61,13 @@ void Core::Update()
 
 void Core::Render()
 {
-	// ĥ�Ѵ�.
-	//Rectangle(m_hbackDC, -1,-1,m_ptResolution.x +1,m_ptResolution.y + 1);
 	PatBlt(m_hbackDC, 0, 0, m_ptResolution.x, m_ptResolution.y, WHITENESS);
 
 	SceneMgr::GetInst()->Render(m_hbackDC);
-	/*Vec2 vPos = m_obj.GetPos();
-	Vec2 vScale = m_obj.GetScale();
-	RECT_RENDER(vPos.x, vPos.y, vScale.x, vScale.y, m_hbackDC);*/
 
-	//// cursor test
-	//POINT mousepos = KeyMgr::GetInst()->GetMousePos();
-	//static wchar_t mousebuf[100] = {};
-	//swprintf_s(mousebuf, L"Mouse: x %d, y: %d", mousepos.x, mousepos.y);
-	//TextOut(m_hbackDC, 10, 10, mousebuf, wcslen(mousebuf));
-
-	// 3. �ű��.
 	BitBlt(m_hDC, 0,0, m_ptResolution.x, m_ptResolution.y, 
 		m_hbackDC, 0,0, SRCCOPY);
 	EventMgr::GetInst()->Update();
-
-
-	//TransparentBlt();
-	//StretchBlt();
-	// 
-	//RECT_RENDER(m_obj.m_ptPos.x, m_obj.m_ptPos.y, m_obj.m_ptScale.x, m_obj.m_ptScale.y, m_hDC);
-	//Rectangle(m_hDC
-	//	, m_obj.m_ptPos.x - ERROR_CANT_CROSS_RM_BOUNDARY,50,150,150);
 }
 
 void Core::CreateGDI()

@@ -61,17 +61,11 @@
     <Filter Include="Engine\07. Component">
       <UniqueIdentifier>{a72219c4-1f53-4d42-868c-88db0b756faf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\08. Module\Factory">
-      <UniqueIdentifier>{210bf1be-6448-487d-a166-d69560eee2db}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\04. Object\Map">
       <UniqueIdentifier>{a5baec83-bff6-4b7a-9e39-0a4ad828e269}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\04. Object\Map\MapObject">
       <UniqueIdentifier>{f9da4e9c-2274-4bf5-be2c-f456ec076f2d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\03. Manager\PlayerMgr">
-      <UniqueIdentifier>{6587818d-b572-40d4-86a9-1a88b946ae2f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\03. Manager\CameraMgr">
       <UniqueIdentifier>{c53d4dd0-8d86-4b78-a8ab-1c5035104859}</UniqueIdentifier>
@@ -85,6 +79,9 @@
     </Filter>
     <Filter Include="Engine\04. Object\Camera">
       <UniqueIdentifier>{1e405945-6e29-4bee-a7b5-a249f1cfd9be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. Manager\PlayerMgr">
+      <UniqueIdentifier>{d2c79dcc-c47f-405b-9374-dfa15e890699}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -181,9 +178,6 @@
     <ClInclude Include="Rigidbody.h">
       <Filter>Engine\07. Component</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerMgr.h">
-      <Filter>Engine\03. Manager\PlayerMgr</Filter>
-    </ClInclude>
     <ClInclude Include="Ground.h">
       <Filter>Engine\04. Object\Map\MapObject</Filter>
     </ClInclude>
@@ -207,6 +201,9 @@
     </ClInclude>
     <ClInclude Include="ShellObject.h">
       <Filter>Engine\04. Object\MainObject</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMgr.h">
+      <Filter>Engine\03. Manager\PlayerMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -301,9 +298,6 @@
     <ClCompile Include="Rigidbody.cpp">
       <Filter>Engine\07. Component</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerMgr.cpp">
-      <Filter>Engine\03. Manager\PlayerMgr</Filter>
-    </ClCompile>
     <ClCompile Include="Ground.cpp">
       <Filter>Engine\04. Object\Map\MapObject</Filter>
     </ClCompile>
@@ -327,6 +321,9 @@
     </ClCompile>
     <ClCompile Include="ShellObject.cpp">
       <Filter>Engine\04. Object\MainObject</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMgr.cpp">
+      <Filter>Engine\03. Manager\PlayerMgr</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -67,7 +67,7 @@ void Scene::Release()
 	{
 		for (size_t j = 0; j < m_vecObj[i].size(); ++j)
 		{
-			if (nullptr != m_vecObj[i][j])
+			if (nullptr != m_vecObj[i][j] || true == m_vecObj[i][j]->GetIsDead())
 				delete m_vecObj[i][j];
 		}
 		m_vecObj[i].clear();

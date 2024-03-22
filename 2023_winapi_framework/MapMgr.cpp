@@ -44,15 +44,11 @@ void MapMgr::CreateJsonBoard()
 		if (startPointLayer->getType() == tson::LayerType::ObjectGroup)
 		{
 			tson::Object* spawn = startPointLayer->firstObj("StartPoint");
-			//Vec2 origin = { (float)spawn->getSize().x / 2.f, (float)spawn->getSize().y / 2.f};
-			//origin *= m_Scale;
-			//spawnPoint = Vec2{ (spawn->getPosition().x + origin.x) * m_Scale.x, (spawn->getPosition().y + origin.y) * m_Scale.y };
 			spawnPoint = Vec2{ spawn->getPosition().x, spawn->getPosition().y };
 		}
 		if (endPointLayer->getType() == tson::LayerType::ObjectGroup)
 		{
 			tson::Object* spawn = endPointLayer->firstObj("EndPoint");
-			//endPoint = Vec2{ spawn->getPosition().x * m_Scale.x, spawn->getPosition().y * m_Scale.y};
 			endPoint = Vec2{ spawn->getPosition().x, spawn->getPosition().y};
 		}
 
@@ -63,7 +59,6 @@ void MapMgr::CreateJsonBoard()
 			tson::Vector2i size = obj.getSize();
 			
 			ShellObject* shellObj = new ShellObject;
-			//shellObj->SetPos(Vec2{ (position.x + origin.x) * m_Scale.x, (position.y + origin.y) * m_Scale.y});
 			shellObj->SetPos(Vec2{ position.x, position.y });
 			shellObj->spawnPoint = Vec2{ position.x, position.y };
 			m_shellObjs.push_back(shellObj);
@@ -92,7 +87,6 @@ void MapMgr::CreateJsonBoard()
 			////	// origin ¼¼ÆÃ
 
 			Vec2 origin = { (float)rect.width / 2.f, (float)rect.height / 2.f };
-			//Vec2 origin = { 0.f, 0.f };
 			origin *= m_Scale;
 			sprite->GetCollider()->SetOffSetPos(origin);
 			
@@ -133,33 +127,6 @@ MapObject* MapMgr::StoreAndLoadImageMapObject(const std::string& _image, const V
 		return m_mapsprite[_image];
 	return nullptr;
 }
-
-
-//ShellObject* MapMgr::StoreAndLoadImageShellObject(const std::string& _image, const Vec2 _pos)
-//{
-//	fs::path path = _image;
-//	if (m_maptex.count(_image) == 0)
-//	{
-//		//if (fs::exists(path) && fs::is_regular_file(path))
-//
-//		std::shared_ptr<Texture> tex = ResMgr::GetInst()->TexLoad(StrToWstr(_image), path);
-//		//bool imageFound = tex->LoadFromFile(tex->GetRelativePath());
-//		if (tex != nullptr)
-//		{
-//			ShellObject* spr = new ShellObject;
-//			spr->SetTexture(tex);
-//			m_maptex[_image] = tex;
-//			m_shellsprite[_image] = spr;
-//		}
-//		else
-//		{
-//			std::cout << "can't find" << path.generic_string() << std::endl;
-//		}
-//	}
-//	if (m_shellsprite.count(_image) > 0)
-//		return m_shellsprite[_image];
-//	return nullptr;
-//}
 
 std::string MapMgr::WstrToStr(const std::wstring& source)
 {

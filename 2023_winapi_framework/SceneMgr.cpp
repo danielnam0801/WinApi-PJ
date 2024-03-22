@@ -48,3 +48,14 @@ void SceneMgr::RegisterScene(const SCENE_TYPE& _scenename, std::shared_ptr<Scene
 {
 	m_mapScenes.insert(m_mapScenes.end(), {_scenename, _scene});
 }
+
+void SceneMgr::Release()
+{
+	map<SCENE_TYPE, std::shared_ptr<Scene>>::iterator iter;
+
+	for (iter = m_mapScenes.begin(); iter != m_mapScenes.end(); iter++)
+	{
+		iter->second->Release();
+	}
+	m_mapScenes = nullptr;
+}

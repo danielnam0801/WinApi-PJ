@@ -45,7 +45,7 @@ void Btn::Render(HDC _hdc)
     int Width = m_Tex->GetWidth();
     int Height = m_Tex->GetHeight();
 
-    StretchBlt(_hdc, rt.left, rt.top, vScale.x, vScale.y, m_Tex->GetDC(), 0, 0, Width, Height, SRCCOPY);
+    TransparentBlt(_hdc, rt.left, rt.top, vScale.x, vScale.y, m_Tex->GetDC(), 0, 0, Width, Height, RGB(255, 255, 255));
 
     DrawText(_hdc, m_Text.c_str(), -1, &rt, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
     SetBkMode(_hdc, TRANSPARENT);

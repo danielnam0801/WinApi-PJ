@@ -17,6 +17,9 @@
 #include "PathMgr.h"
 #include "ResMgr.h"
 #include "MapMgr.h"
+#include "Game_Scene.h"
+#include "ShellObject.h"
+
 #include <iostream>
 #include <sstream>
 
@@ -38,7 +41,7 @@ Player::Player()
 	, _height{70.f}
 	, _tryCnt{0}
 	, textTime{0.f}
-
+	, _detectTimer{0.3f}
 {
 	m_pTex = ResMgr::GetInst()->TexLoad(L"Player", L"Texture\\AllPlayer.bmp");
 	CreateCollider();
@@ -95,10 +98,7 @@ void Player::Update()
 	
 	if (KEY_DOWN(KEY_TYPE::R) || m_vPos.y > 5000.f)
 	{
-		ReStart();
-		_tryCnt = GetTryCnt() + 1;
-		textTime = 0.f;
-		SetTryText();
+		ReStart();	
 	}
 
 	UpdateState();
@@ -108,6 +108,17 @@ void Player::Update()
 	textTime += fDT;
 	if (textTime > 5.f)
 		SetTryTextHide();
+
+	if (_isCanDetect == false)
+	{
+		_detectTimer -= fDT;
+		if (_detectTimer < 0.f)
+		{
+			_isCanDetect = true;
+			_detectTimer = 0.3f;
+		}
+	}
+
 }
 
 float Player::GetJumpLevel(float& _acc)
@@ -192,6 +203,7 @@ void Player::CreateInit()
 {
 	GetGravity()->SetGravity(1400.f);
 	GetGravity()->SetApplyGravity(true);
+	_isCanDetect = true;
 }
 
 void Player::UpdateState()
@@ -433,13 +445,30 @@ void Player::SetShell()
 
 void Player::SetShellOff()
 {
+	_isCanDetect = false;
 	_shellOn = false;
 	m_vScale = Vec2{ 1.f,1.f };
 	Vec2 colScale =
 	{ m_vScale.x * (_width/2 - 5), m_vScale.y * (_height/2 - 5)};
 	SetAnimOffsetPos(false);
 	SetColliderOffsetPos();
-//	Make_ShellOBj
+
+	ShellObject* shellObj = new ShellObject;
+	shellObj->SetPos(GetPos());
+	shellObj->GetGravity()->SetApplyGravity(true);
+	SceneMgr::GetInst()->GetCurScene()->
+		AddObject(shellObj, OBJECT_GROUP::REMAKESHELL);	
+}
+
+void Player::ReStart()
+{
+	m_vPos = MapMgr::GetInst()->GetSpawnPoint();
+	_tryCnt = GetTryCnt() + 1;
+	textTime = 0.f;
+	SetTryText();
+	std::shared_ptr<Game_Scene> gameScene
+		= std::static_pointer_cast<Game_Scene>(SceneMgr::GetInst()->GetCurScene());
+	gameScene->Restart();
 }
 
 void Player::Render(HDC _dc)

@@ -2,14 +2,11 @@
 class Player;
 class PlayerMgr
 {
-	SINGLE(PlayerMgr);
-public:
-	void Init();
-	void Update();
-	void Render(HDC _dc);
-public:
-	Player* GetPlayer() { return m_Player; }
-private:
-	Player* m_Player;
+	SINGLE(PlayerMgr)
+	public:
+		void SetPlayer(Player* other) { m_Player = other; }
+		Player* GetPlayer() { return m_Player; }
+	private:
+		Player* m_Player;
 };
 

@@ -9,6 +9,7 @@
 #include "CameraMgr.h"
 #include "Object.h"
 #include "Player.h"
+#include "SceneMgr.h"
 
 ShellObject::ShellObject()
 {
@@ -24,6 +25,7 @@ ShellObject::ShellObject()
 	GetCollider()->SetOffSetPos(Vec2{ Width , Height });
 	GetGravity()->SetGravity(100.f);
 	GetGravity()->SetApplyGravity(false);
+	enabled = true;
 }
 
 ShellObject::~ShellObject()
@@ -41,56 +43,44 @@ void ShellObject::Update()
 
 void ShellObject::Render(HDC _dc)
 {
-	Vec2 vPos = GetPos();
+	if (enabled == false) return;
+	Vec2 vPos = GetPos(); 
 	vPos = CameraMgr::GetInst()->GetLocalPos(vPos);
 
 	int Width = m_tex->GetWidth();
 	int Height = m_tex->GetHeight();
-
-	//HBITMAP hMemBtiamp = CreateCompatibleBitmap(m_tex->GetDC(), m_tex->GetWidth(), m_tex->GetHeight());
-	//HDC hMemDc = CreateCompatibleDC(m_tex->GetDC());
-	//SelectObject(hMemDc, hMemBtiamp);
 	
-	//TransparentBlt(_dc
-	//	, (int)(vPos.x - m_vScale.x / 2)
-	//	, (int)(vPos.y - m_vScale.y / 2)
-	//	, Width, Height, m_tex->GetDC()
-	//	, 0, 0, Width, Height, RGB(255, 0, 255));
-
-	StretchBlt(_dc
+	TransparentBlt(_dc
 		, (int)(vPos.x - m_vScale.x / 2)
 		, (int)(vPos.y - m_vScale.y / 2)
-		, Width * m_vScale.x, Height * m_vScale.y, m_tex->GetDC()
-		, 0, 0, Width, Height, SRCCOPY);
+		, Width * 1.6, Height * 1.6, m_tex->GetDC()
+		, 0, 0, Width, Height, RGB(255, 255, 255));
 
-
-	/*DeleteObject(hMemBtiamp);
-	DeleteDC(hMemDc);*/
-
-
-	//RECT_RENDER(m_vPos.x, m_vPos.y, m_vScale.x, m_vScale.y, _dc);
 	Component_Render(_dc);
 }
 
 void ShellObject::EnterCollision(Collider* _pOther)
 {
+	if (enabled == false) return;
 	if (_pOther->GetObj()->GetName() == L"Player")
 	{
 		Player* pPlayer = reinterpret_cast<Player*>(_pOther->GetObj());
-		if (!pPlayer->GetShell())
+		if (!pPlayer->GetShell() && pPlayer->IsCanDetect())
 		{
 			pPlayer->SetShell();
-			//m_IsAlive = false;
+			enabled = false;
 		}
 	}
-	/*if (_pOther->GetObj()->GetName() == L"Ground")
+
+	if (_pOther->GetObj()->GetName() == L"Ground")
 	{
-		m_IsAlive = false;
-	}*/
+		GetGravity()->SetApplyGravity(false);
+	}
 }
 
 void ShellObject::Reload()
 {
 	m_vPos = spawnPoint;
+	enabled = true;
 }
 

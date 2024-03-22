@@ -14,5 +14,7 @@ public:
 	void Reload();
 public:
 	Vec2 spawnPoint;
+private:
+	bool enabled;
 };
 

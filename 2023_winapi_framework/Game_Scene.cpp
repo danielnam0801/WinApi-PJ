@@ -1,16 +1,19 @@
 #include "pch.h"
 #include "Game_Scene.h"
 #include "Core.h"
+
 #include "Object.h"
-#include "CollisionMgr.h"
 #include "Player.h"
-#include "ResMgr.h"
+#include "ShellObject.h"
+#include "Background.h"
 #include "MapObject.h"
+
+#include "ResMgr.h"
 #include "MapMgr.h"
 #include "CameraMgr.h"
-#include "ShellObject.h"
-#include "Gravity.h"
-#include "Background.h"
+#include "CollisionMgr.h"
+#include "PlayerMgr.h"
+#include "SceneMgr.h"
 
 void Game_Scene::Init()
 {
@@ -24,8 +27,8 @@ void Game_Scene::Init()
 	AddObject(m_bg, OBJECT_GROUP::UI);
 
 
-	Object* m_Player = new Player;
-
+	Player* m_Player = new Player;
+	PlayerMgr::GetInst()->SetPlayer(m_Player);
 
 	for (int i = 0; i < MapMgr::GetInst()->GetShellObjs().size(); i++)
 	{
@@ -40,7 +43,7 @@ void Game_Scene::Init()
 
 	AddObject(m_Player, OBJECT_GROUP::PLAYER);
 
-	//ResMgr::GetInst()->LoadSound(L"BGM", L"Sound\\Retro_bgm.wav", true);
+	ResMgr::GetInst()->LoadSound(L"BGM", L"Sound\\Retro_bgm.wav", true);
 	ResMgr::GetInst()->LoadSound(L"Jump", L"Sound\\Jump.wav", false);
 	ResMgr::GetInst()->LoadSound(L"Land", L"Sound\\Land.wav", false);
 	ResMgr::GetInst()->LoadSound(L"Bump", L"Sound\\Bump.wav", false);
@@ -49,8 +52,27 @@ void Game_Scene::Init()
 	//// 충돌체크해야되는것들을 설정하자
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::GROUND);
 	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::SHELL);
-	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::GROUND, OBJECT_GROUP::SHELL);
+	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::PLAYER, OBJECT_GROUP::REMAKESHELL);
+	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::SHELL, OBJECT_GROUP::GROUND);
+	CollisionMgr::GetInst()->CheckGroup(OBJECT_GROUP::REMAKESHELL, OBJECT_GROUP::GROUND);
 	CameraMgr::GetInst()->SetTarget(m_Player);
 	CameraMgr::GetInst()->SetPrevLook(MapMgr::GetInst()->GetEndPoint());
 	CameraMgr::GetInst()->SetLook(m_Player->GetPos());
+}
+
+void Game_Scene::Restart()
+{
+	std::vector<ShellObject*> shells = MapMgr::GetInst()->GetShellObjs();
+	// 기본 배치된 껍데기들은 다시 활성화시켜준다.
+	for (int i = 0; i < shells.size(); i++)
+	{
+		shells[i]->Reload();
+	}
+
+	// 새로 생성했던 껍데기들은 비워준다.
+	std::vector<Object*> newShells = SceneMgr::GetInst()->GetCurScene()->GetGroupObject(OBJECT_GROUP::REMAKESHELL);
+	for (int i = 0; i < newShells.size(); i++)
+	{
+		newShells[i]->SetIsDead(true);
+	}
 }

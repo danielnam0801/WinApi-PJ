@@ -10,6 +10,7 @@ public:
 public:
 	void LoadScene(const SCENE_TYPE& _scenename);
 	void RegisterScene(const SCENE_TYPE& _scenename, std::shared_ptr<Scene> _scene);
+	void Release();
 public:
 	const std::shared_ptr<Scene>& GetCurScene() const
 	{

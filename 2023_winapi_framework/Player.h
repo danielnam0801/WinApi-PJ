@@ -22,8 +22,9 @@ public:
 public:
     void SetShell();
     void SetPlayerColInfo(PLAYER_COL_INFO _colInfo) { m_colInfo = _colInfo; }
-    const bool& GetShell() { return _shellOn; }
     const PLAYER_STATE& GetCurState() { return m_curState; }
+    const bool& GetShell() { return _shellOn; }
+    const bool& IsCanDetect() { return _isCanDetect; }
     float GetJumpLevel(float& _acc);
     void SetPlayerState(PLAYER_STATE _state) { m_curState = _state; }
     void SetAnimOffsetPos(bool shellOn);
@@ -49,13 +50,15 @@ private:
     void CreateInit();
     void SetShellOff();
     void InitJump() { _jumpPower = -550.f; }
-    void ReStart() { m_vPos = MapMgr::GetInst()->GetSpawnPoint(); }
+    void ReStart();
     const int& GetTryCnt() { return _tryCnt; }
 private:
     float _isCreateEnd;
     float _jumpTime;
     float _curTime;
+    float _detectTimer;
     bool _shellOn;
+    bool _isCanDetect;
     bool _isJump;
     bool _isDoubleJump;
     float _jumpPower;

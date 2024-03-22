@@ -3,6 +3,8 @@
 class Game_Scene :
     public Scene
 {
+public:
     virtual void Init() override;
+    void Restart();
 };
 
