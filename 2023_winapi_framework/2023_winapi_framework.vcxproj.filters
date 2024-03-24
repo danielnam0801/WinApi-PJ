@@ -172,9 +172,6 @@
     <ClInclude Include="MapObject.h">
       <Filter>Engine\04. Object\Map\MapObject</Filter>
     </ClInclude>
-    <ClInclude Include="ToolScene.h">
-      <Filter>Engine\05. Scene\MainScene</Filter>
-    </ClInclude>
     <ClInclude Include="Rigidbody.h">
       <Filter>Engine\07. Component</Filter>
     </ClInclude>
@@ -204,6 +201,9 @@
     </ClInclude>
     <ClInclude Include="PlayerMgr.h">
       <Filter>Engine\03. Manager\PlayerMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverScene.h">
+      <Filter>Engine\05. Scene\MainScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -256,9 +256,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>Engine\04. Object\MainObject</Filter>
     </ClCompile>
-    <ClCompile Include="Res.cpp">
-      <Filter>Engine\06. Resource</Filter>
-    </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Engine\06. Resource</Filter>
     </ClCompile>
@@ -292,9 +289,6 @@
     <ClCompile Include="MapObject.cpp">
       <Filter>Engine\04. Object\Map\MapObject</Filter>
     </ClCompile>
-    <ClCompile Include="ToolScene.cpp">
-      <Filter>Engine\05. Scene\MainScene</Filter>
-    </ClCompile>
     <ClCompile Include="Rigidbody.cpp">
       <Filter>Engine\07. Component</Filter>
     </ClCompile>
@@ -324,6 +318,12 @@
     </ClCompile>
     <ClCompile Include="PlayerMgr.cpp">
       <Filter>Engine\03. Manager\PlayerMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverScene.cpp">
+      <Filter>Engine\05. Scene\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Res.cpp">
+      <Filter>Engine\06. Resource</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -184,6 +184,7 @@
     <ClInclude Include="enums.h" />
     <ClInclude Include="EventMgr.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="Game_Scene.h" />
     <ClInclude Include="Gravity.h" />
     <ClInclude Include="Ground.h" />
@@ -207,7 +208,6 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TimeMgr.h" />
-    <ClInclude Include="ToolScene.h" />
     <ClInclude Include="Vec2.h" />
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +222,7 @@
     <ClCompile Include="CollisionMgr.cpp" />
     <ClCompile Include="Core.cpp" />
     <ClCompile Include="EventMgr.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="Game_Scene.cpp" />
     <ClCompile Include="Gravity.cpp" />
     <ClCompile Include="Ground.cpp" />
@@ -243,7 +244,6 @@
     <ClCompile Include="Start_Scene.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TimeMgr.cpp" />
-    <ClCompile Include="ToolScene.cpp" />
     <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
   <ItemGroup>

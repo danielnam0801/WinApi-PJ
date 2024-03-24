@@ -2,12 +2,14 @@
 #include "SceneMgr.h"
 #include "Start_Scene.h"
 #include "Game_Scene.h"
+#include "GameOverScene.h"
 void SceneMgr::Init()
 {
 	m_pCurScene = nullptr;
 	// �� ���
 	RegisterScene(SCENE_TYPE::START_SCENE,std::make_shared<Start_Scene>());
 	RegisterScene(SCENE_TYPE::GAME_SCENE, std::make_shared<Game_Scene>());
+	RegisterScene(SCENE_TYPE::GAMEOVER_SCENE, std::make_shared<GameOverScene>());
 
 	// ù �� ����
 	LoadScene(SCENE_TYPE::START_SCENE);
@@ -57,5 +59,4 @@ void SceneMgr::Release()
 	{
 		iter->second->Release();
 	}
-	m_mapScenes = nullptr;
 }

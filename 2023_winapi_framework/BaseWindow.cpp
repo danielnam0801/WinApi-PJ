@@ -21,8 +21,6 @@ BaseWindow::~BaseWindow()
 
 int BaseWindow::Run(HINSTANCE _hInst, LPWSTR _lpCmdline, int _nCmdShow)
 {
-
-
     //this->m_hWnd;
     m_hInst = _hInst;
     this->MyRegisterClass();
@@ -61,7 +59,7 @@ void BaseWindow::WindowCreate()
     int iWinposx = GetSystemMetrics(SM_CXSCREEN) / 2 - m_ptResolution.x / 2;
     int iWinposy = GetSystemMetrics(SM_CYSCREEN) / 2 - m_ptResolution.y / 2;
     
-    m_hWnd = CreateWindowW(WINDOW_CLASS_NAME, L"Jun's Framework", WS_OVERLAPPEDWINDOW,
+    m_hWnd = CreateWindowW(WINDOW_CLASS_NAME, L"SlimeKingx2", WS_OVERLAPPEDWINDOW,
         iWinposx, iWinposy, m_ptResolution.x, m_ptResolution.y, nullptr, nullptr, m_hInst, nullptr);
     
     RECT rt = { iWinposx, iWinposy, iWinposx + m_ptResolution.x, iWinposy + m_ptResolution.y };
@@ -96,22 +94,10 @@ LRESULT BaseWindow::WndProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _l
     {
         PAINTSTRUCT ps;
         HDC hdc = BeginPaint(_hWnd, &ps);
-        // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-        //TextOutW(hdc, 100, 100, L"Hello World", 12);
-        //TextOutA(hdc, 200, 200, "Hello World", 12);
         EndPaint(_hWnd, &ps);
     }
     break;
-    //    // 우리가 PAINT를 쓸까..?
-    //case WM_PAINT:
-    //{
-    //    PAINTSTRUCT ps;
-    //    HDC hdc = BeginPaint(_hWnd, &ps);
-    //    // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-    //    Rectangle(hdc, 10, 10, 110, 110);
-    //    EndPaint(_hWnd, &ps);
-    //}
-    //break;
+
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
@@ -124,10 +110,8 @@ LRESULT BaseWindow::WndProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _l
 int BaseWindow::MessageLoop()
 {
     MSG msg;
-    // 기본 메시지 루프입니다:
     while (true)
     {
-        // 어? 메시지 있네? 그럼 여기 ㅇㅋ
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
             if (msg.message == WM_QUIT)
@@ -137,7 +121,6 @@ int BaseWindow::MessageLoop()
         }
         else
         {
-            // 어? 메시지 없음? ㅇㅋ 나 따로놈 게임함
             Core::GetInst()->GameLoop();
         }
     }

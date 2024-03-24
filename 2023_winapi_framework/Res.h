@@ -1,9 +1,9 @@
 #pragma once
 class Res
 {
-public:
-	Res();
-	~Res();
+public: 
+	Res() {};
+	~Res() {};
 public:
 	void SetKey(const wstring& _StrKey) 
 	{	m_strKey = _StrKey;	}
